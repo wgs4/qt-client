@@ -146,6 +146,14 @@ static QString countryMQL("SELECT country_id, country_name, country_name"
                           "  FROM country"
                           " <? if exists('Qt') ?>WHERE country_qt_number IS NOT NULL<? endif ?>"
                           " ORDER BY country_name;");
+static QString crmroleMQL("SELECT crmrole_id, crmrole_name, crmrole_name"
+                          "  FROM crmrole"
+                          "  WHERE true"
+                          " <? if exists('address') ?>AND crmrole_addr<? endif ?>"
+                          " <? if exists('contact') ?>AND crmrole_cntct<? endif ?>"
+                          " <? if exists('email') ?>AND crmrole_email<? endif ?>"
+                          " <? if exists('phone') ?>AND crmrole_phone<? endif ?>"
+                          " ORDER BY crmrole_sort;");
 static QString currMQL("SELECT curr_id,"
                        "       currConcat(curr_abbr, curr_symbol), curr_abbr"
                        "  FROM curr_symbol"
@@ -302,6 +310,22 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
                        new XComboBoxDescrip(XComboBox::CRMAccountCommentTypes,
                        "commentTypes", "MaintainCommentTypes",
                        cmnttypeMQL, "cmnttype", true, "source_name", "CRMA"));
+    typeDescrip.insert(XComboBox::CRMRoleAddress,
+                       new XComboBoxDescrip(XComboBox::CRMRoleAddress,
+                       "crmRoles", "MaintainCRMRoles",
+                       crmroleMQL, "crmRole", true, "address"));
+    typeDescrip.insert(XComboBox::CRMRoleContact,
+                       new XComboBoxDescrip(XComboBox::CRMRoleContact,
+                       "crmRoles", "MaintainCRMRoles",
+                       crmroleMQL, "crmRole", true, "contact"));
+    typeDescrip.insert(XComboBox::CRMRolePhone,
+                       new XComboBoxDescrip(XComboBox::CRMRolePhone,
+                       "crmRoles", "MaintainCRMRoles",
+                       crmroleMQL, "crmRole", true, "phone"));
+    typeDescrip.insert(XComboBox::CRMRoleEmail,
+                       new XComboBoxDescrip(XComboBox::CRMRoleEmail,
+                       "crmRoles", "MaintainCRMRoles",
+                       crmroleMQL, "crmRole", true, "email"));
     typeDescrip.insert(XComboBox::ClassCodes,
                        new XComboBoxDescrip(XComboBox::ClassCodes,
                        "classCodes", "MaintainClassCodes",

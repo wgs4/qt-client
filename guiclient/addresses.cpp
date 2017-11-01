@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -15,6 +15,8 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QVariant>
+#include <QToolBar>
+#include <QToolButton>
 
 #include <openreports.h>
 #include <metasql.h>
@@ -35,7 +37,11 @@ addresses::addresses(QWidget* parent, const char*, Qt::WindowFlags fl)
   setQueryOnStartEnabled(true);
   setParameterWidgetVisible(true);
 
+  _crmacctid = -1;
+  _detachAct = 0;
+
   parameterWidget()->append(tr("Show Inactive"), "showInactive", ParameterWidget::Exists);
+  parameterWidget()->append(tr("Account"), "crmacct_id", ParameterWidget::Crmacct);
 
   list()->addColumn(tr("Line 1"),	 -1, Qt::AlignLeft, true, "addr_line1");
   list()->addColumn(tr("Line 2"),	 75, Qt::AlignLeft, true, "addr_line2");
@@ -47,8 +53,17 @@ addresses::addresses(QWidget* parent, const char*, Qt::WindowFlags fl)
 
   setupCharacteristics("ADDR");
 
+  QToolButton * detachBtn = new QToolButton(this);
+  detachBtn->setText(tr("Detach"));
+  _detachAct = toolBar()->insertWidget(filterSeparator(), detachBtn);
+  _detachAct->setEnabled(false);
+  _detachAct->setVisible(false);
+
   if (_privileges->check("MaintainAddresses"))
+  {
     connect(list(), SIGNAL(itemSelected(int)), this, SLOT(sEdit()));
+    connect(list(), SIGNAL(valid(bool)), _detachAct, SLOT(setEnabled(bool)));
+  }
   else
   {
     newAction()->setEnabled(false);
@@ -69,6 +84,28 @@ void addresses::sPopulateMenu(QMenu *pMenu, QTreeWidgetItem*, int)
 
   menuItem = pMenu->addAction(tr("Delete"), this, SLOT(sDelete()));
   menuItem->setEnabled(_privileges->check("MaintainAddresses"));
+}
+
+enum SetResponse addresses::set(const ParameterList& pParams)
+{
+  XWidget::set(pParams);
+  QVariant param;
+  bool	   valid;
+  
+  param = pParams.value("showRole", &valid);
+  if (valid)
+  {
+    list()->addColumn(tr("Role"), 80, Qt::AlignLeft, true, "crmrole");
+    list()->moveColumn(list()->column("crmrole"), 0);
+  }
+
+  sFillList();
+  return NoError;
+}
+
+int addresses::crmacctId()
+{
+  return _crmacctid;
 }
 
 void addresses::sNew()
@@ -105,6 +142,62 @@ void addresses::sView()
   address newdlg(this, "", true);
   newdlg.set(params);
   newdlg.exec();
+}
+
+void addresses::sDetach()
+{
+  int answer = QMessageBox::question(this, tr("Detach Address?"),
+			tr("<p>Are you sure you want to detach this Address "
+			   "from this Account?"),
+			QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+  if (answer == QMessageBox::Yes)
+  {
+    int cntctId = list()->id();
+    XSqlQuery detq;
+    detq.prepare("DELETE FROM  crmacctaddrass "
+                 "WHERE crmacctaddrass_crmacct_id=:crmacct_id "
+                 " AND crmacctaddrass_addr_id=:addr_id ");
+    detq.bindValue(":addr_id", list()->id());
+    detq.bindValue(":crmacct_id", _crmacctid);
+    detq.exec();
+    if (detq.first())
+    {
+      int returnVal = detq.value("returnVal").toInt();
+      if (returnVal < 0)
+      {
+        ErrorReporter::error(QtCriticalMsg, this, tr("Error detaching Address from Account (%1)")
+                        .arg(returnVal),detq, __FILE__, __LINE__);
+        return;
+      }
+      emit cntctDetached(cntctId);
+    }
+    else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Detaching Address"),
+                                  detq, __FILE__, __LINE__))
+      return;
+
+    sFillList();
+  }
+}
+
+QAction* addresses::detachAction()
+{
+  return _detachAct;
+}
+
+void addresses::setCrmacctid(int crmacctId)
+{
+  _crmacctid = crmacctId;
+  if (_crmacctid == -1)
+  {
+    parameterWidget()->setDefault(tr("Account"), QVariant(), true);
+    _detachAct->setVisible(false);
+  }
+  else
+  {
+    parameterWidget()->setDefault(tr("Account"), _crmacctid, true);
+    setNewVisible(false);
+    _detachAct->setVisible(true);
+  }
 }
 
 void addresses::sDelete()

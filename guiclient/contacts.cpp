@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -59,9 +59,9 @@ contacts::contacts(QWidget* parent, const char*, Qt::WindowFlags fl)
   list()->addColumn(tr("Account #"),           80, Qt::AlignLeft,  true, "crmacct_number");
   list()->addColumn(tr("Account Name"),        -1, Qt::AlignLeft,  true, "crmacct_name");
   list()->addColumn(tr("Title"),               -1, Qt::AlignLeft,  true, "cntct_title");
-  list()->addColumn(tr("Phone"),	      100, Qt::AlignLeft,  true, "cntct_phone");
-  list()->addColumn(tr("Alternate"),          100, Qt::AlignLeft,  true, "cntct_phone2");
-  list()->addColumn(tr("Fax"),                100, Qt::AlignLeft, false, "cntct_fax");
+  list()->addColumn(tr("Office #"),	      100, Qt::AlignLeft,  true, "cntct_phone");
+  list()->addColumn(tr("Mobile #"),           100, Qt::AlignLeft,  true, "cntct_phone2");
+  list()->addColumn(tr("Fax #"),              100, Qt::AlignLeft, false, "cntct_phone3");
   list()->addColumn(tr("E-Mail"),             100, Qt::AlignLeft,  true, "cntct_email");
   list()->addColumn(tr("Web Address"),        100, Qt::AlignLeft, false, "cntct_webaddr");
   list()->addColumn(tr("Address"),             -1, Qt::AlignLeft, false, "addr_line1");
@@ -116,6 +116,13 @@ enum SetResponse contacts::set(const ParameterList& pParams)
       _attachAct->setEnabled(false);
       disconnect(list(), SIGNAL(valid(bool)), _detachAct, SLOT(setEnabled(bool)));
     }
+  }
+
+  param = pParams.value("showRole", &valid);
+  if (valid)
+  {
+    list()->addColumn(tr("Role"), 80, Qt::AlignLeft, true, "crmrole");
+    list()->moveColumn(list()->column("crmrole"), 0);
   }
 
   param = pParams.value("run", &valid);
@@ -233,10 +240,10 @@ void contacts::sAttach()
     int answer = QMessageBox::Yes;
 
     if (attached.crmAcctId() > 0 && attached.crmAcctId() != _crmacctid)
-      answer = QMessageBox::question(this, tr("Detach Contact?"),
+      answer = QMessageBox::question(this, tr("Attach Contact?"),
 			    tr("<p>This Contact is currently attached to a "
 			       "different Account. Are you sure you want "
-			       "to change the Account for this person?"),
+			       "to also attach this Account for this person?"),
 			    QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
     if (answer == QMessageBox::Yes)
     {
@@ -266,6 +273,7 @@ void contacts::sAttach()
 
 void contacts::sDetach()
 {
+  XTreeWidgetItem * item = (XTreeWidgetItem*)list()->currentItem();
   int answer = QMessageBox::question(this, tr("Detach Contact?"),
 			tr("<p>Are you sure you want to detach this Contact "
 			   "from this Account?"),
@@ -273,10 +281,13 @@ void contacts::sDetach()
   if (answer == QMessageBox::Yes)
   {
     int cntctId = list()->id();
+    QString role = item->rawValue("crmrole").toString();
     XSqlQuery detq;
-    detq.prepare("SELECT detachContact(:cntct_id, :crmacct_id) AS returnVal;");
+    detq.prepare("SELECT detachContact(:cntct_id, :crmacct_id, :role) AS returnVal;");
     detq.bindValue(":cntct_id", cntctId);
     detq.bindValue(":crmacct_id", _crmacctid);
+    if(role.length() > 0)
+      detq.bindValue(":role", role);
     detq.exec();
     if (detq.first())
     {
@@ -309,7 +320,7 @@ void contacts::setCrmacctid(int crmacctId)
   else
   {
     parameterWidget()->setDefault(tr("Account"), _crmacctid, true);
-    _attachAct->setVisible(true);
+    setNewVisible(false);
     _detachAct->setVisible(true);
   }
 }

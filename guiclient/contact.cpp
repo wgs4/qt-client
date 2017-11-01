@@ -212,25 +212,27 @@ contact::contact(QWidget* parent, const char* name, bool modal, Qt::WindowFlags 
   //_save = _buttonBox->button(QDialogButtonBox::Save);
   //_save->setObjectName("_save");
 
-  connect(_buttonBox,            SIGNAL(accepted()), this, SLOT(sSave()));
-  connect(_buttonBox,            SIGNAL(rejected()), this, SLOT(sClose()));
-  connect(_crmAccount,           SIGNAL(newId(int)), _contact, SLOT(setSearchAcct(int)));
-  connect(_detachUse,            SIGNAL(clicked()), this, SLOT(sDetachUse()));
-  connect(_editUse,              SIGNAL(clicked()), this, SLOT(sEditUse()));
-  connect(_showOrders,       SIGNAL(toggled(bool)), this, SLOT(sFillList()));
-  connect(_uses,               SIGNAL(valid(bool)), this, SLOT(sHandleValidUse(bool)));
-  connect(_uses, SIGNAL(populateMenu(QMenu*, XTreeWidgetItem*)), this, SLOT(sPopulateUsesMenu(QMenu*)));
-  connect(_viewUse,                       SIGNAL(clicked()), this, SLOT(sViewUse()));
-  connect(omfgThis,         SIGNAL(crmAccountsUpdated(int)), this, SLOT(sFillList()));
-  connect(omfgThis,      SIGNAL(customersUpdated(int,bool)), this, SLOT(sFillList()));
-  connect(omfgThis,            SIGNAL(employeeUpdated(int)), this, SLOT(sFillList()));
-  connect(omfgThis,              SIGNAL(prospectsUpdated()), this, SLOT(sFillList()));
-  connect(omfgThis, SIGNAL(purchaseOrdersUpdated(int,bool)), this, SLOT(sFillList()));
-  connect(omfgThis,         SIGNAL(quotesUpdated(int,bool)), this, SLOT(sFillList()));
-  connect(omfgThis,    SIGNAL(salesOrdersUpdated(int,bool)), this, SLOT(sFillList()));
-  connect(omfgThis,      SIGNAL(transferOrdersUpdated(int)), this, SLOT(sFillList()));
-  connect(omfgThis,                SIGNAL(vendorsUpdated()), this, SLOT(sFillList()));
-  connect(omfgThis,             SIGNAL(warehousesUpdated()), this, SLOT(sFillList()));
+  connect(_buttonBox,      SIGNAL(accepted()), this, SLOT(sSave()));
+  connect(_buttonBox,      SIGNAL(rejected()), this, SLOT(sClose()));
+  connect(_crmAccount,     SIGNAL(newId(int)), _contact, SLOT(setSearchAcct(int)));
+  connect(_detachUse,      SIGNAL(clicked()), this, SLOT(sDetachUse()));
+  connect(_editUse,        SIGNAL(clicked()), this, SLOT(sEditUse()));
+  connect(_showOrders,     SIGNAL(toggled(bool)), this, SLOT(sFillList()));
+  connect(_uses,           SIGNAL(valid(bool)), this, SLOT(sHandleValidUse(bool)));
+  connect(_uses,           SIGNAL(populateMenu(QMenu*, XTreeWidgetItem*)), this, SLOT(sPopulateUsesMenu(QMenu*)));
+  connect(_viewUse,        SIGNAL(clicked()), this, SLOT(sViewUse()));
+  connect(omfgThis,        SIGNAL(crmAccountsUpdated(int)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(customersUpdated(int,bool)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(employeeUpdated(int)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(prospectsUpdated()), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(purchaseOrdersUpdated(int,bool)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(quotesUpdated(int,bool)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(salesOrdersUpdated(int,bool)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(transferOrdersUpdated(int)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(vendorsUpdated()), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(warehousesUpdated()), this, SLOT(sFillList()));
+  connect(_notesButton,    SIGNAL(clicked()), this, SLOT(sHandleButtons()));
+  connect(_commentsButton, SIGNAL(clicked()), this, SLOT(sHandleButtons()));
 
   _charass->setType("CNTCT");
 
@@ -907,6 +909,14 @@ void contact::sViewUse()
     case 23: sViewTransferOrder();	break;
     default: break;
   }
+}
+
+void contact::sHandleButtons()
+{
+  if (_commentsButton->isChecked())
+    _remarksStack->setCurrentIndex(0);
+  else
+    _remarksStack->setCurrentIndex(1);
 }
 
 void contact::sHandleValidUse(bool valid)

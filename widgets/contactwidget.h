@@ -268,6 +268,10 @@ public slots:
   virtual void	setPhonesVisible(const bool);
   virtual void	setSearchAcct(const int);
   virtual void	setWebaddrVisible(const bool);
+  virtual void  sBuildPhones();
+  virtual void  sAddNewPhoneRow();
+  virtual void  sRemovePhone();
+  virtual void  sSavePhones();
 
   //Set Data Mapping
   virtual void setDataWidgetMap(XDataWidgetMapper* m);
@@ -342,7 +346,8 @@ protected:
   QString _addressChange;
   AddressCluster* _address;
   UsernameCluster* _owner;
-
+  QGridLayout* _phoneGrid;
+  QPushButton *_add;
   QString _extraClause;
   QString _query;
   int _searchAcctId;
@@ -401,6 +406,8 @@ private:
   QString  _fieldNameCountry;
   QString  _subjText;
   QString  _bodyText;
+  int      _rowId;
+  QMap<QString, int> cmap;
 };
 
 void setupContactWidget(QScriptEngine *engine);

@@ -119,18 +119,11 @@ void ContactWidget::init()
     _buttonBox->addWidget(_crmAcct,	0, 1, Qt::AlignTop);
     _buttonBox->addWidget(_owner, 	0, 2, Qt::AlignTop);
 
+    _phoneGrid 		= new QGridLayout;
+
     QRegExp rx("^([0-9a-z]+[-._+&amp;])*[0-9a-z]+@([-0-9a-z]+[.])+[a-z]{2,6}$");
     QValidator *validator = new QRegExpValidator(rx, this);
 
-    _phoneLit		= new QLabel(tr("Voice:"), this);
-    _phoneLit->setObjectName("_phoneLit");
-    _phone		= new XLineEdit(this, "_phone");
-    _phone2Lit		= new QLabel(tr("Alternate:"), this);
-    _phone2Lit->setObjectName("_phone2Lit");
-    _phone2		= new XLineEdit(this, "_phone2");
-    _faxLit		= new QLabel(tr("Fax:"), this);
-    _faxLit->setObjectName("_faxLit");
-    _fax		= new XLineEdit(this, "_fax");
     _emailLit		= new QLabel(tr("E-Mail:"), this);
     _emailLit->setObjectName("_emailLit");
     _email		= new XComboBox(this, "_email");
@@ -152,7 +145,6 @@ void ContactWidget::init()
     _middle->setMinimumHeight(22);
     _last->setMinimumHeight(22);
     _suffix->setMinimumHeight(22);
-    _phone->setMinimumWidth(140);
     _crmAcct->setMinimumHeight(72);
 #endif    
 
@@ -170,9 +162,6 @@ void ContactWidget::init()
     _label->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     _nameLit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     _titleLit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    _phoneLit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    _phone2Lit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-    _faxLit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     _emailLit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     _initialsLit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
     _webaddrLit->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
@@ -195,9 +184,6 @@ void ContactWidget::init()
     connect(_initials,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
     connect(_crmAcct,	SIGNAL(newId(int)),		     this, SIGNAL(changed()));
     connect(_title,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
-    connect(_phone,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
-    connect(_phone2,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
-    connect(_fax,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
     connect(_email,	SIGNAL(currentTextChanged(const QString&)), this, SIGNAL(changed()));
     connect(_webaddr,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
     connect(_address,	SIGNAL(changed()),                   this, SIGNAL(changed()));
@@ -211,9 +197,6 @@ void ContactWidget::init()
     connect(_initials,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
     connect(_crmAcct,	SIGNAL(newId(int)),  this, SLOT(sCheck()));
     connect(_title,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
-    connect(_phone,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
-    connect(_phone2,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
-    connect(_fax,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
     connect(emailEdit,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
     connect(_webaddr,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
     connect(_address,	SIGNAL(changed()),   this, SLOT(sCheck()));
@@ -393,9 +376,6 @@ void ContactWidget::silentSetId(const int pId)
           _initials->setText(idQ.value("cntct_initials").toString());
           _crmAcct->setId(idQ.value("cntct_crmacct_id").toInt());
           _title->setText(idQ.value("cntct_title").toString());
-          _phone->setText(idQ.value("cntct_phone").toString());
-          _phone2->setText(idQ.value("cntct_phone2").toString());
-          _fax->setText(idQ.value("cntct_fax").toString());
           _emailCache=idQ.value("cntct_email").toString();
           _email->append(FAKEEMAILID, idQ.value("cntct_email").toString()); // TODO: this is rotten
           _webaddr->setText(idQ.value("cntct_webaddr").toString());
@@ -403,6 +383,8 @@ void ContactWidget::silentSetId(const int pId)
           _active->setChecked(idQ.value("cntct_active").toBool());
           _notes = idQ.value("cntct_notes").toString();
           _owner->setUsername(idQ.value("cntct_owner_username").toString());
+
+          sBuildPhones();
 
           fillEmail();
 
@@ -415,9 +397,6 @@ void ContactWidget::silentSetId(const int pId)
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_initials)),     _initials->text()); 	 
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(this)),          _number->text()); 	 
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_title)),        _title->text()); 	 
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_phone)),        _phone->text()); 	 
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_phone2)),       _phone2->text()); 	 
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_fax)),          _fax->text()); 	 
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_email)),        _email->currentText());
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_webaddr)),      _webaddr->text()); 	 
            }
@@ -495,9 +474,6 @@ void ContactWidget::clear()
   _initials->clear();
   _crmAcct->setId(-1);
   _title->clear();
-  _phone->clear();
-  _phone2->clear();
-  _fax->clear();
   _email->clear();
   _webaddr->clear();
   _address->clear();
@@ -541,9 +517,6 @@ void ContactWidget::setDataWidgetMap(XDataWidgetMapper* m)
   m->addMapping(_suffix      ,  _fieldNameSuffix,         "text",   "defaultText");  
   m->addMapping(_initials    ,  _fieldNameInitials,       "text",   "defaultText");
   m->addMapping(_title       ,  _fieldNameTitle,          "text",   "defaultText");
-  m->addMapping(_phone       ,  _fieldNamePhone,          "text",   "defaultText");
-  m->addMapping(_phone2      ,  _fieldNamePhone2,         "text",   "defaultText");
-  m->addMapping(_fax         ,  _fieldNameFax,            "text",   "defaultText");
   m->addMapping(_email       ,  _fieldNameEmailAddress,   "text",   "defaultText");
   m->addMapping(_webaddr     ,  _fieldNameWebAddress,     "text",   "defaultText");
   _honorific->setFieldName(_fieldNameHonorific);
@@ -604,9 +577,6 @@ int ContactWidget::save(AddressCluster::SaveFlags flag)
   datamodQ.bindValue(":suffix",	   _suffix->text());
   datamodQ.bindValue(":initials",  _initials->text());
   datamodQ.bindValue(":title",	   _title->text());
-  datamodQ.bindValue(":phone",	   _phone->text());
-  datamodQ.bindValue(":phone2",	   _phone2->text());
-  datamodQ.bindValue(":fax",	   _fax->text());
   datamodQ.bindValue(":email",	   _email->currentText());
   datamodQ.bindValue(":webaddr",   _webaddr->text());
   datamodQ.bindValue(":notes",	   _notes);
@@ -704,12 +674,8 @@ void ContactWidget::setInitialsVisible(const bool p)
 
 void ContactWidget::setPhonesVisible(const bool p)
 {
-  _phoneLit->setVisible(p);
-  _phone->setVisible(p);
-  _phone2Lit->setVisible(p);
-  _phone2->setVisible(p);
-  _faxLit->setVisible(p);
-  _fax->setVisible(p);
+  // TODO Loop through _phoneGrid children and set visibility
+  // _phoneGrid
   // layout();
 }
 
@@ -731,10 +697,6 @@ void ContactWidget::setMinimalLayout(const bool p)
   _middle->setVisible(true);
   _last->setVisible(true);
   _title->setVisible(true);
-  _phoneLit->setVisible(true);
-  _phone->setVisible(true);
-  _faxLit->setVisible(true);
-  _fax->setVisible(true);
   _emailLit->setVisible(true);
   _email->setVisible(true);
 
@@ -743,8 +705,6 @@ void ContactWidget::setMinimalLayout(const bool p)
   _initials->setVisible(! p);
   _crmAcct->setVisible(! p);
   _active->setVisible(! p);
-  _phone2Lit->setVisible(! p);
-  _phone2->setVisible(! p);
   _webaddrLit->setVisible(! p);
   _webaddr->setVisible(! p);
   _address->setVisible(! p);
@@ -774,17 +734,12 @@ void ContactWidget::layout()
     currLayout->removeItem(_nameBox);
     currLayout->removeItem(_buttonBox);
     currLayout->removeItem(_titleBox);
-    currLayout->removeWidget(_phoneLit);
-    currLayout->removeWidget(_phone);
-    currLayout->removeWidget(_phone2Lit);
-    currLayout->removeWidget(_phone2);
-    currLayout->removeWidget(_faxLit);
-    currLayout->removeWidget(_fax);
     currLayout->removeWidget(_emailLit);
     currLayout->removeWidget(_email);
     currLayout->removeWidget(_webaddrLit);
     currLayout->removeWidget(_webaddr);
     currLayout->removeWidget(_address);
+    currLayout->removeItem(_phoneGrid);
   }
 
   _grid->addWidget(_label,	0, 0, 1, -1);
@@ -807,15 +762,15 @@ void ContactWidget::layout()
     _grid->setColumnStretch(4, 0);
     _grid->setColumnStretch(5, 2);
 
-    _grid->addWidget(_phoneLit,	5, 0);
-    _grid->addWidget(_phone,	5, 1);
-    _grid->addWidget(_faxLit,	5, 2);
-    _grid->addWidget(_fax,	5, 3);
+//    _grid->addWidget(_phoneLit,	5, 0);
+//    _grid->addWidget(_phone,	5, 1);
+//    _grid->addWidget(_faxLit,	5, 2);
+//    _grid->addWidget(_fax,	5, 3);
     _grid->addWidget(_emailLit,	5, 4);
     _grid->addWidget(_email,	5, 5);
 
-    _grid->addWidget(_phone2Lit,	5, 0);
-    _grid->addWidget(_phone2,		5, 1);
+//    _grid->addWidget(_phone2Lit,	5, 0);
+//    _grid->addWidget(_phone2,		5, 1);
     _grid->addWidget(_webaddrLit,	5, 4);
     _grid->addWidget(_webaddr,		6, 0);
     _grid->addWidget(_address,		6, 1); //, -1, -1);
@@ -826,17 +781,12 @@ void ContactWidget::layout()
     _grid->setColumnStretch(1, 1);
     _grid->setColumnStretch(2, 3);
 
-    _grid->addWidget(_phoneLit,		5, 0);
-    _grid->addWidget(_phone,		5, 1);
     _grid->addWidget(_address,		5, 2, 5, -1);
-    _grid->addWidget(_phone2Lit,	6, 0);
-    _grid->addWidget(_phone2,		6, 1);
-    _grid->addWidget(_faxLit,		7, 0);
-    _grid->addWidget(_fax,		7, 1);
-    _grid->addWidget(_emailLit,		8, 0);
-    _grid->addWidget(_email,		8, 1);
-    _grid->addWidget(_webaddrLit,	9, 0);
-    _grid->addWidget(_webaddr,		9, 1);
+    _grid->addWidget(_emailLit,		5, 0);
+    _grid->addWidget(_email,		5, 1);
+    _grid->addWidget(_webaddrLit,	6, 0);
+    _grid->addWidget(_webaddr,		6, 1);
+    _grid->addItem(_phoneGrid,          7, 0, -1, 2);
   }
   else
   {
@@ -847,17 +797,12 @@ void ContactWidget::layout()
     _grid->setColumnStretch(4, 0);
     _grid->setColumnStretch(5, 2);
 
-    _grid->addWidget(_phoneLit,		6, 0);
-    _grid->addWidget(_phone,		6, 1);
-    _grid->addWidget(_faxLit,		6, 2);
-    _grid->addWidget(_fax,		6, 3);
     _grid->addWidget(_webaddrLit,	6, 4);
     _grid->addWidget(_webaddr,		5, 5);
-    _grid->addWidget(_phone2Lit,	7, 0);
-    _grid->addWidget(_phone2,		7, 1);
     _grid->addWidget(_emailLit,		7, 2);
     _grid->addWidget(_email,		7, 3);
     _grid->addWidget(_address,		8, 0, 1, -1);
+    _grid->addItem(_phoneGrid,          9, 0, -1, 2);
   }
 
 #if defined Q_OS_MAC
@@ -943,9 +888,6 @@ void ContactWidget::sCheck()
       (! _initials->isVisibleTo(this) || _initials->text().simplified().isEmpty()) &&
       (! _crmAcct->isVisibleTo(this) || _crmAcct->id() <= 0) &&
       (! _title->isVisibleTo(this)   || _title->text().simplified().isEmpty()) &&
-      (! _phone->isVisibleTo(this)   || _phone->text().simplified().isEmpty()) &&
-      (! _phone2->isVisibleTo(this)  || _phone2->text().simplified().isEmpty()) &&
-      (! _fax->isVisibleTo(this)     || _fax->text().simplified().isEmpty()) &&
       (! _email->isVisibleTo(this)   || _email->currentText().simplified().isEmpty()) &&
       (! _webaddr->isVisibleTo(this) || _webaddr->text().simplified().isEmpty()) &&
       (! _address->isVisibleTo(this) || _address->id() <= 0))
@@ -1452,6 +1394,116 @@ bool ContactWidget::eventFilter(QObject *obj, QEvent *event)
         break;
     }
     return QObject::eventFilter(obj, event);
+}
+
+void ContactWidget::sBuildPhones()
+{
+  XSqlQuery getp;
+  _rowId = -1;
+  cmap.clear();
+  getp.prepare("SELECT cntctphone_crmrole_id, cntctphone_phone "
+               "FROM cntctphone "
+               "WHERE cntctphone_cntct_id=:cntctid;");
+  getp.bindValue(":cntctid", _id);
+  getp.exec();
+  ErrorReporter::error(QtCriticalMsg, this, tr("Getting Phone Details"),
+                         getp, __FILE__, __LINE__);
+
+  _add = new QPushButton(tr("+"), this);
+  _add->setObjectName(QString("_phoneAdd"));
+  connect(_add, SIGNAL(clicked()), this, SLOT(sAddNewPhoneRow()));
+
+  while(getp.next())
+  {
+    sAddNewPhoneRow();
+    XComboBox *cRole   = findChild<XComboBox*>(QString("_phRole%1").arg(_rowId));
+    XLineEdit *cNumber = findChild<XLineEdit*>(QString("_contactPhone%1").arg(_rowId));
+    cRole->setId(getp.value("cntctphone_crmrole_id").toInt());
+    cNumber->setText(getp.value("cntctphone_phone").toString());
+  }
+
+  if (getp.size() == 0)
+    sAddNewPhoneRow();
+} 
+
+void ContactWidget::sAddNewPhoneRow()
+{
+  _rowId++;
+qDebug() << "adding phone widgets at row " << _rowId;
+  QPushButton *rem = new QPushButton(tr("-"), this);
+  XLineEdit   *ph  = new XLineEdit(this, qPrintable(QString("_contactPhone%1").arg(_rowId)));
+  XComboBox   *cb  = new XComboBox(this, qPrintable(QString("_phRole%1").arg(_rowId)));
+
+  cb->setObjectName(QString("_phRole%1").arg(_rowId));
+  cb->setType(XComboBox::CRMRolePhone);
+  ph->setObjectName(QString("_contactPhone%1").arg(_rowId));
+  rem->setObjectName(QString("_contactRem%1").arg(_rowId));
+  connect(rem, SIGNAL(clicked()), this, SLOT(sRemovePhone()));
+
+  _phoneGrid->addWidget(cb,  _rowId, 0);
+  _phoneGrid->addWidget(ph,  _rowId, 1);
+  _phoneGrid->addWidget(rem, _rowId, 2);
+  _phoneGrid->addWidget(_add, _rowId, 3);
+
+  cmap[rem->objectName()] = _rowId;
+}
+
+void ContactWidget::sRemovePhone()
+{
+  XSqlQuery remq;
+  QString rem = qobject_cast<QPushButton*>(sender())->objectName();
+  int i = cmap[rem];
+
+  XComboBox *oldRole = findChild<XComboBox*>(QString("_phRole%1").arg(cmap[rem]));
+  XLineEdit *oldNumb = findChild<XLineEdit*>(QString("_contactPhone%1").arg(cmap[rem]));
+  QPushButton *oldRem = findChild<QPushButton*>(QString("_contactRem%1").arg(cmap[rem]));
+
+  remq.prepare("DELETE FROM cntctphone "
+               "WHERE cntctphone_crmrole_id=:cntctphone_crmrole_id "
+               " AND  cntctphone_cntct_id=:cntctphone_cntct_id "
+               " AND  cntctphone_phone=:cntctphone_phone;");
+  remq.bindValue(":cntctphone_crmrole_id", oldRole->id());
+  remq.bindValue(":cntctphone_cntct_id", _id);
+  remq.bindValue(":cntctphone_phone", oldNumb->text());
+  remq.exec();
+  ErrorReporter::error(QtCriticalMsg, this, tr("Removing Contact Phone Details"),
+                         remq, __FILE__, __LINE__);
+
+  delete oldNumb;
+  delete oldRole;
+  delete oldRem;
+
+  cmap.remove(rem);
+
+  if (i == _rowId)
+    _rowId--;
+  _phoneGrid->addWidget(_add, _rowId, 3);
+}
+
+void ContactWidget::sSavePhones()
+{
+  XSqlQuery savec;
+
+    savec.prepare("INSERT INTO cntctphone (cntctphone_crmrole_id, cntctphone_cntct_id, cntctphone_phone) "
+                  " SELECT :cntctphone_crmrole_id, :cntctphone_cntct_id, :cntctphone_phone "
+                  " WHERE NOT EXISTS (SELECT 1 FROM cntctphone WHERE cntctphone_crmrole_id=:cntctphone_crmrole_id "
+                  "                                             AND  cntctphone_cntct_id=:cntctphone_cntct_id "
+                  "                                             AND  cntctphone_phone=:cntctphone_phone);");
+
+  foreach (int i, cmap) {
+    XComboBox *cRole   = _phoneGrid->findChild<XComboBox*>(QString("_phRole%1").arg(i));
+    XLineEdit *cNumber = _phoneGrid->findChild<XLineEdit*>(QString("_contactPhone%1").arg(i));
+
+    if (!cRole->isValid() || cNumber->text().trimmed().isEmpty())
+      continue;
+
+    savec.bindValue(":cntctphone_crmrole_id", cRole->id());
+    savec.bindValue(":cntctphone_cntct_id", _id);
+    savec.bindValue(":cntctphone_phone", cNumber->text());
+    savec.exec();
+    ErrorReporter::error(QtCriticalMsg, this, tr("Saving Contact Phone Details"),
+                         savec, __FILE__, __LINE__);
+  }
 }
 
 // script api //////////////////////////////////////////////////////////////////

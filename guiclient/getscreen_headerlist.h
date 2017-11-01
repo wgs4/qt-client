@@ -118,6 +118,8 @@
 #include "creditMemoItem.h"
 #include "crmaccount.h"
 #include "crmaccounts.h"
+#include "crmRole.h"
+#include "crmRoles.h"
 #include "currencies.h"
 #include "currencyConversion.h"
 #include "currencyConversions.h"

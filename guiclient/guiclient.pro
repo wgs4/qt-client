@@ -222,6 +222,8 @@ FORMS =   absoluteCalendarItem.ui               \
           crmaccountMergePickTaskPage.ui        \
           crmaccountMergePurgePage.ui           \
           crmaccountMergeResultPage.ui          \
+          crmRole.ui                            \
+          crmRoles.ui                           \
           currencies.ui                         \
           currency.ui                           \
           currencyConversion.ui                 \
@@ -789,6 +791,8 @@ HEADERS = ../common/format.h                    \
           crmaccountMergePurgePage.h            \
           crmaccountMergeResultPage.h           \
           crmaccounts.h                         \
+          crmRole.h                             \
+          crmRoles.h                            \
           currencies.h                          \
           currenciesDialog.h                    \
           currency.h                            \
@@ -1409,6 +1413,8 @@ SOURCES = absoluteCalendarItem.cpp              \
           crmaccountMergePurgePage.cpp          \
           crmaccountMergeResultPage.cpp         \
           crmaccounts.cpp                       \
+          crmRole.cpp                           \
+          crmRoles.cpp                          \
           currencies.cpp                        \
           currenciesDialog.cpp                  \
           currency.cpp                          \
