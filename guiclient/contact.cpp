@@ -214,7 +214,6 @@ contact::contact(QWidget* parent, const char* name, bool modal, Qt::WindowFlags 
 
   connect(_buttonBox,      SIGNAL(accepted()), this, SLOT(sSave()));
   connect(_buttonBox,      SIGNAL(rejected()), this, SLOT(sClose()));
-  connect(_crmAccount,     SIGNAL(newId(int)), _contact, SLOT(setSearchAcct(int)));
   connect(_detachUse,      SIGNAL(clicked()), this, SLOT(sDetachUse()));
   connect(_editUse,        SIGNAL(clicked()), this, SLOT(sEditUse()));
   connect(_showOrders,     SIGNAL(toggled(bool)), this, SLOT(sFillList()));
@@ -286,7 +285,7 @@ enum SetResponse contact::set(const ParameterList &pParams)
 
   param = pParams.value("crmacct_id", &valid);
   if (valid)
-    _crmAccount->setId(param.toInt());
+    _crmAccount = param.toInt();
 
   param = pParams.value("addr_line1", &valid);
   if (valid)
@@ -575,7 +574,7 @@ void contact::sSave()
   _contact->setAddress(saveResult);
   _contact->setNotes(_notes->toPlainText());
   _contact->setOwnerUsername(_owner->username());
-  _contact->setCrmAcctId(_crmAccount->id());
+  _contact->setCrmAcctId(_crmAccount);
   _contact->setActive(_active->isChecked());
 
   saveResult = _contact->save(AddressCluster::CHANGEALL);
@@ -595,7 +594,7 @@ void contact::sPopulate()
 {
   _number->setText(_contact->number());
   _active->setChecked(_contact->active());
-  _crmAccount->setId(_contact->crmAcctId());
+//  _crmAccount = _contact->crmAcctId();
   _owner->setUsername(_contact->owner());
   _notes->setText(_contact->notes());
   _data->_activeCache = _contact->active();
@@ -666,14 +665,16 @@ void contact::sDetachUse()
     case 1:
       question = tr("Are you sure that you want to remove this Contact as "
                     "the Primary Contact for this Account?");
-      detachq.prepare("UPDATE crmacct SET crmacct_cntct_id_1 = NULL "
-                      "WHERE (crmacct_id=:id);");
+      detachq.prepare("DELETE FROM crmacctcntctass "
+                      "WHERE crmacctcntctass_crmacct_id=:id"
+                      " AND crmacctcntctass_crmrole_id=getcrmroleid('Primary');");
       break;
     case 2:
       question = tr("Are you sure that you want to remove this Contact as "
                     "the Secondary Contact for this Account?");
-      detachq.prepare("UPDATE crmacct SET crmacct_cntct_id_2 = NULL "
-                      "WHERE (crmacct_id=:id);");
+      detachq.prepare("DELETE FROM crmacctcntctass "
+                      "WHERE crmacctcntctass_crmacct_id=:id"
+                      " AND crmacctcntctass_crmrole_id=getcrmroleid('Secondary');");
       break;
 
     case 3:
@@ -701,13 +702,6 @@ void contact::sDetachUse()
                     "the Secondary Contact for this Vendor?");
       detachq.prepare("UPDATE vendinfo SET vend_cntct2_id = NULL "
                       "WHERE (vend_id=:id);");
-      break;
-
-    case 7:
-      question = tr("Are you sure that you want to remove this Contact as "
-                    "the Contact for this Prospect?");
-      detachq.prepare("UPDATE prospect SET prospect_cntct_id = NULL "
-                      "WHERE (prospect_id=:id);");
       break;
 
     case 8:

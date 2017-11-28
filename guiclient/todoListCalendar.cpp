@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -391,7 +391,7 @@ void todoListCalendar::sFillList(const QDate & date)
                 "       END AS due_qtforegroundrole "
                 "  FROM todoitem() LEFT OUTER JOIN incdt ON (incdt_id=todoitem_incdt_id) "
                 "                  LEFT OUTER JOIN crmacct ON (crmacct_id=todoitem_crmacct_id) "
-                "                  LEFT OUTER JOIN custinfo ON (cust_id=crmacct_cust_id) "
+                "                  LEFT OUTER JOIN custinfo ON (cust_crmacct_id=crmacct_id) "
                 "                  LEFT OUTER JOIN incdtpriority ON (incdtpriority_id=todoitem_priority_id) "
                 " WHERE( (todoitem_due_date = <? value(\"date\") ?>)"
                 "  <? if not exists(\"completed\") ?>"
@@ -419,7 +419,7 @@ void todoListCalendar::sFillList(const QDate & date)
                 "       END AS due_qtforegroundrole "
                 "  FROM prjtask() JOIN prj() ON (prj_id=prjtask_prj_id) "
                 "       LEFT OUTER JOIN crmacct ON (crmacct_id=prj_crmacct_id) "
-                "       LEFT OUTER JOIN custinfo ON (cust_id=crmacct_cust_id) "
+                "       LEFT OUTER JOIN custinfo ON (cust_crmacct_id=crmacct_id) "
                 " WHERE( (prjtask_due_date = <? value(\"date\") ?>)"
                 "  <? if not exists(\"completed\") ?>"
                 "  AND   (prjtask_status != 'C')"

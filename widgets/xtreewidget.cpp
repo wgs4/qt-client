@@ -2433,7 +2433,9 @@ QString XTreeWidget::toCsv() const
 QString XTreeWidget::toVcf() const
 {
   XSqlQuery qry;
-  qry.prepare("SELECT * FROM cntct WHERE (cntct_id=:cntct_id);");
+  qry.prepare("SELECT *, getcontactphone(cntct_id, 'Office') AS contact_phone, "
+              "          getcontactphone(cntct_id, 'Office') AS contact_phone2 "
+              "  FROM cntct WHERE (cntct_id=:cntct_id);");
   qry.bindValue(":cntct_id", this->selectedItems().at(0)->id());
   qry.exec();
   if (qry.first()) {
@@ -2459,8 +2461,8 @@ QString XTreeWidget::toVcf() const
     QString org = "";
     QString title = qry.value("cntct_title").toString();
     QString photo = "";
-    QString phoneWork = qry.value("cntct_phone").toString();
-    QString phoneHome = qry.value("cntct_phone2").toString();
+    QString phoneWork = qry.value("contact_phone").toString();
+    QString phoneHome = qry.value("contact_phone2").toString();
     QString addressId = qry.value("cntct_addr_id").toString();
     XSqlQuery qry2;
     qry2.prepare("SELECT * FROM addr WHERE (addr_id=:addr_id);");

@@ -34,8 +34,8 @@ void ContactWidget::init()
 
     _titleSingular = tr("Contact");
     _titlePlural = tr("Contacts");
-    _query = "SELECT cntct.*, crmacct_name "
-             "FROM cntct() LEFT OUTER JOIN crmacct ON (cntct_crmacct_id = crmacct_id) ";
+    _query = "SELECT cntct.* "
+             "FROM cntct()";
 
     _layoutDone = false;
     _minimalLayout = false;
@@ -111,12 +111,10 @@ void ContactWidget::init()
     _titleBox->addWidget(_title,	2);
 
     _buttonBox 		= new QGridLayout;
-    _crmAcct		= new CRMAcctCluster(this, "_crmAcct");
     _active		= new QCheckBox(tr("Active"), this);
     _active->setObjectName("_active");
     _owner              = new UsernameCluster(this, "_owner");
 
-    _buttonBox->addWidget(_crmAcct,	0, 1, Qt::AlignTop);
     _buttonBox->addWidget(_owner, 	0, 2, Qt::AlignTop);
 
     _phoneGrid 		= new QGridLayout;
@@ -145,7 +143,6 @@ void ContactWidget::init()
     _middle->setMinimumHeight(22);
     _last->setMinimumHeight(22);
     _suffix->setMinimumHeight(22);
-    _crmAcct->setMinimumHeight(72);
 #endif    
 
     QPalette p = _email->palette();
@@ -169,7 +166,6 @@ void ContactWidget::init()
     _honorific->setEditable(true);
     _honorific->setType(XComboBox::Honorifics);
 
-    _crmAcct->setLabel(tr("Account:"));
     _owner->setLabel(tr("Owner:"));
 
     layout();
@@ -182,7 +178,6 @@ void ContactWidget::init()
     connect(_last,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
     connect(_suffix,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
     connect(_initials,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
-    connect(_crmAcct,	SIGNAL(newId(int)),		     this, SIGNAL(changed()));
     connect(_title,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
     connect(_email,	SIGNAL(currentTextChanged(const QString&)), this, SIGNAL(changed()));
     connect(_webaddr,	SIGNAL(textChanged(const QString&)), this, SIGNAL(changed()));
@@ -195,7 +190,6 @@ void ContactWidget::init()
     connect(_last,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
     connect(_suffix,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
     connect(_initials,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
-    connect(_crmAcct,	SIGNAL(newId(int)),  this, SLOT(sCheck()));
     connect(_title,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
     connect(emailEdit,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
     connect(_webaddr,	SIGNAL(editingFinished()), this, SLOT(sCheck()));
@@ -207,8 +201,6 @@ void ContactWidget::init()
     
     connect(_first, SIGNAL(editingFinished()), this, SLOT(findDuplicates()));
     connect(_last, SIGNAL(editingFinished()), this, SLOT(findDuplicates()));
-
-    connect(_crmAcct, SIGNAL(newId(int)), this, SLOT(setSearchAcct(int)));
 
     setFocusPolicy(Qt::StrongFocus);
     setFocusProxy(_honorific);
@@ -233,21 +225,21 @@ void ContactWidget::findDuplicates()
   QString msg;
   XSqlQuery r;
   
-  r.prepare(  "SELECT cntct_id, COALESCE(cntct_crmacct_id,0) AS cntct_crmacct_id "
+  r.prepare(  "SELECT cntct_id, COALESCE(crmacctcntctass_crmacct_id,0) AS crmacct_id "
               "FROM cntct "
-              "WHERE ( ( cntct_first_name ~~* :first) "
-              " AND (cntct_last_name ~~* :last) );");
+              " JOIN crmacctcntctass ON (crmacctcntctass_cntct_id=cntct_id) "
+              "WHERE cntct_first_name ~~* :first "
+              " AND  cntct_last_name ~~* :last; ");
   r.bindValue(":first", _first->text());
   r.bindValue(":last", _last->text());
-  r.bindValue(":crmacct_id", _searchAcctId);
   r.exec();
   if (r.size() == 1)
   { 
     r.first();
     msg = tr("A contact exists with the same first and last name");
-    if (_searchAcctId > 0 && r.value("cntct_crmacct_id").toInt() == 0)
+    if (_searchAcctId > 0 && r.value("crmacct_id").toInt() == 0)
       msg += tr(" not associated with any Account");
-    else if (_searchAcctId == r.value("cntct_crmacct_id").toInt())
+    else if (_searchAcctId == r.value("crmacct_id").toInt())
       msg += tr(" on the current Account");
     else if (_searchAcctId > 0)
       msg += tr(" associated with another Account");
@@ -269,7 +261,7 @@ void ContactWidget::findDuplicates()
       int cntctid = 0;
       while (r.next())
       {
-        if (r.value("cntct_crmacct_id").toInt() == _searchAcctId)
+        if (r.value("crmacct_id").toInt() == _searchAcctId)
         {
           cnt += 1;
           cntctid = r.value("cntct_id").toInt();
@@ -374,7 +366,6 @@ void ContactWidget::silentSetId(const int pId)
           _last->setText(idQ.value("cntct_last_name").toString());
           _suffix->setText(idQ.value("cntct_suffix").toString());
           _initials->setText(idQ.value("cntct_initials").toString());
-          _crmAcct->setId(idQ.value("cntct_crmacct_id").toInt());
           _title->setText(idQ.value("cntct_title").toString());
           _emailCache=idQ.value("cntct_email").toString();
           _email->append(FAKEEMAILID, idQ.value("cntct_email").toString()); // TODO: this is rotten
@@ -464,6 +455,7 @@ void ContactWidget::setNumber(QString p)
 void ContactWidget::clear()
 {
   _id = -1;
+  _crmacctid = -1;
   _valid = false;
 
   _honorific->clearEditText();
@@ -472,7 +464,6 @@ void ContactWidget::clear()
   _last->clear();
   _suffix->clear();
   _initials->clear();
-  _crmAcct->setId(-1);
   _title->clear();
   _email->clear();
   _webaddr->clear();
@@ -521,8 +512,6 @@ void ContactWidget::setDataWidgetMap(XDataWidgetMapper* m)
   m->addMapping(_webaddr     ,  _fieldNameWebAddress,     "text",   "defaultText");
   _honorific->setFieldName(_fieldNameHonorific);
   _honorific->setDataWidgetMap(m);
-  _crmAcct->setFieldName(_fieldNameCrmAccount);
-  _crmAcct->setDataWidgetMap(m);
   _address->setFieldNameAddrChange(_fieldNameAddrChange);
   _address->setFieldNameNumber(_fieldNameAddrNumber);
   _address->setFieldNameLine1(_fieldNameLine1);
@@ -558,13 +547,15 @@ int ContactWidget::save(AddressCluster::SaveFlags flag)
 {
   int addrSave = _address->save(flag);
   
+  QString phonelist = sBuildPhoneJson();
+ 
   if (addrSave < 0)
     return addrSave;
 
   XSqlQuery datamodQ;
-  datamodQ.prepare("SELECT COALESCE(saveCntct(:cntct_id,:cntct_number,:crmacct_id,:addr_id,"
+  datamodQ.prepare("SELECT COALESCE(saveCntct(:cntct_id,:cntct_number,:addr_id,"
 		   ":honorific,:first,:middle,:last,:suffix,:initials,"
-		   ":active,:phone,:phone2,:fax,:email,:webaddr,"
+		   ":active,:phone,:email,:webaddr,"
 		   ":notes,:title,:flag,:owner),0) AS result;");
   datamodQ.bindValue(":cntct_number", _number->text());
   datamodQ.bindValue(":cntct_id",  id());
@@ -577,6 +568,7 @@ int ContactWidget::save(AddressCluster::SaveFlags flag)
   datamodQ.bindValue(":suffix",	   _suffix->text());
   datamodQ.bindValue(":initials",  _initials->text());
   datamodQ.bindValue(":title",	   _title->text());
+  datamodQ.bindValue(":phone",	   phonelist);
   datamodQ.bindValue(":email",	   _email->currentText());
   datamodQ.bindValue(":webaddr",   _webaddr->text());
   datamodQ.bindValue(":notes",	   _notes);
@@ -589,8 +581,6 @@ int ContactWidget::save(AddressCluster::SaveFlags flag)
     datamodQ.bindValue(":flag", QString("CHANGEONE"));
   else
     return -1;
-  if (_crmAcct->id() > 0)
-    datamodQ.bindValue(":crmacct_id",_crmAcct->id());	// else NULL
   datamodQ.bindValue(":active",    QVariant(_active->isChecked()));
   datamodQ.exec();
   if (datamodQ.first())
@@ -615,9 +605,9 @@ int ContactWidget::save(AddressCluster::SaveFlags flag)
 
 void ContactWidget::setAccount(const int p)
 {
-  if (_crmAcct->id() != p)
+  if (_crmacctid != p)
   {
-    _crmAcct->setId(p);
+    _crmacctid = p;
     _changed = true;
   }
 }
@@ -648,7 +638,7 @@ void ContactWidget::setAddressVisible(const bool vis)
 
 void ContactWidget::setAccountVisible(const bool p)
 {
-  _crmAcct->setVisible(p);
+  // TODO remove this function
   layout();
 }
 
@@ -676,7 +666,7 @@ void ContactWidget::setPhonesVisible(const bool p)
 {
   // TODO Loop through _phoneGrid children and set visibility
   // _phoneGrid
-  // layout();
+  layout();
 }
 
 void ContactWidget::setWebaddrVisible(const bool p)
@@ -703,7 +693,6 @@ void ContactWidget::setMinimalLayout(const bool p)
   // at the mercy of minimal layout
   _initialsLit->setVisible(! p);
   _initials->setVisible(! p);
-  _crmAcct->setVisible(! p);
   _active->setVisible(! p);
   _webaddrLit->setVisible(! p);
   _webaddr->setVisible(! p);
@@ -762,15 +751,8 @@ void ContactWidget::layout()
     _grid->setColumnStretch(4, 0);
     _grid->setColumnStretch(5, 2);
 
-//    _grid->addWidget(_phoneLit,	5, 0);
-//    _grid->addWidget(_phone,	5, 1);
-//    _grid->addWidget(_faxLit,	5, 2);
-//    _grid->addWidget(_fax,	5, 3);
     _grid->addWidget(_emailLit,	5, 4);
     _grid->addWidget(_email,	5, 5);
-
-//    _grid->addWidget(_phone2Lit,	5, 0);
-//    _grid->addWidget(_phone2,		5, 1);
     _grid->addWidget(_webaddrLit,	5, 4);
     _grid->addWidget(_webaddr,		6, 0);
     _grid->addWidget(_address,		6, 1); //, -1, -1);
@@ -886,7 +868,6 @@ void ContactWidget::sCheck()
       (! _last->isVisibleTo(this)    || _last->text().simplified().isEmpty()) &&
       (! _suffix->isVisibleTo(this)   || _suffix->text().simplified().isEmpty()) &&
       (! _initials->isVisibleTo(this) || _initials->text().simplified().isEmpty()) &&
-      (! _crmAcct->isVisibleTo(this) || _crmAcct->id() <= 0) &&
       (! _title->isVisibleTo(this)   || _title->text().simplified().isEmpty()) &&
       (! _email->isVisibleTo(this)   || _email->currentText().simplified().isEmpty()) &&
       (! _webaddr->isVisibleTo(this) || _webaddr->text().simplified().isEmpty()) &&
@@ -1076,7 +1057,8 @@ void ContactList::sFillList()
 {
   MetaSQLQuery mql("SELECT cntct.*, crmacct_name "
                    "  FROM cntct()"
-                   "  LEFT OUTER JOIN crmacct ON (cntct_crmacct_id = crmacct_id)"
+                   "  LEFT OUTER JOIN crmacctcntctass ON (crmacctcntctass_cntct_id=cntct_id) "
+                   "  LEFT OUTER JOIN crmacct ON (crmacctcntctass_crmacct_id = crmacct_id)"
                    " WHERE cntct_active"
                    "<? if exists('crmacctid') ?>"
                    " AND ( (crmacct_id=<? value('crmacctid') ?>) OR (crmacct_parent_id=<? value('crmacctid') ?>) )"
@@ -1194,11 +1176,11 @@ ContactSearch::ContactSearch(QWidget* pParent, Qt::WindowFlags pFlags)
 
   _listTab->addColumn(tr("First Name"),     80, Qt::AlignLeft, true, "cntct_first_name");
   _listTab->addColumn(tr("Last Name"),      -1, Qt::AlignLeft, true, "cntct_last_name");
-  _listTab->addColumn(tr("Account"),   100, Qt::AlignLeft, true, "crmacct_name");
+  _listTab->addColumn(tr("Account"),       100, Qt::AlignLeft, true, "crmacct_name");
   _listTab->addColumn(tr("Title"),         100, Qt::AlignLeft, true, "cntct_title");
-  _listTab->addColumn(tr("Phone"),	      75, Qt::AlignLeft, true, "cntct_phone");
-  _listTab->addColumn(tr("Alt. Phone"),     75, Qt::AlignLeft, true, "cntct_phone2");
-  _listTab->addColumn(tr("Fax"),	      75, Qt::AlignLeft, true, "cntct_fax");
+  _listTab->addColumn(tr("Phone"),	    75, Qt::AlignLeft, true, "contact_phone");
+  _listTab->addColumn(tr("Alt. Phone"),     75, Qt::AlignLeft, true, "contact_phone2");
+  _listTab->addColumn(tr("Fax"),	    75, Qt::AlignLeft, true, "contact_fax");
   _listTab->addColumn(tr("Email Address"), 100, Qt::AlignLeft, true, "cntct_email");
   _listTab->addColumn(tr("Web Address"),   100, Qt::AlignLeft, true, "cntct_webaddr");
 
@@ -1242,9 +1224,13 @@ void ContactSearch::sFillList()
        !_searchEmail->isChecked()    && !_searchWebAddr->isChecked() ))
     return;
 
-  MetaSQLQuery mql("SELECT cntct.*, crmacct_name"
+  MetaSQLQuery mql("SELECT cntct.*, crmacct_name, "
+                   " getcontactphone(cntct_id, 'Office') AS contact_phone, "
+                   " getcontactphone(cntct_id, 'Mobile') AS contact_phone2, "
+                   " getcontactphone(cntct_id, 'Fax') AS contact_fax "
                    "  FROM cntct()"
-                   "  LEFT OUTER JOIN crmacct ON (cntct_crmacct_id = crmacct_id)"
+                   "  LEFT OUTER JOIN crmacctcntctass ON (crmacctcntctass_cntct_id=cntct_id)"
+                   "  LEFT OUTER JOIN crmacct ON (crmacctcntctass_crmacct_id = crmacct_id)"
                    " WHERE true"
                    "<? if exists('crmacctid') ?>"
                    "  AND ( (crmacct_id=<? value('crmacctid') ?>) OR (crmacct_parent_id=<? value('crmacctid') ?>) )"
@@ -1269,9 +1255,7 @@ void ContactSearch::sFillList()
                    "     || COALESCE(cntct_title,'') || '\n' "
                    "  <? endif ?>"
                    "  <? if exists('searchPhones') ?> "
-                   "    || COALESCE(cntct_phone,'') || '\n' "
-                   "    || COALESCE(cntct_phone2,'') || '\n' "
-                   "    || COALESCE(cntct_fax,'') || '\n' "
+                   "    || phonejson(cntct_id) || '\n' "
                    "  <? endif ?>"
                    "  <? if exists('searchEmail') ?> "
                    "     || COALESCE(cntct_email,'') || '\n' "
@@ -1356,7 +1340,6 @@ void ContactWidget::fillEmail()
       curremail = _emailCache;
   if (! curremail.isEmpty())
   {
-      qDebug() << "using" << curremail;
       if (_email->findText(curremail) >= 0)
           _email->setText(curremail);
       else
@@ -1401,9 +1384,11 @@ void ContactWidget::sBuildPhones()
   XSqlQuery getp;
   _rowId = -1;
   cmap.clear();
-  getp.prepare("SELECT cntctphone_crmrole_id, cntctphone_phone "
+  getp.prepare("SELECT cntctphone_crmrole_id, cntctphone_crmrole_id, cntctphone_phone "
                "FROM cntctphone "
-               "WHERE cntctphone_cntct_id=:cntctid;");
+               "JOIN crmrole ON crmrole_id=cntctphone_crmrole_id " 
+               "WHERE cntctphone_cntct_id=:cntctid "
+               "ORDER BY crmrole_sort;");
   getp.bindValue(":cntctid", _id);
   getp.exec();
   ErrorReporter::error(QtCriticalMsg, this, tr("Getting Phone Details"),
@@ -1413,7 +1398,7 @@ void ContactWidget::sBuildPhones()
   _add->setObjectName(QString("_phoneAdd"));
   connect(_add, SIGNAL(clicked()), this, SLOT(sAddNewPhoneRow()));
 
-  while(getp.next())
+  while (getp.next())
   {
     sAddNewPhoneRow();
     XComboBox *cRole   = findChild<XComboBox*>(QString("_phRole%1").arg(_rowId));
@@ -1422,14 +1407,16 @@ void ContactWidget::sBuildPhones()
     cNumber->setText(getp.value("cntctphone_phone").toString());
   }
 
-  if (getp.size() == 0)
+  while (cmap.size() < 3)
+  {
     sAddNewPhoneRow();
+  }
 } 
 
 void ContactWidget::sAddNewPhoneRow()
 {
   _rowId++;
-qDebug() << "adding phone widgets at row " << _rowId;
+
   QPushButton *rem = new QPushButton(tr("-"), this);
   XLineEdit   *ph  = new XLineEdit(this, qPrintable(QString("_contactPhone%1").arg(_rowId)));
   XComboBox   *cb  = new XComboBox(this, qPrintable(QString("_phRole%1").arg(_rowId)));
@@ -1444,6 +1431,11 @@ qDebug() << "adding phone widgets at row " << _rowId;
   _phoneGrid->addWidget(ph,  _rowId, 1);
   _phoneGrid->addWidget(rem, _rowId, 2);
   _phoneGrid->addWidget(_add, _rowId, 3);
+  
+  cb->show();
+  ph->show();
+  rem->show();
+  _add->show();
 
   cmap[rem->objectName()] = _rowId;
 }
@@ -1478,32 +1470,31 @@ void ContactWidget::sRemovePhone()
   if (i == _rowId)
     _rowId--;
   _phoneGrid->addWidget(_add, _rowId, 3);
+  _add->show();
 }
 
-void ContactWidget::sSavePhones()
+QString ContactWidget::sBuildPhoneJson()
 {
-  XSqlQuery savec;
-
-    savec.prepare("INSERT INTO cntctphone (cntctphone_crmrole_id, cntctphone_cntct_id, cntctphone_phone) "
-                  " SELECT :cntctphone_crmrole_id, :cntctphone_cntct_id, :cntctphone_phone "
-                  " WHERE NOT EXISTS (SELECT 1 FROM cntctphone WHERE cntctphone_crmrole_id=:cntctphone_crmrole_id "
-                  "                                             AND  cntctphone_cntct_id=:cntctphone_cntct_id "
-                  "                                             AND  cntctphone_phone=:cntctphone_phone);");
+  QJsonObject phonesObject;
+  QJsonArray phoneArray;
 
   foreach (int i, cmap) {
-    XComboBox *cRole   = _phoneGrid->findChild<XComboBox*>(QString("_phRole%1").arg(i));
-    XLineEdit *cNumber = _phoneGrid->findChild<XLineEdit*>(QString("_contactPhone%1").arg(i));
+    XComboBox *cRole   = findChild<XComboBox*>(QString("_phRole%1").arg(i));
+    XLineEdit *cNumber = findChild<XLineEdit*>(QString("_contactPhone%1").arg(i));
 
     if (!cRole->isValid() || cNumber->text().trimmed().isEmpty())
       continue;
 
-    savec.bindValue(":cntctphone_crmrole_id", cRole->id());
-    savec.bindValue(":cntctphone_cntct_id", _id);
-    savec.bindValue(":cntctphone_phone", cNumber->text());
-    savec.exec();
-    ErrorReporter::error(QtCriticalMsg, this, tr("Saving Contact Phone Details"),
-                         savec, __FILE__, __LINE__);
+    QJsonObject phoneObject;
+    phoneObject.insert("role", cRole->code());
+    phoneObject.insert("number", cNumber->text());
+    phoneArray.push_back(phoneObject);
   }
+  phonesObject.insert("phones", phoneArray);
+
+  QJsonDocument doc(phonesObject);
+
+  return doc.toJson();
 }
 
 // script api //////////////////////////////////////////////////////////////////

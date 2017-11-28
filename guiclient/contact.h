@@ -87,6 +87,7 @@ protected:
 
 private:
     int _cntctid;
+    int _crmAccount;
 
 };
 

@@ -336,7 +336,6 @@ const struct {
   { "CRMAccount",	-2, QT_TRANSLATE_NOOP("storedProcErrorLookup", "User does not exist so this CRM Account Number is invalid."
                                                                   ),		 0, "" },
   { "CRMAccount",	-3, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot change the Username"), 0, "" },
-
   { "deleteAccount",  -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "The selected Ledger Account cannot be deleted as it "
                              "is currently used in one or more Cost Categories."
                              "  You must reassign these Cost Category "

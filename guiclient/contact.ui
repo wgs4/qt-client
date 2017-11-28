@@ -335,9 +335,6 @@ to be bound by its terms.</comment>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="CRMAcctCluster" name="_crmAccount"/>
-     </item>
     </layout>
    </item>
   </layout>

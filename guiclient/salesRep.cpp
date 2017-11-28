@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -242,15 +242,17 @@ bool salesRep::save()
     return false;
 
   XSqlQuery crmq;
-  crmq.prepare("SELECT crmacct_id, crmacct_emp_id"
-               "  FROM crmacct"
-               " WHERE crmacct_salesrep_id=:id;");
+  crmq.prepare("SELECT crmacct_id, emp_id "
+               " FROM salesrep "
+               " JOIN crmacct ON (salesrep_crmacct_id=crmacct_id) "
+               " LEFT OUTER JOIN emp ON (emp_crmacct_id=crmacct_id) "
+               " WHERE salesrep_id=:id;");
   crmq.bindValue(":id", _salesrepid);
   crmq.exec();
   if (crmq.first())
   {
     _crmacctid = crmq.value("crmacct_id").toInt();
-    _empid     = crmq.value("crmacct_emp_id").toInt();
+    _empid     = crmq.value("emp_id").toInt();
   }
   else if (ErrorReporter::error(QtCriticalMsg, this, tr("Database Error"),
                                 crmq, __FILE__, __LINE__))
@@ -316,10 +318,11 @@ bool salesRep::sPopulate()
   {
     getq.prepare("SELECT salesrep_number AS number, salesrep_active AS active,"
                  "       salesrep_name   AS name,   salesrep_commission AS comm,"
-                 "       crmacct_id,                crmacct_emp_id,"
+                 "       crmacct_id,                emp_id,"
                  "       crmacct_owner_username"
                  "  FROM salesrep"
-                 "  JOIN crmacct ON (salesrep_id=crmacct_salesrep_id)"
+                 "  JOIN crmacct ON (salesrep_crmacct_id=crmacct_id)"
+                 "  LEFT OUTER JOIN emp ON (emp_crmacct_id=crmacct_id) "
                  " WHERE (salesrep_id=:id);" );
     getq.bindValue(":id", _salesrepid);
   }
@@ -327,9 +330,10 @@ bool salesRep::sPopulate()
   {
     getq.prepare("SELECT crmacct_number AS number, crmacct_active AS active,"
                  "       crmacct_name   AS name,   NULL AS comm,"
-                 "       crmacct_id,               crmacct_emp_id,"
+                 "       crmacct_id,               emp_id,"
                  "       crmacct_owner_username"
                  "  FROM crmacct"
+                 "  LEFT OUTER JOIN emp ON (emp_crmacct_id=crmacct_id) "
                  " WHERE (crmacct_id=:id);" );
     getq.bindValue(":id", _crmacctid);
   }
@@ -344,7 +348,7 @@ bool salesRep::sPopulate()
     if (! commission.isNull())
       _commPrcnt->setDouble(commission.toDouble() * 100);
     _crmacctid = getq.value("crmacct_id").toInt();
-    _empid     = getq.value("crmacct_emp_id").toInt();
+    _empid     = getq.value("emp_id").toInt();
     _crmowner  = getq.value("crmacct_owner_username").toString();
 
     _number->setEnabled(false);

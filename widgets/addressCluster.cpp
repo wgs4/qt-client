@@ -115,8 +115,8 @@ void AddressCluster::init()
   _accuracy->setVisible(false);
   _mktg->setVisible(false);
 
-  _longitude->setValidator(new QDoubleValidator(-180.0, 180.0, 6, this));
-  _latitude->setValidator(new QDoubleValidator(-90.0, 90.0, 6, this));
+  _longitude->setValidator(new QDoubleValidator(-180.0, 180.0, 7, this));
+  _latitude->setValidator(new QDoubleValidator(-90.0, 90.0, 7, this));
 
   _addrChange->hide();
 #if defined Q_OS_MAC
@@ -372,8 +372,25 @@ void AddressCluster::silentSetId(const int pId)
         _addr3->setText(idQ.value("addr_line3").toString());
         _city->setText(idQ.value("addr_city").toString());
         _postalcode->setText(idQ.value("addr_postalcode").toString());
+
         _longitude->setText(idQ.value("addr_lon").toDouble());
         _latitude->setText(idQ.value("addr_lat").toDouble());
+ 
+        QString mapLink = QString("<a href=\"https://www.google.co.nz/maps/@" 
+                          + idQ.value("addr_lon").toString() + ","
+                          + idQ.value("addr_lat").toString() + ",18z?hl=en\">");
+        QString lngLink = mapLink + QString("Longitude:</a>");
+        QString latLink = mapLink + QString("Latitude:</a>");
+        _longitudeLit->setText(lngLink);
+        _longitudeLit->setTextFormat(Qt::RichText);
+        _longitudeLit->setTextInteractionFlags(Qt::TextBrowserInteraction);
+        _longitudeLit->setOpenExternalLinks(true);
+        _latitudeLit->setText(latLink);
+        _latitudeLit->setTextFormat(Qt::RichText);
+        _latitudeLit->setTextInteractionFlags(Qt::TextBrowserInteraction);
+        _latitudeLit->setOpenExternalLinks(true);
+
+
         _accuracy->setText(idQ.value("addr_accuracy").toDouble());
         _mktg->setChecked(idQ.value("addr_allowmktg").toBool());
 

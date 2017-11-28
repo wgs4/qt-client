@@ -299,9 +299,9 @@ void crmaccount::sClose()
     XSqlQuery begin("BEGIN;");
 
     XSqlQuery detachq;
-    detachq.prepare("SELECT MIN(detachContact(cntct_id, :crmacct_id)) AS returnVal "
-              "FROM cntct "
-              "WHERE (cntct_crmacct_id=:crmacct_id);");
+    detachq.prepare("SELECT MIN(detachContact(crmacctcntctass_cntct_id, crmacctcntctass_crmacct_id)) AS returnVal "
+              "FROM crmacctcntctass "
+              "WHERE (crmacctcntctass_crmacct_id=:crmacct_id);");
     detachq.bindValue(":crmacct_id", _crmacctId);
     detachq.exec();
     if (detachq.first())
@@ -311,7 +311,7 @@ void crmaccount::sClose()
       {
         rollback.exec();
         ErrorReporter::error(QtCriticalMsg, this,
-                             tr("Error detaching Contact from Account."),
+                             tr("Error detaching Contacts from Account."),
                              storedProcErrorLookup("detachContact", returnVal),
                              __FILE__, __LINE__);
         return;
@@ -398,7 +398,7 @@ void crmaccount::sSave()
     return;
 
   QString incomplete = tr("The %1 relationship is selected but no appropriate "
-                          "data have been created. Either click the %2 button "
+                          "data has been created. Either click the %2 button "
                           " to enter the data or unselect the check box.");
   QList<GuiErrorCheck> errors;
   errors<< GuiErrorCheck(numberIsUsed, _number,
@@ -557,18 +557,10 @@ QSqlError crmaccount::saveNoErrorCheck(bool pInTxn)
                   "    crmacct_parent_id=:crmacct_parent_id,"
                   "    crmacct_active=:crmacct_active,"
                   "    crmacct_type=:crmacct_type,"
-                  "    crmacct_cust_id=:crmacct_cust_id,"
                   "    crmacct_competitor_id=:crmacct_competitor_id,"
                   "    crmacct_partner_id=:crmacct_partner_id,"
-                  "    crmacct_prospect_id=:crmacct_prospect_id,"
-                  "    crmacct_taxauth_id=:crmacct_taxauth_id,"
-                  "    crmacct_vend_id=:crmacct_vend_id,"
-                  "    crmacct_cntct_id_1=:crmacct_cntct_id_1,"
-                  "    crmacct_cntct_id_2 =:crmacct_cntct_id_2,"
                   "    crmacct_owner_username =:crmacct_owner_username,"
                   "    crmacct_notes=:crmacct_notes,"
-                  "    crmacct_emp_id=:crmacct_emp_id,"
-                  "    crmacct_salesrep_id=:crmacct_salesrep_id,"
                   "    crmacct_usr_username=:crmacct_usr_username"
                   " WHERE (crmacct_id=:crmacct_id);" );
 
@@ -579,24 +571,12 @@ QSqlError crmaccount::saveNoErrorCheck(bool pInTxn)
   updateq.bindValue(":crmacct_type",    _organization->isChecked() ? "O" : "I");
   updateq.bindValue(":crmacct_notes",   _notes->toPlainText());
 
-  if (_custId > 0)
-    updateq.bindValue(":crmacct_cust_id",        _custId);
   if (_competitorId > 0)
     updateq.bindValue(":crmacct_competitor_id",  _competitorId);
   if (_partnerId > 0)
     updateq.bindValue(":crmacct_partner_id",     _partnerId);
-  if (_prospectId > 0)
-    updateq.bindValue(":crmacct_prospect_id",    _prospectId);
-  if (_taxauthId > 0)
-    updateq.bindValue(":crmacct_taxauth_id",     _taxauthId);
-  if (_vendId > 0)
-    updateq.bindValue(":crmacct_vend_id",        _vendId);
   if (_parentCrmacct->id() > 0)
     updateq.bindValue(":crmacct_parent_id",      _parentCrmacct->id());
-  if (_empId > 0)
-    updateq.bindValue(":crmacct_emp_id",         _empId);
-  if (_salesrepId > 0)
-    updateq.bindValue(":crmacct_salesrep_id",    _salesrepId);
   if (! _username.isEmpty())
     updateq.bindValue(":crmacct_usr_username",   _username);
   if (! _owner->username().isEmpty())
@@ -634,7 +614,16 @@ void crmaccount::setId(int id)
 void crmaccount::sPopulate()
 {
   XSqlQuery getq;
-  getq.prepare( "SELECT *, userCanCreateUsers(getEffectiveXtUser()) AS cancreateusers "
+  getq.prepare( "SELECT *, userCanCreateUsers(getEffectiveXtUser()) AS cancreateusers, "
+             "  (crmacctTypes(crmacct_id)#>>'{competitor}')::INT AS competitor, "
+             "  (crmacctTypes(crmacct_id)#>>'{customer}')::INT AS customer,  "
+             "  (crmacctTypes(crmacct_id)#>>'{employee}')::INT AS employee, "
+             "  (crmacctTypes(crmacct_id)#>>'{partner}')::INT AS partner, "
+             "  (crmacctTypes(crmacct_id)#>>'{prospect}')::INT AS prospect, "
+             "  (crmacctTypes(crmacct_id)#>>'{salesrep}')::INT AS salesrep, "
+             "  (crmacctTypes(crmacct_id)#>>'{taxauth}')::INT AS taxauth, "
+             "  (crmacctTypes(crmacct_id)#>>'{user}') AS user, "
+             "  (crmacctTypes(crmacct_id)#>>'{vendor}')::INT AS vendor "
              "FROM crmacct "
              "WHERE (crmacct_id=:crmacct_id);" );
   getq.bindValue(":crmacct_id", _crmacctId);
@@ -655,15 +644,15 @@ void crmaccount::sPopulate()
                qPrintable(acctType));
 
     _canCreateUsers = getq.value("cancreateusers").toBool();
-    _competitorId = getq.value("crmacct_competitor_id").toInt();
-    _custId     = getq.value("crmacct_cust_id").toInt();
-    _empId      = getq.value("crmacct_emp_id").toInt();
-    _partnerId  = getq.value("crmacct_partner_id").toInt();
-    _prospectId = getq.value("crmacct_prospect_id").toInt();
-    _salesrepId = getq.value("crmacct_salesrep_id").toInt();
-    _taxauthId  = getq.value("crmacct_taxauth_id").toInt();
-    _username   = getq.value("crmacct_usr_username").toString();
-    _vendId     = getq.value("crmacct_vend_id").toInt();
+    _competitorId = getq.value("competitor").toInt();
+    _custId     = getq.value("customer").toInt();
+    _empId      = getq.value("employee").toInt();
+    _partnerId  = getq.value("partner").toInt();
+    _prospectId = getq.value("prospect").toInt();
+    _salesrepId = getq.value("salesrep").toInt();
+    _taxauthId  = getq.value("taxauth").toInt();
+    _username   = getq.value("user").toString();
+    _vendId     = getq.value("vendor").toInt();
 
     _notes->setText(getq.value("crmacct_notes").toString());
     _parentCrmacct->setId(getq.value("crmacct_parent_id").toInt());
@@ -953,22 +942,32 @@ void crmaccount::sUpdateRelationships()
     qDebug("crmaccount::sUpdateRelationships() entered");
 
   XSqlQuery getq;
-  getq.prepare("SELECT * FROM crmacct WHERE (crmacct_id=:crmacct_id);" );
+  getq.prepare("SELECT *, "
+               "  (crmacctTypes(crmacct_id)#>>'{competitor}')::INT AS competitor, "
+               "  (crmacctTypes(crmacct_id)#>>'{customer}')::INT AS customer,  "
+               "  (crmacctTypes(crmacct_id)#>>'{employee}')::INT AS employee, "
+               "  (crmacctTypes(crmacct_id)#>>'{partner}')::INT AS partner, "
+               "  (crmacctTypes(crmacct_id)#>>'{prospect}')::INT AS prospect, "
+               "  (crmacctTypes(crmacct_id)#>>'{salesrep}')::INT AS salesrep, "
+               "  (crmacctTypes(crmacct_id)#>>'{taxauth}')::INT AS taxauth, "
+               "  (crmacctTypes(crmacct_id)#>>'{user}') AS user, "
+               "  (crmacctTypes(crmacct_id)#>>'{vendor}')::INT AS vendor "
+               " FROM crmacct WHERE (crmacct_id=:crmacct_id);" );
   getq.bindValue(":crmacct_id", _crmacctId);
   getq.exec();
   if (getq.first())
   {
     _number->setText(getq.value("crmacct_number").toString());
     _name->setText(getq.value("crmacct_name").toString());
-    _competitorId = getq.value("crmacct_competitor_id").toInt();
-    _custId     = getq.value("crmacct_cust_id").toInt();
-    _empId      = getq.value("crmacct_emp_id").toInt();
-    _partnerId  = getq.value("crmacct_partner_id").toInt();
-    _prospectId = getq.value("crmacct_prospect_id").toInt();
-    _salesrepId = getq.value("crmacct_salesrep_id").toInt();
-    _taxauthId  = getq.value("crmacct_taxauth_id").toInt();
-    _username   = getq.value("crmacct_usr_username").toString();
-    _vendId     = getq.value("crmacct_vend_id").toInt();
+    _competitorId = getq.value("competitor").toInt();
+    _custId     = getq.value("customer").toInt();
+    _empId      = getq.value("employee").toInt();
+    _partnerId  = getq.value("partner").toInt();
+    _prospectId = getq.value("prospect").toInt();
+    _salesrepId = getq.value("salesrep").toInt();
+    _taxauthId  = getq.value("taxauth").toInt();
+    _username   = getq.value("user").toString();
+    _vendId     = getq.value("vendor").toInt();
 
     sHandleChildButtons();
     _owner->setUsername(getq.value("crmacct_owner_username").toString());
@@ -1243,19 +1242,13 @@ void crmaccount::sHandleChildButtons()
     _vendorButton->setEnabled(false);
 }
 
-void crmaccount::sHandleCntctDetach(int cntctId)
-{
-/*  if (_primary->id() == cntctId)
-    _primary->clear();
-  if (_secondary->id() == cntctId)
-    _secondary->clear();
-*/
-}
-
 void crmaccount::sAddAddress()
 {
   XSqlQuery adda;
   QList<GuiErrorCheck> errors;
+
+  if ( !_address->isValid())
+    _address->save(AddressCluster::CHECK);
 
   errors<< GuiErrorCheck(!_addrRole->isValid(), _cntctRole,
                          tr("Please first select a Role."))

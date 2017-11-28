@@ -539,7 +539,7 @@ bool vendor::sSave()
           "       vend_accnt_id = <? value('vend_accnt_id') ?>,"
           "       vend_expcat_id = <? value('vend_expcat_id') ?>,"
           "       vend_tax_id = <? value('vend_tax_id') ?> "
-          " WHERE vend_id = <? value('vend_id') ?>;" ;
+          " WHERE vend_id = <? value('vend_id') ?>;";
   }
   else if (_mode == cNew)
     sql = "INSERT INTO vendinfo "
@@ -598,7 +598,7 @@ bool vendor::sSave()
           "  <? value('vend_accnt_id') ?>,"
           "  <? value('vend_expcat_id') ?>,"
           "  <? value('vend_tax_id') ?> "
-          "   );"  ;
+          "   );";
 
   ParameterList params;
   params.append("vend_id", _vendid);
@@ -694,20 +694,11 @@ bool vendor::sSave()
   XSqlQuery commit("COMMIT;");
 
   // We also need to find out the CRMAcct in case of adding Comments
-  if (_mode == cNew && _crmacctid == -1)
+  if (_mode == cNew)
   {
-    sql = "SELECT crmacct_id FROM crmacct WHERE (crmacct_vend_id = <? value('vend_id') ?>);";
-    MetaSQLQuery mql(sql);
-    XSqlQuery crma = mql.toQuery(params);
-    if (crma.first())
+    if (upsq.first())
     {
-      _crmacctid = crma.value("crmacct_id").toInt();
-    }
-    else if (crma.lastError().type() != QSqlError::NoError)
-    {
-      ErrorReporter::error(QtCriticalMsg, this, tr("Error Retrieving Vendor CRM Account"),
-                         crma, __FILE__, __LINE__);
-      return false;
+      _crmacctid = upsq.value("crmacct_id").toInt();
     }
   }
   _tempMode = cEdit;
@@ -841,7 +832,10 @@ void vendor::sLoadCrmAcct(int crmacctId)
   _crmacctid = crmacctId;
 
   XSqlQuery getq;
-  getq.prepare("SELECT * FROM crmacct WHERE (crmacct_id=:crmacct_id);");
+  getq.prepare("SELECT crm.*, getcrmaccountcontact(crmacct_id, 'Primary') AS cntct_id_1, "
+               "              getcrmaccountcontact(crmacct_id, 'Secondary') AS cntct_id_2 "
+               " FROM crmacct crm "
+               " WHERE (crmacct_id=:crmacct_id)");
   getq.bindValue(":crmacct_id", crmacctId);
   getq.exec();
   if (getq.first())
@@ -854,12 +848,12 @@ void vendor::sLoadCrmAcct(int crmacctId)
     _name->setText(getq.value("crmacct_name").toString());
     _active->setChecked(getq.value("crmacct_active").toBool());
 
-    _contact1->setId(getq.value("crmacct_cntct_id_1").toInt());
+    _contact1->setId(getq.value("cntct_id_1").toInt());
     _contact1->setSearchAcct(_crmacctid);
-    _contact2->setId(getq.value("crmacct_cntct_id_2").toInt());
+    _contact2->setId(getq.value("cntct_id_2").toInt());
     _contact2->setSearchAcct(_crmacctid);
 
-    if (getq.value("crmacct_cntct_id_1").toInt() != 0)
+    if (getq.value("cntct_id_1").toInt() != 0)
     {
       XSqlQuery contactQry;
       contactQry.prepare("SELECT cntct_addr_id FROM cntct WHERE (cntct_id=:cntct_id);");
@@ -911,13 +905,13 @@ bool vendor::sPopulate()
             "       <? value('na') ?> AS accntnum "
             "<? endif ?>"
             "FROM vendinfo "
-            "  JOIN crmacct ON (vend_id=crmacct_vend_id) "
+            "  JOIN crmacct ON (vend_crmacct_id=crmacct_id) "
             "WHERE (vend_id=<? value('vend_id') ?>);"
             "<? elseif exists('crmacct_id') ?>"
             "SELECT crmacct_number AS vend_number, crmacct_name   AS vend_name,"
             "       crmacct_active AS vend_active,"
-            "       crmacct_cntct_id_1 AS vend_cntct1_id,"
-            "       crmacct_cntct_id_2 AS vend_cntct2_id,"
+            "       getcrmaccountcontact(crmacct_id, 'Primary') AS vend_cntct1_id,"
+            "       getcrmaccountcontact(crmacct_id, 'Secondary') AS vend_cntct2_id,"
             "       fetchMetricText('DefaultPOShipVia') AS vend_shipvia,"
             "       NULL AS vend_accntnum,    NULL AS vend_vendtype_id,"
             "       NULL AS vend_name,        NULL AS vend_addr_id,"
@@ -1462,14 +1456,9 @@ void vendor::close()
                            delq, __FILE__, __LINE__))
       return;
     omfgThis->sVendorsUpdated();
-    // Clean out CRM Acct but only if not used elsewhere
-    delq.prepare("DELETE FROM crmacct WHERE ((crmacct_number=:vend_number) "
-                      "                 AND ((crmacct_cust_id IS NULL)  "
-                      "                  AND (crmacct_competitor_id IS NULL) "
-                      "                  AND (crmacct_partner_id IS NULL)    "
-                      "                  AND (crmacct_prospect_id IS NULL)   "
-                      "                  AND (crmacct_taxauth_id IS NULL))); ");
-    delq.bindValue(":vend_number", _number->number().trimmed().toUpper());
+    // Clean out CRM Acct but only if not used elsewhere (FKs handle this)
+    delq.prepare("DELETE FROM crmacct WHERE crmacct_id=:crmacct_id; ");
+    delq.bindValue(":crmacct_id", _crmacctid);
     delq.exec();
     if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Deleting"),
                            delq, __FILE__, __LINE__))

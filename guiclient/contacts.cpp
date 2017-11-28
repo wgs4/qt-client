@@ -55,13 +55,14 @@ contacts::contacts(QWidget* parent, const char*, Qt::WindowFlags fl)
 
   list()->addColumn(tr("First Name"),          80, Qt::AlignLeft,  true, "cntct_first_name");
   list()->addColumn(tr("Last Name"),          100, Qt::AlignLeft,  true, "cntct_last_name");
+  list()->addColumn(tr("Active"),              50, Qt::AlignLeft,  true, "cntct_active");
   list()->addColumn(tr("Owner"),      _userColumn, Qt::AlignLeft, false, "cntct_owner_username");
   list()->addColumn(tr("Account #"),           80, Qt::AlignLeft,  true, "crmacct_number");
   list()->addColumn(tr("Account Name"),        -1, Qt::AlignLeft,  true, "crmacct_name");
   list()->addColumn(tr("Title"),               -1, Qt::AlignLeft,  true, "cntct_title");
-  list()->addColumn(tr("Office #"),	      100, Qt::AlignLeft,  true, "cntct_phone");
-  list()->addColumn(tr("Mobile #"),           100, Qt::AlignLeft,  true, "cntct_phone2");
-  list()->addColumn(tr("Fax #"),              100, Qt::AlignLeft, false, "cntct_phone3");
+  list()->addColumn(tr("Office #"),	      100, Qt::AlignLeft,  true, "contact_phone");
+  list()->addColumn(tr("Mobile #"),           100, Qt::AlignLeft,  true, "contact_phone2");
+  list()->addColumn(tr("Fax #"),              100, Qt::AlignLeft, false, "contact_phone3");
   list()->addColumn(tr("E-Mail"),             100, Qt::AlignLeft,  true, "cntct_email");
   list()->addColumn(tr("Web Address"),        100, Qt::AlignLeft, false, "cntct_webaddr");
   list()->addColumn(tr("Address"),             -1, Qt::AlignLeft, false, "addr_line1");

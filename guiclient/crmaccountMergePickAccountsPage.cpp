@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -57,7 +57,7 @@ CrmaccountMergePickAccountsPage::CrmaccountMergePickAccountsPage(QWidget *parent
   _sources->addColumn(tr("Name"),             -1, Qt::AlignLeft,  true, "crmacct_name");
   _sources->addColumn(tr("First"),            50, Qt::AlignLeft,  true, "cntct_first_name" );
   _sources->addColumn(tr("Last"),             -1, Qt::AlignLeft,  true, "cntct_last_name" );
-  _sources->addColumn(tr("Phone"),           100, Qt::AlignLeft,  true, "cntct_phone" );
+  _sources->addColumn(tr("Phone"),           100, Qt::AlignLeft,  true, "contact_phone" );
   _sources->addColumn(tr("Email"),           100, Qt::AlignLeft,  true, "cntct_email" );
   _sources->addColumn(tr("Address"),          -1, Qt::AlignLeft,  false, "addr_line1" );
   _sources->addColumn(tr("City"),             75, Qt::AlignLeft,  false, "addr_city" );

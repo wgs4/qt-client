@@ -476,7 +476,7 @@ void invoice::populateShipto(int pShiptoid)
   {
     XSqlQuery shipto;
     shipto.prepare( "SELECT shipto_id, shipto_num, shipto_name, shipto_addr_id, "
-                    "       cntct_phone, shipto_salesrep_id, "
+                    "       getcontactphone(cntct_id, 'Office') AS contact_phone, shipto_salesrep_id, "
                     "       COALESCE(shipto_shipvia, cust_shipvia, '') AS shipvia, "
                     "       COALESCE(shipto_taxzone_id, -1) AS shipto_taxzone_id,"
                     "       COALESCE(shipto_shipchrg_id, -1) AS shipto_shipchrg_id,"
@@ -497,7 +497,7 @@ void invoice::populateShipto(int pShiptoid)
 
       _shipToName->setText(shipto.value("shipto_name"));
       _shipToAddr->setId(shipto.value("shipto_addr_id").toInt());
-      _shipToPhone->setText(shipto.value("cntct_phone"));
+      _shipToPhone->setText(shipto.value("contact_phone"));
       _shipTo->setId(shipto.value("shipto_id").toInt());
 
       _shipToAddr->blockSignals(false);

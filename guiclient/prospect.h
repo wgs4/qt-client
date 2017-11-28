@@ -32,21 +32,19 @@ public:
 public slots:
     virtual SetResponse set(const ParameterList & pParams );
 
-    virtual void	sCheckNumber();
-    virtual void	sDeleteQuote();
-    virtual void	sEditQuote();
-    virtual void	sNewQuote();
-    virtual void	sPrintQuote();
-    virtual void	sSave();
-    virtual void	sViewQuote();
-    virtual void	sFillQuotesList();
-    virtual void	sPopulateQuotesMenu(QMenu * menuThis);
-    virtual bool	sPopulate();
-    virtual void        sSetCrmAccountId();
-    virtual void        sBuildContacts();
-    virtual void        sAddNewContactRow();
-    virtual void        sRemoveContact();
-    virtual void        sSaveContacts();
+    virtual void sCheckNumber();
+    virtual void sDeleteQuote();
+    virtual void sEditQuote();
+    virtual void sNewQuote();
+    virtual void sPrintQuote();
+    virtual void sSaveClicked();
+    virtual void sSave(bool pPartial);
+    virtual void sViewQuote();
+    virtual void sFillQuotesList();
+    virtual void sPopulateQuotesMenu(QMenu * menuThis);
+    virtual bool sPopulate();
+    virtual void sSetCrmAccountId();
+    virtual void sAddContact();
 
 signals:
             void newId(int);
@@ -63,11 +61,13 @@ protected:
     QPushButton *_add;
 
 private:
-    int _crmacctid;
-    int _mode;
-    int _prospectid;
-    int _NumberGen;
-    int _rowId;
+    int  _crmacctid;
+    int  _mode;
+    int  _prospectid;
+    int  _NumberGen;
+    int  _rowId;
+    bool _isSaved;
+    bool _saved;
     QMap<QString, int> cmap;
     QString _cachedNumber;
     QString _crmowner;

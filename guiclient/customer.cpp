@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -1288,12 +1288,11 @@ void customer::populate()
 
   _notice = false;
   cust.prepare( "SELECT custinfo.*, "
-                "       cust_commprcnt, cust_discntprcnt,"
                 "       (cust_gracedays IS NOT NULL) AS hasGraceDays,"
                 "       COALESCE(cust_financecharge, true) AS financecharge,"
-                "       crmacct_id, crmacct_owner_username "
+                "       crmacct_owner_username "
                 "FROM custinfo LEFT OUTER JOIN "
-                "     crmacct ON (cust_id=crmacct_cust_id) "
+                "     crmacct ON (cust_crmacct_id=crmacct_id) "
                 "WHERE (cust_id=:cust_id);" );
   cust.bindValue(":cust_id", _custid);
   cust.exec();
@@ -1306,7 +1305,7 @@ void customer::populate()
     }
     setValid(true);
 
-    _crmacctid = cust.value("crmacct_id").toInt();
+    _crmacctid = cust.value("cust_crmacct_id").toInt();
     _crmowner = cust.value("crmacct_owner_username").toString();
     _crmacct->setEnabled(_crmacctid > 0 &&
                          (_privileges->check("MaintainAllCRMAccounts") ||
@@ -1706,7 +1705,14 @@ void customer::sLoadCrmAcct(int crmacctId)
   _corrCntct->setSearchAcct(_crmacctid);
 
   XSqlQuery getq;
-  getq.prepare("SELECT * FROM crmacct WHERE (crmacct_id=:crmacct_id);");
+  getq.prepare("SELECT crm.*, pc.crmacctcntctass_cntct_id AS cntct_id_1, "
+               "              sc.crmacctcntctass_cntct_id AS cntct_id_2 " 
+               "  FROM crmacct crm "
+               "  LEFT OUTER JOIN crmacctcntctass pc ON (crmacct_id=pc.crmacctcntctass_crmacct_id "
+               "                      AND pc.crmacctcntctass_crmrole_id=getcrmroleid('Primary')) "
+               "  LEFT OUTER JOIN crmacctcntctass sc ON (crmacct_id=sc.crmacctcntctass_crmacct_id "
+               "                      AND sc.crmacctcntctass_crmrole_id=getcrmroleid('Secondary')) "
+               "  WHERE (crmacct_id=:crmacct_id);");
   getq.bindValue(":crmacct_id", crmacctId);
   getq.exec();
   if (getq.first())
@@ -1720,8 +1726,8 @@ void customer::sLoadCrmAcct(int crmacctId)
 //    _number->setCanEdit(false);
     _name->setText(getq.value("crmacct_name").toString());
     _active->setChecked(getq.value("crmacct_active").toBool());
-    _billCntct->setId(getq.value("crmacct_cntct_id_1").toInt());
-    _corrCntct->setId(getq.value("crmacct_cntct_id_1").toInt());
+    _billCntct->setId(getq.value("cntct_id_1").toInt());
+    _corrCntct->setId(getq.value("cntct_id_2").toInt());
   }
   else if (ErrorReporter::error(QtCriticalMsg, this, tr("Getting Account"),
                            getq, __FILE__, __LINE__))
@@ -1853,9 +1859,9 @@ void customer::sIdChanged(int id)
   _cctrans->findChild<CustomerSelector*>("_customerSelector")->setCustId(id);
 
   XSqlQuery qry;
-  qry.prepare("SELECT crmacct_id "
-                    "FROM crmacct "
-                    "WHERE crmacct_cust_id=:cust_id;" );
+  qry.prepare("SELECT cust_crmacct_id "
+                    "FROM custinfo "
+                    "WHERE cust_id=:cust_id;" );
   qry.bindValue(":cust_id", id);
   qry.exec();
 

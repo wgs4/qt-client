@@ -155,14 +155,13 @@ public:
   inline virtual bool    minimalLayout()  const { return _minimalLayout; }
   Q_INVOKABLE virtual Mode    mode()      const { return _mode; }
   inline virtual QString notes()	  const { return _notes; }
-  inline virtual bool    phonesVisible()  const { return _phone->isVisible(); }
+  inline virtual bool    phonesVisible()  const { return _number->isVisible(); }
   inline virtual int     searchAcct()	  const { return _searchAcctId; }
   inline virtual bool    webaddrVisible() const { return _webaddr->isVisible(); }
 
   Q_INVOKABLE virtual bool    active()		const { return _active->isChecked(); }
   Q_INVOKABLE virtual int     id()	        const { return _id; }
   Q_INVOKABLE virtual QString emailAddress()	const { return _email->currentText(); }
-  Q_INVOKABLE virtual QString fax()		const { return _fax->text(); }
   Q_INVOKABLE virtual QString first()		const { return _first->text(); }
   Q_INVOKABLE virtual QString honorific()       const { return _honorific->currentText(); }
   Q_INVOKABLE virtual QString initials()        const { return _initials->text(); }
@@ -170,8 +169,6 @@ public:
   Q_INVOKABLE virtual QString name()            const;
   Q_INVOKABLE virtual QString number()          const { return _number->text(); }
   Q_INVOKABLE virtual QString ownerUsername()   const { return _owner->username(); }
-  Q_INVOKABLE virtual QString phone()		const { return _phone->text(); }
-  Q_INVOKABLE virtual QString phone2()		const { return _phone2->text(); }
   Q_INVOKABLE virtual QString title()           const { return _title->text(); }
   Q_INVOKABLE virtual QString webAddress()	const { return _webaddr->text(); }
   Q_INVOKABLE virtual QString suffix()		const { return _suffix->text(); }
@@ -221,7 +218,7 @@ public slots:
   inline virtual void setAddress(const int p)           { _address->setId(p); }
   inline virtual void setActive(const bool p)           { _active->setChecked(p); }
          virtual void setChange(QString p);
-  inline virtual void setCrmAcctId(const int p)         { _crmAcct->setId(p); }
+  inline virtual void setCrmAcctId(const int p)         { _crmacctid = p; }
   inline virtual void setDescription(const QString&)    { }
   inline virtual void setEmailAddress(const QString& p) { _email->setText(p); }
   inline virtual void setFax(const QString& p)	        { _fax->setText(p); }
@@ -271,7 +268,7 @@ public slots:
   virtual void  sBuildPhones();
   virtual void  sAddNewPhoneRow();
   virtual void  sRemovePhone();
-  virtual void  sSavePhones();
+  virtual QString sBuildPhoneJson();
 
   //Set Data Mapping
   virtual void setDataWidgetMap(XDataWidgetMapper* m);
