@@ -1384,7 +1384,7 @@ void ContactWidget::sBuildPhones()
   XSqlQuery getp;
   _rowId = -1;
   cmap.clear();
-  getp.prepare("SELECT cntctphone_crmrole_id, cntctphone_crmrole_id, cntctphone_phone "
+  getp.prepare("SELECT cntctphone_crmrole_id, cntctphone_phone "
                "FROM cntctphone "
                "JOIN crmrole ON crmrole_id=cntctphone_crmrole_id " 
                "WHERE cntctphone_cntct_id=:cntctid "
@@ -1407,7 +1407,7 @@ void ContactWidget::sBuildPhones()
     cNumber->setText(getp.value("cntctphone_phone").toString());
   }
 
-  while (cmap.size() < 3)
+  while (cmap.size() < 3)  // Pad phone list for aesthetics
   {
     sAddNewPhoneRow();
   }

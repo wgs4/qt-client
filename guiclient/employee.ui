@@ -179,9 +179,6 @@ to be bound by its terms.</comment>
       <layout class="QGridLayout" name="contactTabLayout">
        <item row="0" column="0">
         <widget class="ContactWidget" name="_contact">
-         <property name="accountVisible">
-          <bool>false</bool>
-         </property>
          <property name="activeVisible">
           <bool>false</bool>
          </property>

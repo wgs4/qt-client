@@ -182,6 +182,7 @@ enum SetResponse employee::set(const ParameterList &pParams)
           _NumberGen = numq.value("number").toInt();
         }
       }
+      _contact->sBuildPhones();  // Initialise phone list
     }
     else if (param.toString() == "edit")
     {
