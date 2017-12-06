@@ -69,7 +69,7 @@
 #define iJustUpdate   3
 
 salesOrder::salesOrder(QWidget *parent, const char *name, Qt::WindowFlags fl)
-  : XWidget(parent, name, fl),
+  : XDocumentWindow(parent, name, fl),
     _saved         (false),
     _saving        (false),
     _calcfreight   (false),
@@ -87,7 +87,8 @@ salesOrder::salesOrder(QWidget *parent, const char *name, Qt::WindowFlags fl)
     _taxzoneidCache(-1),
     _crmacctid     (-1)
 {
-  setupUi(this);
+  setupUi(widget());
+  setWindowTitle(tr("Sales Order"));
 
   _dspShipmentsBySalesOrder = new dspShipmentsBySalesOrder(this, "dspShipmentsBySalesOrder", Qt::Widget);
   _dspShipmentsBySalesOrder->setObjectName("dspShipmentsBySalesOrder");
@@ -115,6 +116,7 @@ salesOrder::salesOrder(QWidget *parent, const char *name, Qt::WindowFlags fl)
   connect(_orderNumber,         SIGNAL(textChanged(const QString &)),           this,         SLOT(sSetUserEnteredOrderNumber()));
   connect(_save,                SIGNAL(clicked()),                              this,         SLOT(sSave()));
   connect(_saveAndAdd,          SIGNAL(clicked()),                              this,         SLOT(sSaveAndAdd()));
+  connect(_close,               SIGNAL(clicked()),                              this,         SLOT(close()));
   connect(_shippingCharges,     SIGNAL(newID(int)),                             this,         SLOT(sHandleShipchrg(int)));
   connect(_shipToAddr,          SIGNAL(changed()),                              this,         SLOT(sConvertShipTo()));
   connect(_shipToName,          SIGNAL(textChanged(const QString &)),           this,         SLOT(sConvertShipTo()));
@@ -303,7 +305,7 @@ void salesOrder::languageChange()
 enum SetResponse salesOrder:: set(const ParameterList &pParams)
 {
   XSqlQuery setSales;
-  XWidget::set(pParams);
+  XDocumentWindow::set(pParams);
   QVariant  param;
   bool      valid;
 
@@ -614,7 +616,12 @@ enum SetResponse salesOrder:: set(const ParameterList &pParams)
 
   param = pParams.value("cust_id", &valid);
   if (valid)
+  {
     _cust->setId(param.toInt());
+    param = pParams.value("shipto_id", &valid);
+    if (valid)
+      _shipTo->setId(param.toInt());
+  }
 
   param = pParams.value("ophead_id", &valid);
   if (valid)
@@ -3367,7 +3374,7 @@ void salesOrder::closeEvent(QCloseEvent *pEvent)
 
   _preferences->set("SoShowAll", _more->isChecked());
 
-  XWidget::closeEvent(pEvent);
+  XDocumentWindow::closeEvent(pEvent);
 }
 
 void salesOrder::sHandleShipchrg(int pShipchrgid)
@@ -3563,6 +3570,7 @@ void salesOrder::setViewMode()
   else
     _saveAndAdd->hide();
   _action->hide();
+  _cancel->hide();
   _delete->hide();
 }
 
@@ -4379,7 +4387,8 @@ void salesOrder::sIssueLineBalance()
                          "  isControlledItemsite(itemsite.itemsite_id) AS controlled, "
                          "  isControlledItemsite(wo_itemsite_id) AS woItemControlled, "
                          "  wo_itemsite_id, "
-                         "  calcIssueToShippingLineBalance('SO', coitem_id) AS balance, wo_id, "
+                         "  calcIssueToShippingLineBalance('SO', coitem_id) AS balance, "
+                         "  coitem_qty_invuomratio, wo_id, "
                          "  CASE WHEN wo_id IS NOT NULL THEN "
                          "    roundQty(woitem.item_fractional, calcIssueToShippingLineBalance('SO', coitem_id) "
                          "    * coitem_qty_invuomratio) "
@@ -4463,7 +4472,7 @@ void salesOrder::sIssueLineBalance()
       parentItemlocdist.prepare("SELECT createItemlocdistParent(:itemsite_id, :qty, :orderType, :orderitemId, "
         ":itemlocSeries, NULL, NULL, :transType) AS result;");
       parentItemlocdist.bindValue(":itemsite_id", itemsiteId);
-      parentItemlocdist.bindValue(":qty", balance * -1);
+      parentItemlocdist.bindValue(":qty", balance * issueSales.value("coitem_qty_invuomratio").toDouble() * -1);
       parentItemlocdist.bindValue(":orderitemId", soitem->id());
       parentItemlocdist.bindValue(":itemlocSeries", itemlocSeries);
       parentItemlocdist.bindValue(":orderType", "SO");

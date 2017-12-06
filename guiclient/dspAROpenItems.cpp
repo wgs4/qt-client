@@ -1186,6 +1186,7 @@ void dspAROpenItems::sPostCreditMemo()
     
   bool changeDate = false;
   QDate newDate = QDate::currentDate();
+  QDate seriesDate;
 
   if (_privileges->check("ChangeSOMemoPostDate"))
   {
@@ -1195,6 +1196,7 @@ void dspAROpenItems::sPostCreditMemo()
     {
       newDate = newdlg.date();
       changeDate = (newDate.isValid());
+      seriesDate = newdlg.seriesDate();
     }
     else
       return;
@@ -1271,9 +1273,10 @@ void dspAROpenItems::sPostCreditMemo()
   tx.exec("BEGIN;");  // TODO - remove this after postCreditMemo can no longer return negative error codes
     
   XSqlQuery postq;
-  postq.prepare("SELECT postCreditMemo(:cmhead_id, fetchJournalNumber('AR-CM'), :itemlocSeries, TRUE) AS result;");
+  postq.prepare("SELECT postCreditMemo(:cmhead_id, fetchJournalNumber('AR-CM', :seriesDate), :itemlocSeries, TRUE) AS result;");
   postq.bindValue(":cmhead_id", id);
   postq.bindValue(":itemlocSeries", itemlocSeries);
+  postq.bindValue(":seriesDate", seriesDate);
   postq.exec();
   if (postq.first())
   {
@@ -1313,6 +1316,7 @@ void dspAROpenItems::sPostInvoice()
     
   bool changeDate = false;
   QDate newDate = QDate::currentDate();
+  QDate seriesDate;
 
   if (!checkInvoiceSitePrivs(list()->currentItem()->id("docnumber")))
     return;
@@ -1325,13 +1329,16 @@ void dspAROpenItems::sPostInvoice()
     {
       newDate = newdlg.date();
       changeDate = (newDate.isValid());
+      seriesDate = newdlg.seriesDate();
     }
     else
       return;
   }
 
   int journal = -1;
-  dspPostInvoice.exec("SELECT fetchJournalNumber('AR-IN') AS result;");
+  dspPostInvoice.prepare("SELECT fetchJournalNumber('AR-IN', :seriesDate) AS result;");
+  dspPostInvoice.bindValue(":seriesDate", seriesDate);
+  dspPostInvoice.exec();
   if (dspPostInvoice.first())
   {
     journal = dspPostInvoice.value("result").toInt();

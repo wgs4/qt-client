@@ -1524,7 +1524,6 @@ void workOrder::sIssueMatlBatch()
                 "   AND (womatl_itemsite_id=itemsite_id) "
                 "   AND (itemsite_item_id=item_id) "
                 "   AND (itemsite_warehous_id=warehous_id) "
-                "   AND ((itemsite_controlmethod IN ('L', 'S')) OR (itemsite_loccntrl)) "
                 "   AND (womatl_issuemethod IN ('S', 'M')) "
                 "   AND (womatl_wo_id=:wo_id)); ");
   items.bindValue(":wo_id", _woIndentedList->id());
@@ -2303,7 +2302,8 @@ void workOrder::populate()
     _assembly->setEnabled(false);
     _disassembly->setEnabled(false);
     _warehouse->setEnabled(false);
-    _comments->setReadOnly(false);
+    if (_mode != cView)
+      _comments->setReadOnly(false);
     _documents->setReadOnly(false);
     _leadTimeLit->hide();
     _leadTime->hide();
