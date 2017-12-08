@@ -3,14 +3,13 @@ include( ../global.pri )
 TARGET   = xtuplewidgets
 TEMPLATE = lib
 CONFIG  += qt warn_on plugin
-QT      += core network printsupport script scripttools sql \
-           webkit webkitwidgets widgets xml
+QT      += core network printsupport script scripttools sql widgets xml
+QT      += designer serialport uitools webchannel websockets
 
-greaterThan(QT_MAJOR_VERSION, 4) {
-  QT += designer printsupport serialport uitools \
-        webchannel websockets widgets
-} else {
-  CONFIG += designer uitools
+equals(QT_MAJOR_VERSION, 5) {
+  lessThan (QT_MINOR_VERSION, 9) {
+    QT += webkit webkitwidgets
+  }
 }
 
 DBFILE       = widgets.db

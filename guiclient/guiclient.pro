@@ -4,12 +4,13 @@ TARGET   = xtuple
 CONFIG   += qt warn_on
 
 QT += xml sql script scripttools network
-QT += webkit xmlpatterns printsupport webkitwidgets
+QT += designer uitools quick websockets webchannel serialport
+QT += xmlpatterns printsupport
 
-isEqual(QT_MAJOR_VERSION, 5) {
-  QT     += designer uitools quick websockets webchannel serialport
-} else {
-  CONFIG += designer uitools
+equals(QT_MAJOR_VERSION, 5) {
+  lessThan (QT_MINOR_VERSION, 9) {
+    QT += webkit webkitwidgets
+  }
 }
 
 TEMPLATE = app

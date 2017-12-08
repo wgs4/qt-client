@@ -1,14 +1,15 @@
 include( ../global.pri )
 TARGET = xtuplescriptapi
 TEMPLATE = lib
-CONFIG += qt \
-    warn_on \
-    staticlib
+CONFIG += qt warn_on staticlib
 
-QT += core network printsupport script sql webkit webkitwidgets widgets xml
+QT += core network printsupport script sql widgets xml serialport
+QT += websockets webchannel
 
-greaterThan (QT_MAJOR_VERSION, 4) {
-  QT += websockets webchannel serialport
+equals(QT_MAJOR_VERSION, 5) {
+  lessThan (QT_MINOR_VERSION, 9) {
+    QT += webkit webkitwidgets
+  }
 }
 
 DBFILE = scriptapi.db
@@ -25,7 +26,6 @@ UI_DIR = tmp
 
 HEADERS += setupscriptapi.h \
     include.h \
-    scriptapi_internal.h \
     char.h \
     engineevaluate.h \
     jsconsole.h \
@@ -72,7 +72,8 @@ HEADERS += setupscriptapi.h \
     qdomprocessinginstructionproto.h \
     qdomtextproto.h \
     qdoublevalidatorproto.h \
-    qeventproto.h \
+    qeventloopproto.h   \
+    qeventproto.h       \
     qfileinfoproto.h \
     qfileproto.h \
     qfontproto.h \
@@ -142,17 +143,10 @@ HEADERS += setupscriptapi.h \
     quuidproto.h \
     qvalidatorproto.h \
     qwebchannelproto.h \
-    qwebelementcollectionproto.h \
-    qwebelementproto.h \
-    qwebframeproto.h \
-    qwebpageproto.h \
-    qwebsecurityoriginproto.h \
-    qwebsettingsproto.h \
     qwebsocketcorsauthenticatorproto.h \
     qwebsocketproto.h             \
     qwebsocketprotocolproto.h     \
     qwebsocketserverproto.h       \
-    qwebviewproto.h \
     qwidgetproto.h \
     webchanneltransport.h \
     xsqlqueryproto.h \
@@ -208,7 +202,8 @@ SOURCES += setupscriptapi.cpp \
     qdomprocessinginstructionproto.cpp \
     qdomtextproto.cpp \
     qdoublevalidatorproto.cpp \
-    qeventproto.cpp \
+    qeventloopproto.cpp \
+    qeventproto.cpp     \
     qfileinfoproto.cpp \
     qfileproto.cpp \
     qfontproto.cpp \
@@ -278,19 +273,31 @@ SOURCES += setupscriptapi.cpp \
     quuidproto.cpp \
     qvalidatorproto.cpp \
     qwebchannelproto.cpp \
-    qwebelementcollectionproto.cpp \
-    qwebelementproto.cpp \
-    qwebframeproto.cpp \
-    qwebpageproto.cpp \
-    qwebsecurityoriginproto.cpp \
-    qwebsettingsproto.cpp \
     qwebsocketcorsauthenticatorproto.cpp \
     qwebsocketproto.cpp           \
     qwebsocketprotocolproto.cpp   \
     qwebsocketserverproto.cpp     \
-    qwebviewproto.cpp \
     qwidgetproto.cpp \
     webchanneltransport.cpp \
     xsqlqueryproto.cpp \
     xvariantsetup.cpp \
     xwebsync.cpp
+
+equals(QT_MAJOR_VERSION, 5) {
+  lessThan (QT_MINOR_VERSION, 9) {
+    HEADERS += qwebelementcollectionproto.h \
+                qwebelementproto.h              \
+                qwebframeproto.h                \
+                qwebpageproto.h                 \
+                qwebsecurityoriginproto.h       \
+                qwebsettingsproto.h             \
+                qwebviewproto.h
+    SOURCES += qwebelementcollectionproto.cpp   \
+                qwebelementproto.cpp            \
+                qwebframeproto.cpp              \
+                qwebpageproto.cpp               \
+                qwebsecurityoriginproto.cpp     \
+                qwebsettingsproto.cpp           \
+                qwebviewproto.cpp
+  }
+}

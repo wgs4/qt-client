@@ -1,13 +1,14 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which(including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
  * to be bound by its terms.
  */
 
+#include "scriptapi_internal.h"
 #include "qwebviewproto.h"
 
 #include <QAction>
@@ -30,12 +31,11 @@ void QWebViewfromScriptValue(const QScriptValue &obj, QWebView* &item)
 
 void setupQWebViewProto(QScriptEngine *engine)
 {
+  scriptDeprecated("QWebView will not be available in Qt 5.9");
   qScriptRegisterMetaType(engine, QWebViewtoScriptValue, QWebViewfromScriptValue);
 
   QScriptValue proto = engine->newQObject(new QWebViewProto(engine));
   engine->setDefaultPrototype(qMetaTypeId<QWebView*>(), proto);
-  // Not allowed. Is private in qwebview.h
-  //engine->setDefaultPrototype(qMetaTypeId<QWebView>(), proto);
 
   QScriptValue constructor = engine->newFunction(constructQWebView,
                                                  proto);

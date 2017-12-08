@@ -1,13 +1,14 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which(including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
  * to be bound by its terms.
  */
 
+#include "scriptapi_internal.h"
 #include "qwebframeproto.h"
 
 #include <QIcon>
@@ -47,13 +48,12 @@ void QWebFramefromScriptValue(const QScriptValue &obj, QWebFrame* &item)
 
 void setupQWebFrameProto(QScriptEngine *engine)
 {
+  scriptDeprecated("QWebFrame will not be available in Qt 5.9");
   qScriptRegisterMetaType(engine, QWebFrametoScriptValue, QWebFramefromScriptValue);
   QScriptValue::PropertyFlags permanent = QScriptValue::ReadOnly | QScriptValue::Undeletable;
 
   QScriptValue proto = engine->newQObject(new QWebFrameProto(engine));
   engine->setDefaultPrototype(qMetaTypeId<QWebFrame*>(), proto);
-  // Not allowed. Is private in in qwebframe.h
-  //engine->setDefaultPrototype(qMetaTypeId<QWebFrame>(), proto);
 
   QScriptValue constructor = engine->newFunction(constructQWebFrame, proto);
   engine->globalObject().setProperty("QWebFrame",  constructor);
@@ -79,14 +79,12 @@ QWebFrameProto::QWebFrameProto(QObject *parent)
 {
 }
 
-#if QT_VERSION >= 0x050000
 void QWebFrameProto::addToJavaScriptWindowObject(const QString & name, QObject * object, QWebFrame::ValueOwnership own)
 {
   QWebFrame *item = qscriptvalue_cast<QWebFrame*>(thisObject());
   if (item)
     item->addToJavaScriptWindowObject(name, object, own);
 }
-#endif
 
 QUrl QWebFrameProto::baseUrl() const
 {

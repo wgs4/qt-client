@@ -2353,7 +2353,7 @@ void GUIClient::loadScriptGlobals(QScriptEngine * engine)
   mainwindowval.setProperty("cTransScraps", QScriptValue(engine, cTransScraps), ro);
   mainwindowval.setProperty("cNoReportDefinition", QScriptValue(engine, cNoReportDefinition), ro);
 
-  setupScriptApi(engine);
+  setupScriptApi(engine, _preferences);
   setupWidgetsScriptApi(engine, ScriptableWidget::_guiClientInterface); // what's a better way?
   setupSetupApi(engine);
   setupGuiErrorCheck(engine);

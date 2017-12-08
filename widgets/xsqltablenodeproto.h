@@ -12,20 +12,12 @@
 #define __XSQLTABLENODEPROTO_H__
 
 #include <QMap>
-#include <QModelIndex>
 #include <QObject>
-#include <QSqlDatabase>
-#include <QSqlError>
-#include <QSqlIndex>
-#include <QSqlQuery>
-#include <QSqlRecord>
 #include <QString>
-#include <QStringList>
-#include <QVariant>
 #include <QtScript>
 
 class QMimeData;
-class XSqlTableModel
+class XSqlTableModel;
 
 Q_DECLARE_METATYPE(XSqlTableNode*)
 
