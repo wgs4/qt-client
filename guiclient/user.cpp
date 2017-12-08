@@ -780,7 +780,7 @@ bool user::sPopulate()
                  "  FROM crmacct"
                  "   LEFT OUTER JOIN emp ON (emp_crmacct_id=crmacct_id) "
                  "   LEFT OUTER JOIN crmacctcntctass ON (crmacct_id=crmacctcntctass_crmacct_id "
-                 "                      AND crmacctcntctass_crmrole_id=getcrmroleid('Primary')"
+                 "                      AND crmacctcntctass_crmrole_id=getcrmroleid('Primary'))"
                  "   LEFT OUTER JOIN cntct ON (crmacctcntctass_cntct_id=cntct_id)"
                  " WHERE (crmacct_id=:id);");
     usrq.bindValue(":id", _crmacctid);

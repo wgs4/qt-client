@@ -96,6 +96,7 @@ private:
     int         _cntct2Id;
     int         _NumberGen;
     bool        _canCreateUsers;
+    bool        _closed;
 
     QSqlError   saveNoErrorCheck(bool pInTxn = false);
 

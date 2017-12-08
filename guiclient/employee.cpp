@@ -209,7 +209,8 @@ enum SetResponse employee::set(const ParameterList &pParams)
   if (empGroup::userHasPriv(cView))
     connect(_groups, SIGNAL(valid(bool)), _viewGroup,   SLOT(setEnabled(bool)));
 
-  _code->setEnabled(editing);
+  if (!_code->text().length())
+    _code->setEnabled(editing);
   _number->setEnabled(editing);
   _name->setEnabled(editing);
   _startDate->setEnabled(editing);
@@ -462,6 +463,8 @@ bool employee::sPopulate()
   if (getq.first())
   {
     _code->setText(getq.value("emp_code").toString());
+    if(_crmacctid > 0)
+      _code->setEnabled(false);
     _name->setText(getq.value("emp_name").toString());
     _number->setText(getq.value("emp_number").toString());
     _active->setChecked(getq.value("emp_active").toBool());

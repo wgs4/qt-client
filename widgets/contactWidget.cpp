@@ -1395,6 +1395,7 @@ void ContactWidget::sBuildPhones()
                          getp, __FILE__, __LINE__);
 
   _add = new QPushButton(tr("+"), this);
+  _add->setMaximumWidth(30);
   _add->setObjectName(QString("_phoneAdd"));
   connect(_add, SIGNAL(clicked()), this, SLOT(sAddNewPhoneRow()));
 
@@ -1418,7 +1419,9 @@ void ContactWidget::sAddNewPhoneRow()
   _rowId++;
 
   QPushButton *rem = new QPushButton(tr("-"), this);
+  rem->setMaximumWidth(30);
   XLineEdit   *ph  = new XLineEdit(this, qPrintable(QString("_contactPhone%1").arg(_rowId)));
+  ph->setMinimumWidth(110);
   XComboBox   *cb  = new XComboBox(this, qPrintable(QString("_phRole%1").arg(_rowId)));
 
   cb->setObjectName(QString("_phRole%1").arg(_rowId));

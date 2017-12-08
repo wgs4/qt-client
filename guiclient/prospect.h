@@ -68,6 +68,7 @@ private:
     int  _rowId;
     bool _isSaved;
     bool _saved;
+    bool _fromCRM;
     QMap<QString, int> cmap;
     QString _cachedNumber;
     QString _crmowner;

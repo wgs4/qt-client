@@ -79,6 +79,7 @@ prospect::prospect(QWidget* parent, const char* name, Qt::WindowFlags fl)
 
   _isSaved = false;
   _saved   = false;
+  _fromCRM = false;
 }
 
 prospect::~prospect()
@@ -102,7 +103,7 @@ enum SetResponse prospect::set(const ParameterList &pParams)
   if (valid)
   {
     _crmacctid = param.toInt();
-    sSetCrmAccountId();
+    _fromCRM = true;
   }
 
   param = pParams.value("prospect_id", &valid);
@@ -113,6 +114,15 @@ enum SetResponse prospect::set(const ParameterList &pParams)
     if (! sPopulate())
       return UndefinedError;
 
+  if (_crmacctid < 0)
+  {
+    getq.exec("SELECT NEXTVAL('crmacct_crmacct_id_seq') AS crmacct_id"); 
+    if(getq.first())
+      _crmacctid = getq.value("crmacct_id").toInt();
+  }
+
+  sSetCrmAccountId();
+
   param = pParams.value("mode", &valid);
   if (valid)
   {
@@ -120,15 +130,10 @@ enum SetResponse prospect::set(const ParameterList &pParams)
     {
       _mode = cNew;
 
-      getq.exec("SELECT NEXTVAL('crmacct_crmacct_id_seq') AS crmacct_id, "
-                "NEXTVAL('cust_cust_id_seq') AS prospect_id" ); 
+      getq.exec("SELECT NEXTVAL('cust_cust_id_seq') AS prospect_id" ); 
       if(getq.first())
-      {
-        _crmacctid = getq.value("crmacct_id").toInt();
         _prospectid = getq.value("prospect_id").toInt();
-        sSetCrmAccountId();
-      }
-
+      
       if(((_metrics->value("CRMAccountNumberGeneration") == "A") ||
           (_metrics->value("CRMAccountNumberGeneration") == "O"))
        && _number->text().isEmpty() )
@@ -164,7 +169,8 @@ enum SetResponse prospect::set(const ParameterList &pParams)
 
   bool canEdit = (cEdit == _mode || cNew == _mode);
   _number->setEnabled(canEdit &&
-                      _metrics->value("CRMAccountNumberGeneration") != "A");
+                      _metrics->value("CRMAccountNumberGeneration") != "A" &&
+                      !_crmacctid);
   _active->setEnabled(canEdit);
   _name->setEnabled(canEdit);
   _newQuote->setEnabled(cEdit == _mode);
@@ -492,6 +498,7 @@ bool prospect::sPopulate()
     sSetCrmAccountId();
 
     _number->setText(getq.value("prospect_number").toString());
+    _number->setEnabled(false);
     _cachedNumber = getq.value("prospect_number").toString();
     _name->setText(getq.value("prospect_name").toString());
     _taxzone->setId(getq.value("prospect_taxzone_id").toInt());
@@ -539,17 +546,20 @@ void prospect::closeEvent(QCloseEvent *pEvent)
   }
   if(cNew == _mode && !_isSaved)
   {
-    query.prepare("DELETE FROM prospect WHERE prospect_id=:prospect_id");
+    query.prepare("DELETE FROM prospect WHERE prospect_id=:prospect_id;");
     query.bindValue(":prospect_id", _prospectid);
     query.exec();
-    ErrorReporter::error(QtCriticalMsg, this, tr("Cleaning Up Prospect & CRM Account"),
-                         query, __FILE__, __LINE__);
-    query.prepare("DELETE FROM crmacct WHERE crmacct_id=:crmacct_id");
-    query.bindValue(":crmacct_id", _crmacctid);
-    query.exec();
-    ErrorReporter::error(QtCriticalMsg, this, tr("Cleaning Up Prospect & CRM Account"),
+    ErrorReporter::error(QtCriticalMsg, this, tr("Cleaning Up Prospect"),
                          query, __FILE__, __LINE__);
 
+   if(!_fromCRM)
+   {
+    query.prepare("DELETE FROM crmacct WHERE crmacct_id=:crmacct_id;");
+    query.bindValue(":crmacct_id", _crmacctid);
+    query.exec();
+    ErrorReporter::error(QtCriticalMsg, this, tr("Cleaning Up Prospect CRM Account"),
+                         query, __FILE__, __LINE__);
+   }
    omfgThis->sProspectsUpdated();
   }
   XWidget::closeEvent(pEvent);

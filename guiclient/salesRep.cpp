@@ -109,6 +109,7 @@ enum SetResponse salesRep::set(const ParameterList &pParams)
   }
 
   bool canEdit = (cNew == _mode || cEdit == _mode);
+  if (!_number->text().length())
   _number->setEnabled(canEdit);
   _name->setEnabled(canEdit);
   _active->setEnabled(canEdit);
@@ -135,7 +136,7 @@ void salesRep::sCheck()
   _number->setText(_number->text().trimmed());
   if ((_mode == cNew) && (_number->text().length()))
   {
-    if (cNew == _mode && -1 != _NumberGen && _number->text().toInt() != _NumberGen)
+    if (-1 != _NumberGen && _number->text().toInt() != _NumberGen)
     {
       XSqlQuery query;
       query.prepare("SELECT releaseCRMAccountNumber(:Number);");
