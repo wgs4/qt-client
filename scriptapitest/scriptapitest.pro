@@ -39,8 +39,8 @@ win32-msvc* {
 }
 
 QMAKE_LIBDIR = ../lib $${OPENRPT_LIBDIR} $$QMAKE_LIBDIR
-LIBS        += -lxtuplecommon -lwrtembed -lopenrptcommon -lz
-LIBS        += -lrenderer -lxtuplescriptapi -lqzint $${DMTXLIB} -lMetaSQL
+LIBS        += -lqzint $${DMTXLIB} -lxtuplescriptapi -lxtuplecommon -lopenrptcommon
+LIBS        += -lrenderer -lMetaSQL
 
 OBJECTS_DIR = tmp
 win32 {

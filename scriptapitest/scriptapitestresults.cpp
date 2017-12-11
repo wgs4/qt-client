@@ -710,12 +710,11 @@ class ScriptApiTestResultsPrivate {
 	"assertIsConstructor(qwebchannel, 'qwebchannel');"
 	"var tmp = new qwebchannel();"
 	;
-    #if QT_VERSION < 0x050900
+#if QT_VERSION < 0x050900
      tests["qwebelementcollection"] = 
 	"assertIsConstructor(qwebelementcollection, 'qwebelementcollection');"
 	"var tmp = new qwebelementcollection();"
 	;
-    #endif
      tests["qwebelement"] = 
 	"assertIsConstructor(qwebelement, 'qwebelement');"
 	"var tmp = new qwebelement();"
@@ -732,6 +731,7 @@ class ScriptApiTestResultsPrivate {
 	"assertIsConstructor(qwebsecurityorigin, 'qwebsecurityorigin');"
 	"var tmp = new qwebsecurityorigin();"
 	;
+#endif
      tests["qwebsettings"] = 
 	"assertIsConstructor(qwebsettings, 'qwebsettings');"
 	"var tmp = new qwebsettings();"
