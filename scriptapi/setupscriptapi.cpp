@@ -166,6 +166,8 @@ static Preferences *prefs = 0;
 
 void setupScriptApi(QScriptEngine *engine, Preferences *pPreferences)
 {
+  engine->installTranslatorFunctions();
+
   if (pPreferences && ! prefs)
     prefs = pPreferences;
 
