@@ -82,7 +82,6 @@ contactMerge::contactMerge(QWidget* parent, const char* name, Qt::WindowFlags fl
   _srccntct->addColumn(tr("Postal"),          80, Qt::AlignLeft, false, "addr_postalcode");
   _srccntct->addColumn(tr("Country"),        100, Qt::AlignLeft, false, "addr_country");
 
-  _target->setAccountVisible(true);
   _target->setOwnerVisible(true);
   _target->setActiveVisible(false);
   _target->setInitialsVisible(false);

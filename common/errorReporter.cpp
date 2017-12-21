@@ -357,6 +357,7 @@ const struct {
 //{ "crmacct_crmacct_type_check",               Upsert,  0, QT_TRANSLATE_NOOP("errorReporter", "") },
 //{ "crmacct_crmacct_usr_username_check",       Upsert,  0, QT_TRANSLATE_NOOP("errorReporter", "") },
 //{ "crmacct_owner_username_check",             Upsert,  0, QT_TRANSLATE_NOOP("errorReporter", "") },
+  { "crmrole_crmrole_name_key",               Upsert,  0, QT_TRANSLATE_NOOP("errorReporter", "Duplicated CRM Role.  Please choose a different name.") },
   { "crmacctaddrass_crmrole_fk",                Delete,  0, QT_TRANSLATE_NOOP("errorReporter", "Cannot delete this CRM Role as it is referenced by CRM Account addresses.") },
   { "cntctaddrass_addr_fk",                     Delete,  0, QT_TRANSLATE_NOOP("errorReporter", "Cannot delete this CRM Role as it is referenced by Contact addresses.") },
   { "crmacctcntctass_crmrole_fk",               Delete,  0, QT_TRANSLATE_NOOP("errorReporter", "Cannot delete this CRM Role as it is referenced by Contacts.") },

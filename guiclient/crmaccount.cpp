@@ -52,6 +52,9 @@ crmaccount::crmaccount(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _todoList->_projects->setVisible(false);
   _todoList->_projects->setChecked(false);
 
+  ParameterList params;
+  params.append("showRole", true);
+
   _contacts = new contacts(this, "contacts", Qt::Widget);
   _contactsPlaceholder->addWidget(_contacts);
   _contacts->setCloseVisible(false);
@@ -60,8 +63,6 @@ crmaccount::crmaccount(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _contacts->parameterWidget()->append("", "hasContext", ParameterWidget::Exists, true);
   _contacts->setParameterWidgetVisible(false);
   _contacts->setQueryOnStartEnabled(false);
-  ParameterList params;
-  params.append("showRole", true);
   _contacts->set(params);
 
   _addresses = new addresses(this, "addresses", Qt::Widget);

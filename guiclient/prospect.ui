@@ -214,6 +214,52 @@ to be bound by its terms.</comment>
       <item row="5" column="4">
        <widget class="DLineEdit" name="_lastTouch"/>
       </item>
+      <item row="2" column="7">
+       <widget class="XLabel" name="_createdLit">
+        <property name="text">
+         <string>Created:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="8">
+       <widget class="DLineEdit" name="_created">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="7">
+       <widget class="XLabel" name="_updatedLit">
+        <property name="text">
+         <string>Updated:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="8">
+       <widget class="DLineEdit" name="_updated">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -288,7 +334,11 @@ to be bound by its terms.</comment>
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="Comments" name="_comments"/>
+        <widget class="Comments" name="_comments">
+         <property name="type">
+          <number>Comments::Contact</number>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

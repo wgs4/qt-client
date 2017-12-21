@@ -573,6 +573,10 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
                        new XComboBoxDescrip(XComboBox::ProjectCommentTypes,
                        "commentTypes", "MaintainCommentTypes",
                        cmnttypeMQL, "cmnttype", true, "source_name", "J"));
+    typeDescrip.insert(XComboBox::ProspectCommentTypes,
+                       new XComboBoxDescrip(XComboBox::ProspectCommentTypes,
+                       "commentTypes", "MaintainCommentTypes",
+                       cmnttypeMQL, "cmnttype", true, "source_name", "PSPCT"));
     typeDescrip.insert(XComboBox::PurchaseOrderCommentTypes,
                        new XComboBoxDescrip(XComboBox::PurchaseOrderCommentTypes,
                        "commentTypes", "MaintainCommentTypes",

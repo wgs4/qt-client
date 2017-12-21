@@ -237,6 +237,7 @@ contact::contact(QWidget* parent, const char* name, bool modal, Qt::WindowFlags 
   connect(_commentsButton, SIGNAL(clicked()), this, SLOT(sHandleButtons()));
 
   _charass->setType("CNTCT");
+  _comments->setType("T");
 
   _uses->addColumn(tr("Used by"),         100, Qt::AlignLeft, true, "type");
   _uses->addColumn(tr("Number"), _orderColumn, Qt::AlignLeft, true, "number");
@@ -246,7 +247,6 @@ contact::contact(QWidget* parent, const char* name, bool modal, Qt::WindowFlags 
   _uses->addColumn(tr("Owner"),   _userColumn, Qt::AlignLeft,  false,"owner");
 
   _contact->setMinimalLayout(false);
-  _contact->setAccountVisible(false);
   _contact->setInitialsVisible(false);
   _contact->setActiveVisible(false);
   _contact->setOwnerVisible(false);
@@ -586,11 +586,16 @@ void contact::sSave()
   saveResult = _contact->save(AddressCluster::CHANGEALL);
   if (saveResult < 0)
   {
-    ErrorReporter::error(QtCriticalMsg, this, tr("Saving Contact"),
-                         tr("<p>There was an error saving this Contact (%1). "
-                            "Check the database server log for errors.")
-                         .arg(saveResult), __FILE__, __LINE__);
-    return;
+    if (saveResult == -99) // Error already reported to user
+      return;
+    else
+    {
+      ErrorReporter::error(QtCriticalMsg, this, tr("Saving Contact"),
+                           tr("<p>There was an error saving this Contact (%1). "
+                              "Check the database server log for errors.")
+                           .arg(saveResult), __FILE__, __LINE__);
+      return;
+    }
   }
   _cntctid = _contact->id();
   done(_contact->id());

@@ -583,7 +583,10 @@ int ContactWidget::save(AddressCluster::SaveFlags flag)
     return -1;
   datamodQ.bindValue(":active",    QVariant(_active->isChecked()));
   datamodQ.exec();
-  if (datamodQ.first())
+  if (ErrorReporter::error(QtCriticalMsg, this, tr("Saving Contact"),
+                           datamodQ, __FILE__, __LINE__))
+    return -99;
+  else if (datamodQ.first())
   {
     if (datamodQ.value("result").toInt() == 0)
       return 0;
@@ -633,12 +636,6 @@ void ContactWidget::setNumberVisible(const bool vis)
 void ContactWidget::setAddressVisible(const bool vis)
 {
   _address->setVisible(vis);
-  layout();
-}
-
-void ContactWidget::setAccountVisible(const bool p)
-{
-  // TODO remove this function
   layout();
 }
 

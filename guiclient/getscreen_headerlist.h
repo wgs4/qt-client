@@ -11,6 +11,7 @@
 #include "addPoComment.h"
 #include "addresses.h"
 #include "address.h"
+#include "addressMerge.h"
 #include "adjustmentTrans.h"
 #include "adjustInvValue.h"
 #include "allocateARCreditMemo.h"

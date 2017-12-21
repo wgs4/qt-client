@@ -87,7 +87,6 @@ private:
 class XTUPLEWIDGETS_EXPORT ContactWidget : public VirtualCluster
 {
   Q_OBJECT
-  Q_PROPERTY(bool     accountVisible        READ accountVisible       	WRITE setAccountVisible);
   Q_PROPERTY(bool     ownerVisible          READ ownerVisible           WRITE setOwnerVisible);
   Q_PROPERTY(bool     ownerEnabled          READ ownerEnabled           WRITE setOwnerEnabled);
   Q_PROPERTY(bool     activeVisible         READ activeVisible        	WRITE setActiveVisible);
@@ -140,7 +139,6 @@ public:
   inline virtual bool    ownerEnabled()   const { return _owner->isEnabled(); }
   inline virtual bool    numberVisible()  const { return _number->isVisible(); }
   inline virtual bool    activeVisible()  const { return _active->isVisible(); }
-  inline virtual bool    accountVisible() const { return _crmAcct->isVisible(); }
   inline virtual bool    addressVisible() const { return _address->isVisible(); }
   inline virtual int     addressId()	  const { return _address->id(); }
   inline virtual QString change()         const { return _change->text(); }
@@ -254,7 +252,6 @@ public slots:
   virtual void  setOwnerVisible(const bool);
   virtual void  setOwnerEnabled(const bool);
   virtual void  setNumberVisible(const bool);
-  virtual void	setAccountVisible(const bool);
   virtual void	setActiveVisible(const bool);
   virtual void	setAddressVisible(const bool);
   virtual void	setEmailVisible(const bool);

@@ -40,16 +40,22 @@ addresses::addresses(QWidget* parent, const char*, Qt::WindowFlags fl)
   _crmacctid = -1;
   _detachAct = 0;
 
-  parameterWidget()->append(tr("Show Inactive"), "showInactive", ParameterWidget::Exists);
   parameterWidget()->append(tr("Account"), "crmacct_id", ParameterWidget::Crmacct);
+  parameterWidget()->append(tr("Address"), "address", ParameterWidget::Text);
+  parameterWidget()->append(tr("City"), "city", ParameterWidget::Text);
+  parameterWidget()->append(tr("State"), "state", ParameterWidget::Text);
+  parameterWidget()->appendComboBox(tr("Country"), "country", XComboBox::LocaleCountries);
+  parameterWidget()->append(tr("Postal Code"), "postalcode", ParameterWidget::Text);
+  parameterWidget()->append(tr("Show Inactive"), "showInactive", ParameterWidget::Exists);
 
   list()->addColumn(tr("Line 1"),	 -1, Qt::AlignLeft, true, "addr_line1");
-  list()->addColumn(tr("Line 2"),	 75, Qt::AlignLeft, true, "addr_line2");
-  list()->addColumn(tr("Line 3"),	 75, Qt::AlignLeft, true, "addr_line3");
-  list()->addColumn(tr("City"),	 75, Qt::AlignLeft, true, "addr_city");
-  list()->addColumn(tr("State"),	 50, Qt::AlignLeft, true, "addr_state");
-  list()->addColumn(tr("Country"),	 50, Qt::AlignLeft, true, "addr_country");
-  list()->addColumn(tr("Postal Code"),50,Qt::AlignLeft, true, "addr_postalcode");
+  list()->addColumn(tr("Line 2"),	 150, Qt::AlignLeft, true, "addr_line2");
+  list()->addColumn(tr("Line 3"),	 150, Qt::AlignLeft, true, "addr_line3");
+  list()->addColumn(tr("City"),	         150, Qt::AlignLeft, true, "addr_city");
+  list()->addColumn(tr("State"),	 75, Qt::AlignLeft, true, "addr_state");
+  list()->addColumn(tr("Country"),	 150, Qt::AlignLeft, true, "addr_country");
+  list()->addColumn(tr("Postal Code"),   75,Qt::AlignLeft, true, "addr_postalcode");
+  list()->addColumn(tr("CRM Account(s)"), 150, Qt::AlignLeft, true, "crmacct");
 
   setupCharacteristics("ADDR");
 
@@ -197,6 +203,7 @@ void addresses::setCrmacctid(int crmacctId)
     parameterWidget()->setDefault(tr("Account"), _crmacctid, true);
     setNewVisible(false);
     _detachAct->setVisible(true);
+    list()->hideColumn(list()->column("crmacct"));
   }
 }
 

@@ -34,6 +34,11 @@ prospects::prospects(QWidget* parent, const char*, Qt::WindowFlags fl)
   parameterWidget()->append(tr("Show Inactive"), "showInactive", ParameterWidget::Exists);
   parameterWidget()->append(tr("Prospect Number Pattern"), "prospect_number_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Prospect Name Pattern"), "prospect_name_pattern", ParameterWidget::Text);
+  parameterWidget()->append(tr("Owner"), "owner", ParameterWidget::User);
+  parameterWidget()->append(tr("Assigned"), "assigned", ParameterWidget::User);
+  parameterWidget()->appendComboBox(tr("Source"), "source", XComboBox::OpportunitySources);
+  parameterWidget()->appendComboBox(tr("Stage"), "stage", XComboBox::OpportunityStages);
+  parameterWidget()->appendComboBox(tr("Priority"), "priority", XComboBox::IncidentPriority);
   parameterWidget()->append(tr("Contact Name Pattern"), "cntct_name_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Phone Pattern"), "cntct_phone_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Email Pattern"), "cntct_email_pattern", ParameterWidget::Text);
@@ -53,15 +58,23 @@ prospects::prospects(QWidget* parent, const char*, Qt::WindowFlags fl)
 
   list()->addColumn(tr("Number"),  _orderColumn, Qt::AlignCenter, true, "prospect_number" );
   list()->addColumn(tr("Name"),    -1,           Qt::AlignLeft,   true, "prospect_name"   );
-  list()->addColumn(tr("First"),   50, Qt::AlignLeft  , true, "cntct_first_name" );
-  list()->addColumn(tr("Last"),    -1, Qt::AlignLeft  , true, "cntct_last_name" );
-  list()->addColumn(tr("Phone"),   100, Qt::AlignLeft  , true, "contact_phone" );
-  list()->addColumn(tr("Email"),   100, Qt::AlignLeft  , true, "cntct_email" );
-  list()->addColumn(tr("Address"), -1, Qt::AlignLeft  , false, "addr_line1" );
-  list()->addColumn(tr("City"),    75, Qt::AlignLeft  , false, "addr_city" );
-  list()->addColumn(tr("State"),   50, Qt::AlignLeft  , false, "addr_state" );
-  list()->addColumn(tr("Country"), 100, Qt::AlignLeft  , false, "addr_country" );
-  list()->addColumn(tr("Postal Code"), 75, Qt::AlignLeft  , false, "addr_postalcode" );
+  list()->addColumn(tr("Created"), _dateColumn,  Qt::AlignLeft,   true, "created" );
+  list()->addColumn(tr("Owner"),   _userColumn,  Qt::AlignLeft,   true, "prospect_owner_username" );
+  list()->addColumn(tr("Assigned"),_userColumn,  Qt::AlignLeft,   true, "prospect_assigned_username" );
+  list()->addColumn(tr("Source"),  100,          Qt::AlignLeft,   true, "prospect_source" );
+  list()->addColumn(tr("Stage"),   100,          Qt::AlignLeft,   true, "prospect_stage" );
+  list()->addColumn(tr("Priority"),100,          Qt::AlignLeft,   true, "prospect_priority" );
+  list()->addColumn(tr("First"),   50,           Qt::AlignLeft,   true, "cntct_first_name" );
+  list()->addColumn(tr("Last"),    -1,           Qt::AlignLeft,   true, "cntct_last_name" );
+  list()->addColumn(tr("Phone"),   100,          Qt::AlignLeft,   true, "contact_phone" );
+  list()->addColumn(tr("Email"),   100,          Qt::AlignLeft,   true, "cntct_email" );
+  list()->addColumn(tr("Address"), -1,           Qt::AlignLeft,   false, "addr_line1" );
+  list()->addColumn(tr("City"),    75,           Qt::AlignLeft,   false, "addr_city" );
+  list()->addColumn(tr("State"),   50,           Qt::AlignLeft,   false, "addr_state" );
+  list()->addColumn(tr("Country"), 100,          Qt::AlignLeft,   false, "addr_country" );
+  list()->addColumn(tr("Postal Code"), 75,       Qt::AlignLeft,   false, "addr_postalcode" );
+
+  setupCharacteristics("PSPCT");
 
   connect(omfgThis, SIGNAL(prospectsUpdated()), SLOT(sFillList()));
 }

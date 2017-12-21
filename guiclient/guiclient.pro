@@ -104,6 +104,7 @@ FORMS =   absoluteCalendarItem.ui               \
           addPoComment.ui                       \
           address.ui                            \
           addresses.ui                          \
+          addressMerge.ui                       \
           adjustmentTrans.ui                    \
           adjustInvValue.ui                     \
           allocateARCreditMemo.ui               \
@@ -670,6 +671,7 @@ HEADERS = ../common/format.h                    \
           addPoComment.h                        \
           address.h                             \
           addresses.h                           \
+          addressMerge.h                        \
           adjustmentTrans.h                     \
           adjustInvValue.h                      \
           allocateARCreditMemo.h                \
@@ -1295,6 +1297,7 @@ SOURCES = absoluteCalendarItem.cpp              \
           addPoComment.cpp                      \
           address.cpp                           \
           addresses.cpp                         \
+          addressMerge.cpp                      \
           adjustmentTrans.cpp                   \
           adjustInvValue.cpp                    \
           allocateARCreditMemo.cpp              \

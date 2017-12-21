@@ -104,6 +104,7 @@ QMap<QString, struct CommentMap *> &Comments::commentMap() {
     addToMap(LotSerial,         "LS",    tr("Lot/Serial"),               "ls_id",        "lotSerial"         );
     addToMap(Opportunity,       "OPP",   tr("Opportunity"),              "ophead_id",    "opportunity",  "MaintainPersonalOpportunities MaintainAllOpportunities");
     addToMap(Project,           "J",     tr("Project"),                  "prj_id",       "project",      "MaintainPersonalProjects MaintainAllProjects");
+    addToMap(Prospect,          "PSPCT", tr("Prospect"),                 "prospect_id",  "prospect",     "MaintainProspectMasters");
     addToMap(PurchaseOrder,     "P",     tr("Purchase Order"),           "pohead_id",   "purchaseOrder"      );
     addToMap(PurchaseOrderItem, "PI",    tr("Purchase Order Item")                                           );
     addToMap(ReturnAuth,        "RA",    tr("Return Authorization"),     "rahead_id",   "returnAuthorization");

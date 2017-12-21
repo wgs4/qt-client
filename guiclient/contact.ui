@@ -65,9 +65,6 @@ to be bound by its terms.</comment>
          </property>
          <item row="1" column="0">
           <widget class="ContactWidget" name="_contact">
-           <property name="accountVisible">
-            <bool>true</bool>
-           </property>
            <property name="ownerVisible">
             <bool>false</bool>
            </property>
@@ -187,13 +184,6 @@ to be bound by its terms.</comment>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="_attach">
-           <property name="text">
-            <string>Attach</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="_detachUse">
            <property name="text">
             <string>Detach</string>
@@ -276,7 +266,7 @@ to be bound by its terms.</comment>
               <enum>Qt::StrongFocus</enum>
              </property>
              <property name="type">
-              <number>0</number>
+              <number>Comments::Contact</number>
              </property>
             </widget>
            </item>

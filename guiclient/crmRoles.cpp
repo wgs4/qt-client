@@ -32,9 +32,9 @@ crmRoles::crmRoles(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _crmroles->addColumn(tr("Role"),        -1, Qt::AlignRight, true, "crmrole_name" );
   _crmroles->addColumn(tr("Contact"),     -1, Qt::AlignRight, true, "crmrole_cntct" );
   _crmroles->addColumn(tr("Address"),     -1, Qt::AlignRight, true, "crmrole_addr" );
-  _crmroles->addColumn(tr("Email"),       -1, Qt::AlignRight, true, "crmrole_email" );
+  _crmroles->addColumn(tr("Email"),       -1, Qt::AlignRight, false, "crmrole_email" );
   _crmroles->addColumn(tr("Phone"),       -1, Qt::AlignRight, true, "crmrole_phone" );
-  _crmroles->addColumn(tr("System"),      -1, Qt::AlignRight, true, "crmrole_system" );
+  _crmroles->addColumn(tr("System Role"), -1, Qt::AlignRight, true, "crmrole_system" );
   
   if (_privileges->check("MaintainCRMRoles"))
   {

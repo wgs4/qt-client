@@ -98,6 +98,7 @@ enum SetResponse prospect::set(const ParameterList &pParams)
   QVariant param;
   XSqlQuery getq;
   bool     valid;
+  bool     newCrm  = false;
 
   param = pParams.value("crmacct_id", &valid);
   if (valid)
@@ -119,6 +120,7 @@ enum SetResponse prospect::set(const ParameterList &pParams)
     getq.exec("SELECT NEXTVAL('crmacct_crmacct_id_seq') AS crmacct_id"); 
     if(getq.first())
       _crmacctid = getq.value("crmacct_id").toInt();
+    newCrm = true;
   }
 
   sSetCrmAccountId();
@@ -130,9 +132,12 @@ enum SetResponse prospect::set(const ParameterList &pParams)
     {
       _mode = cNew;
 
-      getq.exec("SELECT NEXTVAL('cust_cust_id_seq') AS prospect_id" ); 
+      getq.exec("SELECT NEXTVAL('cust_cust_id_seq') AS prospect_id"); 
       if(getq.first())
+      {
         _prospectid = getq.value("prospect_id").toInt();
+        _created->setDate(QDate::currentDate());
+      }
       
       if(((_metrics->value("CRMAccountNumberGeneration") == "A") ||
           (_metrics->value("CRMAccountNumberGeneration") == "O"))
@@ -170,7 +175,7 @@ enum SetResponse prospect::set(const ParameterList &pParams)
   bool canEdit = (cEdit == _mode || cNew == _mode);
   _number->setEnabled(canEdit &&
                       _metrics->value("CRMAccountNumberGeneration") != "A" &&
-                      !_crmacctid);
+                      newCrm);
   _active->setEnabled(canEdit);
   _name->setEnabled(canEdit);
   _newQuote->setEnabled(cEdit == _mode);
@@ -466,9 +471,12 @@ void prospect::sPopulateQuotesMenu(QMenu *menuThis)
 bool prospect::sPopulate()
 {
   XSqlQuery getq;
+
   if (_prospectid >= 0)
   {
-    getq.prepare("SELECT prospect.*, crmacct_id, crmacct_owner_username"
+    getq.prepare("SELECT prospect.*, crmacct_id, crmacct_owner_username, "
+                 " prospect_created::DATE AS created, "
+                 " prospect_lastupdated::DATE AS updated "
                  "  FROM prospect, crmacct"
                  " WHERE ((prospect_id=:prospect_id)"
                  "   AND  (prospect_crmacct_id=crmacct_id));" );
@@ -514,6 +522,9 @@ bool prospect::sPopulate()
     _source->setId(getq.value("prospect_source_id").toInt());
     _priority->setId(getq.value("prospect_priority_id").toInt());
     _stage->setId(getq.value("prospect_opstage_id").toInt());
+    _created->setDate(getq.value("created").toString().length() > 0 ? getq.value("created").toDate() 
+                                                                     : QDate::currentDate());
+    _updated->setDate(getq.value("updated").toDate());
   }
   else if (ErrorReporter::error(QtCriticalMsg, this, tr("Getting Prospect"),
                                 getq, __FILE__, __LINE__))

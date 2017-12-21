@@ -75,7 +75,7 @@ class XTUPLEWIDGETS_EXPORT XComboBox : public QComboBox
       LocationCommentTypes, LotSerialCommentTypes, OpportunityCommentTypes,
       OpportunityStages, OpportunitySources, OpportunityTypes,
       PlannerCodes,	PoProjects, ProductCategories,
-      ProfitCenters,	ProjectCommentTypes,
+      ProfitCenters,	ProjectCommentTypes, ProspectCommentTypes,
       PurchaseOrderCommentTypes, PurchaseOrderItemCommentTypes,
       ReasonCodes, RegistrationTypes, Reports, ReturnReasonCodes,
       ReturnAuthCommentTypes, ReturnAuthItemCommentTypes,
