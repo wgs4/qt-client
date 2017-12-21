@@ -942,7 +942,6 @@ HEADERS = ../common/format.h                    \
           itemSourceList.h              \
           itemSourcePrice.h             \
           itemSourceSearch.h            \
-          itemSources.h                 \
           itemSubstitute.h              \
           itemUOM.h                     \
           items.h                       \
@@ -1564,7 +1563,6 @@ SOURCES = absoluteCalendarItem.cpp              \
           itemSourceList.cpp            \
           itemSourcePrice.cpp           \
           itemSourceSearch.cpp          \
-          itemSources.cpp               \
           itemSubstitute.cpp            \
           itemUOM.cpp                   \
           items.cpp                     \

@@ -80,6 +80,7 @@ prospect::prospect(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _isSaved = false;
   _saved   = false;
   _fromCRM = false;
+  _closed = false;
 }
 
 prospect::~prospect()
@@ -156,20 +157,7 @@ enum SetResponse prospect::set(const ParameterList &pParams)
       _mode = cEdit;
     }
     else if (param.toString() == "view")
-    {
-      _mode = cView;
-
-      _save->hide();
-
-      disconnect(_quotes, SIGNAL(itemSelected(int)), _editQuote, SLOT(animateClick()));
-      disconnect(_quotes, SIGNAL(valid(bool)),       _editQuote, SLOT(setEnabled(bool)));
-      disconnect(_quotes, SIGNAL(valid(bool)),       _editQuote, SLOT(setEnabled(bool)));
-      disconnect(_quotes, SIGNAL(valid(bool)),     _deleteQuote, SLOT(setEnabled(bool)));
-
-      connect(_quotes, SIGNAL(itemSelected(int)), _viewQuote, SLOT(animateClick()));
-
-      _close->setText(tr("&Close"));
-    }
+      setViewMode();
   }
 
   bool canEdit = (cEdit == _mode || cNew == _mode);
@@ -183,6 +171,22 @@ enum SetResponse prospect::set(const ParameterList &pParams)
   _mainGroup->setEnabled(canEdit);
 
   return NoError;
+}
+
+void prospect::setViewMode()
+{
+  _mode = cView;
+
+  _save->hide();
+
+  disconnect(_quotes, SIGNAL(itemSelected(int)), _editQuote, SLOT(animateClick()));
+  disconnect(_quotes, SIGNAL(valid(bool)),       _editQuote, SLOT(setEnabled(bool)));
+  disconnect(_quotes, SIGNAL(valid(bool)),       _editQuote, SLOT(setEnabled(bool)));
+  disconnect(_quotes, SIGNAL(valid(bool)),     _deleteQuote, SLOT(setEnabled(bool)));
+
+  connect(_quotes, SIGNAL(itemSelected(int)), _viewQuote, SLOT(animateClick()));
+
+  _close->setText(tr("&Close"));
 }
 
 int prospect::id() const
@@ -474,7 +478,34 @@ bool prospect::sPopulate()
 
   if (_prospectid >= 0)
   {
-    getq.prepare("SELECT prospect.*, crmacct_id, crmacct_owner_username, "
+    if (!_lock.acquire("prospect", _prospectid, AppLock::Interactive))
+      setViewMode();
+ 
+    _closed = false;
+ 
+    foreach (QWidget* widget, QApplication::allWidgets())
+    {
+      if (!widget->isWindow() || !widget->isVisible())
+        continue;
+ 
+      prospect *w = qobject_cast<prospect*>(widget);
+ 
+      if (w && w->id()==_prospectid)
+      {
+        w->setFocus();
+ 
+        if (omfgThis->showTopLevel())
+        {
+          w->raise();
+          w->activateWindow();
+        }
+
+        _closed = true;
+        break;
+      }
+    }
+
+    getq.prepare("SELECT prospect.*, crmacct_id, crmacct_owner_username"
                  " prospect_created::DATE AS created, "
                  " prospect_lastupdated::DATE AS updated "
                  "  FROM prospect, crmacct"
@@ -640,4 +671,12 @@ void prospect::sAddContact()
                            addc, __FILE__, __LINE__))
       return;
   _contacts->sFillList();
+}
+
+void prospect::setVisible(bool visible)
+{
+  if (_closed)
+    close();
+  else
+    XWidget::setVisible(visible);
 }

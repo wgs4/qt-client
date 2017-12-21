@@ -249,19 +249,19 @@ enum SetResponse crmaccount::set(const ParameterList &pParams)
   }
 
   _closed = false;
- 
- foreach (QWidget* widget, QApplication::allWidgets())
- {
+
+  foreach (QWidget* widget, QApplication::allWidgets())
+  {
     if (!widget->isWindow() || !widget->isVisible())
       continue;
- 
+
     crmaccount *w = qobject_cast<crmaccount*>(widget);
- 
+
     if (w && w->id()==_crmacctId)
     {
       w->setFocus();
- 
-    if (omfgThis->showTopLevel())
+
+      if (omfgThis->showTopLevel())
       {
         w->raise();
         w->activateWindow();
@@ -1424,4 +1424,12 @@ void crmaccount::sUser()
   user *newdlg = new user(this);
   newdlg->set(params);
   omfgThis->handleNewWindow(newdlg);
+}
+
+void crmaccount::setVisible(bool visible)
+{
+  if (_closed)
+    close();
+  else
+    XWidget::setVisible(visible);
 }

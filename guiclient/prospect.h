@@ -11,6 +11,7 @@
 #ifndef PROSPECT_H
 #define PROSPECT_H
 
+#include "applock.h"
 #include "guiclient.h"
 #include "xwidget.h"
 #include <parameter.h>
@@ -45,6 +46,8 @@ public slots:
     virtual bool sPopulate();
     virtual void sSetCrmAccountId();
     virtual void sAddContact();
+    virtual void setViewMode();
+    virtual void setVisible(bool);
 
 signals:
             void newId(int);
@@ -72,6 +75,8 @@ private:
     QMap<QString, int> cmap;
     QString _cachedNumber;
     QString _crmowner;
+    bool _closed;
+    AppLock _lock;
 };
 
 #endif // PROSPECT_H

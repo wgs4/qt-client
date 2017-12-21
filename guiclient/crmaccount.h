@@ -67,6 +67,8 @@ protected slots:
     virtual void sCheckNumber();
     virtual void sHandleButtons();
     virtual void sHandleChildButtons();
+    virtual void sHandleCntctDetach(int cntctId);
+    virtual void setVisible(bool);
 
 protected:
     virtual void closeEvent(QCloseEvent*);

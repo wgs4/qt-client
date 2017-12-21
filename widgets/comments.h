@@ -108,6 +108,7 @@ class XTUPLEWIDGETS_EXPORT Comments : public QWidget
     void sNew();
     void sView();
     void sEdit();
+    void sOpen();
     void refresh();
 
     void anchorClicked(const QUrl &);

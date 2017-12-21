@@ -395,6 +395,7 @@ void contactMerge::sPopulateTarget()
   if (contactPopulateTarget.first())
   {
     _target->setId(contactPopulateTarget.value("cntct_id").toInt());
+    _target->sBuildPhones();
     _targetGroup->setTitle(grpTitle + " (#" + contactPopulateTarget.value("cntct_number").toString() + ")");
   }
   else

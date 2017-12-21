@@ -1391,10 +1391,13 @@ void ContactWidget::sBuildPhones()
   ErrorReporter::error(QtCriticalMsg, this, tr("Getting Phone Details"),
                          getp, __FILE__, __LINE__);
 
-  _add = new QPushButton(tr("+"), this);
-  _add->setMaximumWidth(30);
-  _add->setObjectName(QString("_phoneAdd"));
-  connect(_add, SIGNAL(clicked()), this, SLOT(sAddNewPhoneRow()));
+//  if (_email->isEnabled())
+//  {
+    _add = new QPushButton(tr("+"), this);
+    _add->setMaximumWidth(30);
+    _add->setObjectName(QString("_phoneAdd"));
+    connect(_add, SIGNAL(clicked()), this, SLOT(sAddNewPhoneRow()));
+//  }
 
   while (getp.next())
   {
@@ -1414,6 +1417,7 @@ void ContactWidget::sBuildPhones()
 void ContactWidget::sAddNewPhoneRow()
 {
   _rowId++;
+  bool enb = _email->isEnabled();
 
   QPushButton *rem = new QPushButton(tr("-"), this);
   rem->setMaximumWidth(30);
@@ -1424,13 +1428,20 @@ void ContactWidget::sAddNewPhoneRow()
   cb->setObjectName(QString("_phRole%1").arg(_rowId));
   cb->setType(XComboBox::CRMRolePhone);
   ph->setObjectName(QString("_contactPhone%1").arg(_rowId));
+
+  cb->setEnabled(enb);
+  ph->setEnabled(enb);
+
   rem->setObjectName(QString("_contactRem%1").arg(_rowId));
   connect(rem, SIGNAL(clicked()), this, SLOT(sRemovePhone()));
 
   _phoneGrid->addWidget(cb,  _rowId, 0);
   _phoneGrid->addWidget(ph,  _rowId, 1);
-  _phoneGrid->addWidget(rem, _rowId, 2);
-  _phoneGrid->addWidget(_add, _rowId, 3);
+  if (enb)
+  {
+    _phoneGrid->addWidget(rem, _rowId, 2);
+    _phoneGrid->addWidget(_add, _rowId, 3);
+  }
   
   cb->show();
   ph->show();
