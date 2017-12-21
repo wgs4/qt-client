@@ -105,7 +105,6 @@ crmaccount::crmaccount(QWidget* parent, const char* name, Qt::WindowFlags fl)
   connect(_number, SIGNAL(editingFinished()), this, SLOT(sCheckNumber()));
   connect(_contactButton, SIGNAL(toggled(bool)), this, SLOT(sHandleButtons()));         
   connect(_addressButton, SIGNAL(toggled(bool)), this, SLOT(sHandleButtons()));       
-  connect(_contacts, SIGNAL(cntctDetached(int)), this, SLOT(sHandleCntctDetach(int)));
 
   _charass->setType("CRMACCT");
 
