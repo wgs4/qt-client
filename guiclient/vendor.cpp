@@ -268,7 +268,6 @@ SetResponse vendor::set(const ParameterList &pParams)
     {
       _mode = cNew;
       emit newMode(_mode);
-
       
       clear();
       _accountingTab->setEnabled(false);
@@ -1339,6 +1338,8 @@ bool vendor::sCheckSave()
 
 void vendor::clear()
 {
+  XSqlQuery setq;
+
   _cachedNumber = QString::null;
   _crmacctid = -1;
   _vendid = -1;
@@ -1390,6 +1391,11 @@ void vendor::clear()
   if (_number->editMode() || _mode == cNew)
     sPrepare();
   _tempMode = _mode;
+
+  // Set default Vendor Type (if exists)
+  setq.exec("SELECT vendtype_id FROM vendtype WHERE vendtype_default;");
+  if (setq.first())
+    _vendtype->setId(setq.value("vendtype_id").toInt());
 }
 
 void vendor::sNumberEditable(bool p)

@@ -195,12 +195,12 @@ enum SetResponse invoice::set(const ParameterList &pParams)
 
       invoiceet.prepare("INSERT INTO invchead ("
 				"    invchead_id, invchead_invcnumber, invchead_orderdate,"
-                "    invchead_invcdate, invchead_cust_id, invchead_posted,"
+                "    invchead_invcdate, invchead_posted,"
 				"    invchead_printed, invchead_commission, invchead_freight,"
 				"    invchead_misc_amount, invchead_shipchrg_id "
 				") VALUES ("
 				"    :invchead_id, :invchead_invcnumber, :invchead_orderdate, "
-				"    :invchead_invcdate, -1, false,"
+				"    :invchead_invcdate, false,"
 				"    false, 0, 0,"
 				"    0, -1"
 				");");

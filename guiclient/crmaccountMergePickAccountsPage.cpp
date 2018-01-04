@@ -74,7 +74,6 @@ CrmaccountMergePickAccountsPage::CrmaccountMergePickAccountsPage(QWidget *parent
   _sources->addColumn(tr("Employee"),  _ynColumn, Qt::AlignCenter,false, "emp");
   _sources->addColumn(tr("Sales Rep"), _ynColumn, Qt::AlignCenter,false, "salesrep");
 
-  _filter->append(tr("Hide Merges in Progress"),"excludeMergeWIP",        ParameterWidget::Exists, true);
   _filter->append(tr("Show Inactive"),          "showInactive",           ParameterWidget::Exists, true);
   _filter->append(tr("Account Number Pattern"), "crmacct_number_pattern", ParameterWidget::Text);
   _filter->append(tr("Account Name Pattern"),   "crmacct_name_pattern",   ParameterWidget::Text);

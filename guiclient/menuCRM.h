@@ -60,6 +60,8 @@ class menuCRM : public QObject
     void sTodoListCalendar();
     void sNewOpportunity();
     void sOpportunities();
+    void sNewProspect();
+    void sProspects();
     void sEditOwners();
     void sSetup();
 
@@ -75,6 +77,7 @@ class menuCRM : public QObject
     QMenu *accountsMenu;
     QMenu *contactsMenu;
     QMenu *addressMenu;
+    QMenu *prospectCRMMenu;
     QMenu *utilitiesMenu;
     QMenu *opportunityMenu;
     

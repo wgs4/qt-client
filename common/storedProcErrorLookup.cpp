@@ -1029,7 +1029,8 @@ const struct {
   { "massReplaceBomitem",  -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot make this BOM Item replacement "
 				  "because it would create a recursive BOM."),
 									0, "" },
-
+  { "mergeAccounts", -6, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot merge two CRM Accounts that both refer to the same entity."),
+                                                         		0, "" },
   { "openAccountingPeriod", -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot open this Accounting Period because "
 				   "it is already open."),		0, "" },
   { "openAccountingPeriod", -2, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot open this Accounting Period because "

@@ -169,6 +169,7 @@ enum SetResponse prospect::set(const ParameterList &pParams)
   _newQuote->setEnabled(cEdit == _mode);
   _notes->setReadOnly(! canEdit);
   _mainGroup->setEnabled(canEdit);
+  _contactTab->setEnabled(canEdit);
 
   return NoError;
 }
@@ -505,7 +506,7 @@ bool prospect::sPopulate()
       }
     }
 
-    getq.prepare("SELECT prospect.*, crmacct_id, crmacct_owner_username"
+    getq.prepare("SELECT prospect.*, crmacct_id, crmacct_owner_username,"
                  " prospect_created::DATE AS created, "
                  " prospect_lastupdated::DATE AS updated "
                  "  FROM prospect, crmacct"

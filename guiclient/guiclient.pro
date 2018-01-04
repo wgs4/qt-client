@@ -219,7 +219,6 @@ FORMS =   absoluteCalendarItem.ui               \
           crmaccountMergePickAccountsPage.ui    \
           crmaccountMergePickDataPage.ui        \
           crmaccountMergePickTaskPage.ui        \
-          crmaccountMergePurgePage.ui           \
           crmaccountMergeResultPage.ui          \
           crmRole.ui                            \
           crmRoles.ui                           \
@@ -790,7 +789,6 @@ HEADERS = ../common/format.h                    \
           crmaccountMergePickAccountsPage.h     \
           crmaccountMergePickDataPage.h         \
           crmaccountMergePickTaskPage.h         \
-          crmaccountMergePurgePage.h            \
           crmaccountMergeResultPage.h           \
           crmaccounts.h                         \
           crmRole.h                             \
@@ -1415,7 +1413,6 @@ SOURCES = absoluteCalendarItem.cpp              \
           crmaccountMergePickAccountsPage.cpp   \
           crmaccountMergePickDataPage.cpp       \
           crmaccountMergePickTaskPage.cpp       \
-          crmaccountMergePurgePage.cpp          \
           crmaccountMergeResultPage.cpp         \
           crmaccounts.cpp                       \
           crmRole.cpp                           \

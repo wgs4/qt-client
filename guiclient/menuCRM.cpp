@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -28,6 +28,8 @@
 #include "addresses.h"
 #include "crmaccount.h"
 #include "crmaccounts.h"
+#include "prospect.h"
+#include "prospects.h"
 #include "incidentWorkbench.h"
 #include "incident.h"
 #include "opportunityList.h"
@@ -64,6 +66,7 @@ menuCRM::menuCRM(GUIClient *Pparent) :
   accountsMenu      = new QMenu(parent);
   contactsMenu      = new QMenu(parent);
   addressMenu       = new QMenu(parent);
+  prospectCRMMenu   = new QMenu(parent);
   utilitiesMenu     = new QMenu(parent);
   opportunityMenu   = new QMenu(parent);
 
@@ -75,6 +78,7 @@ menuCRM::menuCRM(GUIClient *Pparent) :
   accountsMenu->setObjectName("menu.crm.accounts");
   contactsMenu->setObjectName("menu.crm.contacts");
   addressMenu->setObjectName("menu.crm.address");
+  prospectCRMMenu->setObjectName("menu.crm.prospect");
   utilitiesMenu->setObjectName("menu.crm.utilities");
   opportunityMenu->setObjectName("menu.crm.opportunity");
 
@@ -123,15 +127,20 @@ menuCRM::menuCRM(GUIClient *Pparent) :
     { "crm.address",	tr("&New..."),		SLOT(sAddress()),	addressMenu,	"MaintainAddresses", NULL, NULL, true	, NULL },
     { "crm.addresses",	tr("&List..."),	SLOT(sAddresses()),	addressMenu,	"MaintainAddresses ViewAddresses", NULL, NULL, true , NULL },
 
+    // CRM | Prospect
+    { "menu",	tr("&Prospect"),       (char*)prospectCRMMenu,	crmMenu,	"true",	NULL, NULL, true, NULL },
+    { "so.enterNewProspect", tr("&New..."),	SLOT(sNewProspect()), prospectCRMMenu, "MaintainProspectMasters",	NULL, NULL, true, NULL },
+    { "so.prospects", tr("&List..."),	SLOT(sProspects()), prospectCRMMenu, "MaintainProspectMasters ViewProspectMasters",	NULL, NULL, true, NULL },
+
     { "separator",		NULL,				NULL,			crmMenu,	"true", NULL, NULL, true	, NULL },
 
     //Utilities
     { "menu",			tr("&Utilities"),		(char*)utilitiesMenu,		crmMenu,	"true", NULL, NULL, true	, NULL },
     { "crm.replaceOwner",	tr("Edit O&wners"),		SLOT(sEditOwners()),	utilitiesMenu,	"EditOwner", NULL, NULL, true, NULL },
     { "crm.createRecurringItems",tr("Create &Recurring Items..."), SLOT(sCreateRecurringItems()),utilitiesMenu, "MaintainPersonalIncidents MaintainPersonalIncidents MaintainAllIncidents MaintainAllProjects MaintainPersonalToDoItems MaintainAllToDoItems", NULL, NULL, true, NULL },
-    { "crm.contactMerge",        tr("&Merge Contacts..."), SLOT(sContactMerge()),        utilitiesMenu, "MergeContacts",          NULL, NULL, true, NULL },
     { "crm.crmaccountMerge",     tr("Merge &Accounts..."), SLOT(sCrmaccountMerge()),     utilitiesMenu, "MaintainAllCRMAccounts", NULL, NULL, true, NULL },
     { "crm.addressMerge",        tr("Merge Addresses..."), SLOT(sAddressMerge()),        utilitiesMenu, "MaintainAddresses",      NULL, NULL, true, NULL },
+    { "crm.contactMerge",        tr("&Merge Contacts..."), SLOT(sContactMerge()),        utilitiesMenu, "MergeContacts",          NULL, NULL, true, NULL },
 
     { "crm.setup",	tr("&Setup..."),	SLOT(sSetup()),	crmMenu,	NULL,	NULL,	NULL,	true, NULL}
 
@@ -341,6 +350,21 @@ void menuCRM::sOpportunities()
   opportunityList* win = new opportunityList();
   win->set(params);
   omfgThis->handleNewWindow(win);
+}
+
+void menuCRM::sNewProspect()
+{
+  ParameterList params;
+  params.append("mode", "new");
+
+  prospect *newdlg = new prospect();
+  newdlg->set(params);
+  omfgThis->handleNewWindow(newdlg);
+}
+
+void menuCRM::sProspects()
+{
+  omfgThis->handleNewWindow(new prospects());
 }
 
 void menuCRM::sSetup()

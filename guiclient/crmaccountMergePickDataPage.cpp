@@ -90,16 +90,8 @@ CrmaccountMergePickDataPage::CrmaccountMergePickDataPage(QWidget *parent)
     _sources->addColumn(mergeUiDesc[i].title, mergeUiDesc[i].width,
                         mergeUiDesc[i].align,  true, mergeUiDesc[i].querycol);
 
-  connect(_deselect,             SIGNAL(clicked()), this, SLOT(sDeselect()));
-  connect(_select,               SIGNAL(clicked()), this, SLOT(sSelect()));
-  connect(_sources, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)),
-                          this, SLOT(sSelect(QTreeWidgetItem*, int)));
-  connect(_sources, SIGNAL(itemSelectionChanged()), this, SLOT(sHandleButtons()));
   connect(_sources, SIGNAL(populateMenu(QMenu *, XTreeWidgetItem *)),
                this, SLOT(sPopulateMenu(QMenu *, XTreeWidgetItem *)));
-
-  _selectedColorIndicator->setStyleSheet(QString("* { color: %1; }")
-                                         .arg(namedColor("emphasis").name()));
 
   setCommitPage(true);
 }
@@ -155,8 +147,7 @@ bool CrmaccountMergePickDataPage::validatePage()
                                 tr("<p>Are you sure you want to merge the "
                                    "Accounts as described here?</p>"
                                    "<p>If you click YES then the merge will "
-                                   "be run immediately. You will have a chance "
-                                   "to undo it later.</p>"),
+                                   "be run immediately and cannot be undone.</p>"),
                                 QMessageBox::No | QMessageBox::Default,
                                 QMessageBox::Yes) == QMessageBox::No)
     return false;
@@ -166,34 +157,14 @@ bool CrmaccountMergePickDataPage::validatePage()
   mrgq.bindValue(":destid", _data->_destid);
   mrgq.exec();
   if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Merging"),
-                           mrgq, __FILE__, __LINE__))
+                            mrgq, __FILE__, __LINE__))
     return false;
 
   disconnect(omfgThis, SIGNAL(crmAccountsUpdated(int)), this, SLOT(sFillList()));
   omfgThis->sCrmAccountsUpdated(_data->_destid);
-  setField("_completedMerge", _data->_destnumber);
+  setField("_completedMerge", _data->_destid);
 
   return true;
-}
-
-void CrmaccountMergePickDataPage::sDeselect()
-{
-  MetaSQLQuery srcm("UPDATE crmacctsel"
-                    "   SET <? literal('colname') ?>=<? value('value') ?>"
-                    " WHERE (crmacctsel_src_crmacct_id=<? value('srcid') ?>);");
-
-  foreach(QModelIndex cell, _sources->selectionModel()->selectedIndexes())
-  {
-    ParameterList params;
-    params.append("colname", mergeUiDesc[cell.column()].mergecol);
-    params.append("value",   QVariant(false));
-    params.append("srcid",   _sources->topLevelItem(cell.row())->id());
-    XSqlQuery srcq = srcm.toQuery(params);
-    ErrorReporter::error(QtCriticalMsg, this, tr("Updating Merge Sources"),
-                         srcq, __FILE__, __LINE__);
-  }
-  _sources->selectionModel()->clear();
-  sFillList();
 }
 
 bool CrmaccountMergePickDataPage::sDelete()
@@ -266,12 +237,6 @@ void CrmaccountMergePickDataPage::sFillList()
     return;
 }
 
-void CrmaccountMergePickDataPage::sHandleButtons()
-{
-  _deselect->setEnabled(_sources->selectionModel()->selectedIndexes().size());
-  _select->setEnabled(_sources->selectionModel()->selectedIndexes().size());
-}
-
 void CrmaccountMergePickDataPage::sPopulateMenu(QMenu *pMenu, XTreeWidgetItem *pItem)
 {
   Q_UNUSED(pItem);
@@ -287,62 +252,6 @@ void CrmaccountMergePickDataPage::sPopulateMenu(QMenu *pMenu, XTreeWidgetItem *p
   menuItem = pMenu->addAction(tr("Delete Account"), this, SLOT(sDelete()));
   menuItem->setEnabled(pItem->id() != _data->_destid &&
                        _privileges->check("MaintainAllCRMAccounts"));
-}
-
-bool CrmaccountMergePickDataPage::sSelect(QTreeWidgetItem *pitem, int col, bool clearSelection)
-{
-  XTreeWidgetItem *item = dynamic_cast<XTreeWidgetItem*>(pitem);
-  if (! item)
-    return false;
-
-  MetaSQLQuery srcm("UPDATE crmacctsel"
-                    "   SET <? literal('colname') ?>=<? value('srcval') ?>"
-                    " WHERE (crmacctsel_src_crmacct_id=<? value('srcid') ?>);");
-  MetaSQLQuery destm("UPDATE crmacctsel"
-                     "   SET <? literal('colname') ?>=<? value('destval') ?>"
-                     " WHERE ((crmacctsel_dest_crmacct_id=<? value('destid') ?>)"
-                     "    AND (crmacctsel_src_crmacct_id!=<? value('srcid') ?>));");
-  ParameterList params;
-  params.append("colname", mergeUiDesc[col].mergecol);
-  params.append("srcval",  QVariant(true));
-  params.append("srcid",   item->id());
-  params.append("destval", QVariant(false));
-  params.append("destid",  item->altId());
-
-  XSqlQuery srcq = srcm.toQuery(params);
-  if (ErrorReporter::error(QtCriticalMsg, this, tr("Updating Merge Sources"),
-                           srcq, __FILE__, __LINE__))
-    return false;
-
-  if (! mergeUiDesc[col].multiple)
-  {
-    XSqlQuery destq = destm.toQuery(params);
-    if (ErrorReporter::error(QtCriticalMsg, this, tr("Updating Merge Destination"),
-                             destq, __FILE__, __LINE__))
-      return false;
-  }
-
-  if (clearSelection)
-  {
-    _sources->selectionModel()->clear();
-    sFillList();
-  }
-
-  return true;
-}
-
-void CrmaccountMergePickDataPage::sSelect()
-{
-  foreach(QModelIndex cell, _sources->selectionModel()->selectedIndexes())
-  {
-    if (mergeUiDesc[cell.column()].mergecol.isEmpty())
-      continue;
-    sSelect(_sources->topLevelItem(cell.row()), cell.column(), false);
-  }
-
-  _sources->selectionModel()->clear();
-
-  sFillList();
 }
 
 void CrmaccountMergePickDataPage::sView()

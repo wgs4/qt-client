@@ -50,7 +50,9 @@ signals:
     void cntctDetached(int);
 
 private:
-    int _crmacctid;
+    int  _crmacctid;
+    int  _mode;
+    bool _captive;
 
     QAction * _attachAct;
     QAction * _detachAct;

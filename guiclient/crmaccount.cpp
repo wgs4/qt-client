@@ -106,6 +106,7 @@ crmaccount::crmaccount(QWidget* parent, const char* name, Qt::WindowFlags fl)
   connect(_contactButton, SIGNAL(toggled(bool)), this, SLOT(sHandleButtons()));         
   connect(_addressButton, SIGNAL(toggled(bool)), this, SLOT(sHandleButtons()));       
 
+  _comments->setType("CRMA");
   _charass->setType("CRMACCT");
 
   _reg->addColumn(tr("Lot/Serial")  ,  _itemColumn,  Qt::AlignLeft, true, "ls_number" );
@@ -292,6 +293,7 @@ void crmaccount::setViewMode()
   _parentCrmacct->setEnabled(canEdit);
   _typeBox->setEnabled(canEdit);
   _contactPage->setEnabled(canEdit);
+  _contactGroupBox->setVisible(canEdit);
   _addressPage->setEnabled(canEdit);
 
   if (_mode == cView)

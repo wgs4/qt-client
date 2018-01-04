@@ -98,17 +98,17 @@ void addresses::sPopulateMenu(QMenu *pMenu, QTreeWidgetItem*, int)
   // Create, Edit, View Prospect:
   XSqlQuery sql;
   sql.prepare("WITH crmaccts AS ( "
-              "SELECT crmacct_prospect_id"
+              "SELECT crmaccttypes(crmacctcntctass_crmacct_id)#>>'{prospect}' AS prospectid"
               "  FROM cntct"
-              "  JOIN crmacct ON cntct_crmacct_id=crmacct_id"
+              "  JOIN crmacctcntctass ON cntct_id=crmacctcntctass_cntct_id"
               " WHERE cntct_addr_id::TEXT IN (SELECT regexp_split_to_table(:addr_id, ','))"
-              "   AND crmacct_cust_id IS NULL) "
+              "   AND crmaccttypes(crmacctcntctass_crmacct_id)#>>'{customer}' IS NULL) "
               "SELECT EXISTS(SELECT 1"
               "                FROM crmaccts"
-              "               WHERE crmacct_prospect_id IS NOT NULL) AS edit,"
+              "               WHERE prospectid IS NOT NULL) AS edit,"
               "       EXISTS(SELECT 1"
               "                FROM crmaccts"
-              "               WHERE crmacct_prospect_id IS NULL) AS new;");
+              "               WHERE prospectid IS NULL) AS new;");
   QStringList ids;
   foreach (XTreeWidgetItem *item, list()->selectedItems())
     ids << QString::number(item->id());
@@ -117,8 +117,8 @@ void addresses::sPopulateMenu(QMenu *pMenu, QTreeWidgetItem*, int)
 
   if (sql.first())
   {
-    bool editProspectPriv = _privileges->check("MaintainAllCRMAccounts"); // TODO - replace if a new "ViewProspect" priv created
-    bool viewProspectPriv = _privileges->check("ViewAllCRMAccounts"); // TODO - replace if a new "ViewProspect" priv created
+    bool editProspectPriv = _privileges->check("MaintainProspectMasters");
+    bool viewProspectPriv = _privileges->check("MaintainProspectMasters ViewProspectMasters");
     
     if (sql.value("edit").toBool())
     {
@@ -303,10 +303,11 @@ void addresses::sNewProspect()
     XSqlQuery sql;
     sql.prepare("SELECT DISTINCT crmacct_number"
                 "  FROM cntct"
-                "  JOIN crmacct ON cntct_crmacct_id=crmacct_id"
+                "  JOIN crmacctcntctass ON cntct_id=crmacctcntctass_cntct_id"
+                "  JOIN crmacct ON crmacct_id=crmacctcntctass_crmacct_id"
                 " WHERE cntct_addr_id=:addr_id"
-                "   AND crmacct_cust_id IS NULL"
-                "   AND crmacct_prospect_id IS NULL"
+                "   AND crmaccttypes(crmacctcntctass_crmacct_id)#>>'{customer}' IS NULL"
+                "   AND crmaccttypes(crmacctcntctass_crmacct_id)#>>'{prospect}' IS NULL"
                 " ORDER BY crmacct_number;");
     sql.bindValue(":addr_id", item->id());
     sql.exec();
@@ -384,11 +385,11 @@ void addresses::sOpenProspect(QString mode)
     XSqlQuery sql;
     sql.prepare("SELECT DISTINCT prospect_number"
                 "  FROM cntct"
-                "  JOIN crmacct ON cntct_crmacct_id=crmacct_id"
-                "  JOIN prospect ON crmacct_prospect_id=prospect_id"
+                "  JOIN crmacctcntctass ON cntct_id=crmacctcntctass_cntct_id"
+                "  JOIN prospect ON crmacctcntctass_crmacct_id=prospect_crmacct_id"
                 " WHERE cntct_addr_id=:addr_id"
-                "   AND crmacct_cust_id IS NULL"
-                "   AND crmacct_prospect_id IS NOT NULL"
+                "   AND crmaccttypes(crmacctcntctass_crmacct_id)#>>'{customer}' IS NULL"
+                "   AND crmaccttypes(crmacctcntctass_crmacct_id)#>>'{prospect}' IS NOT NULL"
                 " ORDER BY prospect_number;");
     sql.bindValue(":addr_id", item->id());
     sql.exec();
