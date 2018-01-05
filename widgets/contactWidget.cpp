@@ -71,11 +71,11 @@ void ContactWidget::init()
     _numberLit		= new QLabel(tr("Number:"), this);
     _numberLit->setObjectName("_numberLit");
     _number		= new XLineEdit(this, "_number");
-    
+
     _change->hide();
     _number->hide();
     _numberLit->hide();
-    
+
     _nameLit		= new QLabel(tr("Name:"), this);
     _nameLit->setObjectName("_nameLit");
     _honorific		= new XComboBox(this, "_honorific");
@@ -102,7 +102,7 @@ void ContactWidget::init()
     _nameBox->addWidget(_last,		2);
     _nameBox->addWidget(_suffix,	0);
     _nameBox->addWidget(_list,		0, Qt::AlignRight);
-    
+
     //_initialsBox->addWidget(_initialsLit, 0);
     _initialsBox->addWidget(_initials,	  0);
     _initialsBox->addStretch(0);
@@ -122,13 +122,23 @@ void ContactWidget::init()
     QRegExp rx("^([0-9a-z]+[-._+&amp;])*[0-9a-z]+@([-0-9a-z]+[.])+[a-z]{2,6}$");
     QValidator *validator = new QRegExpValidator(rx, this);
 
+    _emailBox		= new QHBoxLayout;
+    _emailBox->setSpacing(2);
     _emailLit		= new QLabel(tr("E-Mail:"), this);
     _emailLit->setObjectName("_emailLit");
     _email		= new XComboBox(this, "_email");
+    _email->setMinimumWidth(110);
     _email->setEditable(true);
     _email->setValidator(validator);
     _email->lineEdit()->installEventFilter(this);
     _email->insertEditor(XComboBox::Adhoc, this, SLOT(sEditEmailList()));
+    _emailopt           = new QCheckBox(tr("Opt In"), this);
+    _emailopt->setObjectName("_emailopt");
+    _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
+
+    _emailBox->addWidget(_email, 2);
+    _emailBox->addWidget(_emailopt, 0);
+
     _webaddrLit		= new QLabel(tr("Web:"), this);
     _webaddrLit->setObjectName("_webaddrLit");
     _webaddr		= new XLineEdit(this, "_webaddr");
@@ -143,13 +153,13 @@ void ContactWidget::init()
     _middle->setMinimumHeight(22);
     _last->setMinimumHeight(22);
     _suffix->setMinimumHeight(22);
-#endif    
+#endif
 
     QPalette p = _email->palette();
     p.setColor(QPalette::Text, Qt::blue);
     emailEdit->setPalette(p);
     _webaddr->setPalette(p);
-    
+
     QFont newFont = _email->font();
     newFont.setUnderline(true);
     emailEdit->setFont(newFont);
@@ -196,9 +206,9 @@ void ContactWidget::init()
     connect(_address,	SIGNAL(changed()),   this, SLOT(sCheck()));
 
     connect(_webaddr,   SIGNAL(doubleClicked()), this, SLOT(sLaunchWebaddr()));
-    
+
     setListVisible(true);
-    
+
     connect(_first, SIGNAL(editingFinished()), this, SLOT(findDuplicates()));
     connect(_last, SIGNAL(editingFinished()), this, SLOT(findDuplicates()));
 
@@ -221,10 +231,10 @@ void ContactWidget::findDuplicates()
 {
   if (_first->text().isEmpty() && _last->text().isEmpty())
     return;
-    
+
   QString msg;
   XSqlQuery r;
-  
+
   r.prepare(  "SELECT cntct_id, COALESCE(crmacctcntctass_crmacct_id,0) AS crmacct_id "
               "FROM cntct "
               " JOIN crmacctcntctass ON (crmacctcntctass_cntct_id=cntct_id) "
@@ -234,7 +244,7 @@ void ContactWidget::findDuplicates()
   r.bindValue(":last", _last->text());
   r.exec();
   if (r.size() == 1)
-  { 
+  {
     r.first();
     msg = tr("A contact exists with the same first and last name");
     if (_searchAcctId > 0 && r.value("crmacct_id").toInt() == 0)
@@ -244,7 +254,7 @@ void ContactWidget::findDuplicates()
     else if (_searchAcctId > 0)
       msg += tr(" associated with another Account");
     msg += tr(". Would you like to use the existing contact?");
-    
+
     if (QMessageBox::question(this, tr("Existing Contact"), msg,
                              QMessageBox::Yes | QMessageBox::Default,
                              QMessageBox::No  | QMessageBox::Escape) == QMessageBox::Yes)
@@ -284,7 +294,7 @@ void ContactWidget::findDuplicates()
 
     QString msg = tr("Multple contacts exist with the same first and last name");
     msg += tr(". Would you like to view all the existing contacts?");
-    
+
     if (QMessageBox::question(this, tr("Existing Contacts"), msg,
                              QMessageBox::Yes | QMessageBox::Default,
                              QMessageBox::No  | QMessageBox::Escape) == QMessageBox::Yes)
@@ -341,11 +351,12 @@ void ContactWidget::silentSetId(const int pId)
     connect(_first, SIGNAL(editingFinished()), this, SLOT(findDuplicates()));
     connect(_last, SIGNAL(editingFinished()), this, SLOT(findDuplicates()));
     clear();
+    return;
   }
   else if (pId == _id)
     return;
   else
-  {   
+  {
       XSqlQuery idQ;
       _query.replace("cntct()","cntct"); // Switch to non-restrictive table
       idQ.prepare(_query + " WHERE cntct_id = :id;");
@@ -369,6 +380,7 @@ void ContactWidget::silentSetId(const int pId)
           _title->setText(idQ.value("cntct_title").toString());
           _emailCache=idQ.value("cntct_email").toString();
           _email->append(FAKEEMAILID, idQ.value("cntct_email").toString()); // TODO: this is rotten
+          _emailopt->setChecked(idQ.value("cntct_email_optin").toBool());
           _webaddr->setText(idQ.value("cntct_webaddr").toString());
           _address->setId(idQ.value("cntct_addr_id").toInt());
           _active->setChecked(idQ.value("cntct_active").toBool());
@@ -380,16 +392,16 @@ void ContactWidget::silentSetId(const int pId)
           fillEmail();
 
           if (_mapper->model())
-          { 	 
+          {
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_number)),       _number->text()); 	               _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_number)),       _number->text());
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_honorific)),    _honorific->currentText()); 	 
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_first)),        _first->text()); 	 
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_last)),         _last->text()); 	 
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_initials)),     _initials->text()); 	 
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(this)),          _number->text()); 	 
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_title)),        _title->text()); 	 
+            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_honorific)),    _honorific->currentText());
+            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_first)),        _first->text());
+            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_last)),         _last->text());
+            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_initials)),     _initials->text());
+            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(this)),          _number->text());
+            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_title)),        _title->text());
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_email)),        _email->currentText());
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_webaddr)),      _webaddr->text()); 	 
+            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_webaddr)),      _webaddr->text());
            }
 
           _ignoreSignals = false;
@@ -466,6 +478,7 @@ void ContactWidget::clear()
   _initials->clear();
   _title->clear();
   _email->clear();
+  _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
   _webaddr->clear();
   _address->clear();
   _active->setChecked(true);
@@ -476,17 +489,17 @@ void ContactWidget::clear()
 QString ContactWidget::name() const
 {
   QString name;
-  
+
   if (!_first->text().isEmpty())
     name = _first->text();
-    
+
   if (!_middle->text().isEmpty())
   {
     if (!name.isEmpty())
       name += " ";
     name += _middle->text();
   }
-  
+
   if (!_last->text().isEmpty())
   {
     if (!name.isEmpty())
@@ -498,14 +511,14 @@ QString ContactWidget::name() const
 }
 
 void ContactWidget::setDataWidgetMap(XDataWidgetMapper* m)
-{  
+{
   m->addMapping(this          ,  _fieldNameNumber,        "number", "defaultText");
   m->addMapping(_change      ,  _fieldNameChange,         "text",   "defaultText");
   m->addMapping(_active      ,  _fieldNameActive);
   m->addMapping(_first       ,  _fieldNameFirst,          "text",   "defaultText");
   m->addMapping(_middle      ,  _fieldNameMiddle,         "text",   "defaultText");
   m->addMapping(_last        ,  _fieldNameLast,           "text",   "defaultText");
-  m->addMapping(_suffix      ,  _fieldNameSuffix,         "text",   "defaultText");  
+  m->addMapping(_suffix      ,  _fieldNameSuffix,         "text",   "defaultText");
   m->addMapping(_initials    ,  _fieldNameInitials,       "text",   "defaultText");
   m->addMapping(_title       ,  _fieldNameTitle,          "text",   "defaultText");
   m->addMapping(_email       ,  _fieldNameEmailAddress,   "text",   "defaultText");
@@ -546,9 +559,9 @@ void ContactWidget::setName(int, const QString& p)
 int ContactWidget::save(AddressCluster::SaveFlags flag)
 {
   int addrSave = _address->save(flag);
-  
+
   QString phonelist = sBuildPhoneJson();
- 
+
   if (addrSave < 0)
     return addrSave;
 
@@ -556,7 +569,7 @@ int ContactWidget::save(AddressCluster::SaveFlags flag)
   datamodQ.prepare("SELECT COALESCE(saveCntct(:cntct_id,:cntct_number,:addr_id,"
 		   ":honorific,:first,:middle,:last,:suffix,:initials,"
 		   ":active,:phone,:email,:webaddr,"
-		   ":notes,:title,:flag,:owner),0) AS result;");
+                   ":notes,:title,:flag,:owner, :emailopt),0) AS result;");
   datamodQ.bindValue(":cntct_number", _number->text());
   datamodQ.bindValue(":cntct_id",  id());
   datamodQ.bindValue(":honorific", _honorific->currentText());
@@ -573,6 +586,7 @@ int ContactWidget::save(AddressCluster::SaveFlags flag)
   datamodQ.bindValue(":webaddr",   _webaddr->text());
   datamodQ.bindValue(":notes",	   _notes);
   datamodQ.bindValue(":owner",     _owner->username());
+  datamodQ.bindValue(":emailopt",  _emailopt->isChecked());
   if (flag == AddressCluster::CHECK)
     datamodQ.bindValue(":flag", QString("CHECK"));
   else if (flag == AddressCluster::CHANGEALL)
@@ -649,6 +663,7 @@ void ContactWidget::setEmailVisible(const bool p)
 {
   _emailLit->setVisible(p);
   _email->setVisible(p);
+  _emailopt->setVisible(p);
   // layout();
 }
 
@@ -662,7 +677,7 @@ void ContactWidget::setInitialsVisible(const bool p)
 void ContactWidget::setPhonesVisible(const bool p)
 {
   // TODO Loop through _phoneGrid children and set visibility
-  // _phoneGrid
+  _phoneGrid->setEnabled(p);
   layout();
 }
 
@@ -686,6 +701,7 @@ void ContactWidget::setMinimalLayout(const bool p)
   _title->setVisible(true);
   _emailLit->setVisible(true);
   _email->setVisible(true);
+  _emailopt->setVisible(true);
 
   // at the mercy of minimal layout
   _initialsLit->setVisible(! p);
@@ -721,7 +737,7 @@ void ContactWidget::layout()
     currLayout->removeItem(_buttonBox);
     currLayout->removeItem(_titleBox);
     currLayout->removeWidget(_emailLit);
-    currLayout->removeWidget(_email);
+    currLayout->removeItem(_emailBox);
     currLayout->removeWidget(_webaddrLit);
     currLayout->removeWidget(_webaddr);
     currLayout->removeWidget(_address);
@@ -734,7 +750,7 @@ void ContactWidget::layout()
   _grid->addItem(_nameBox,	1, 1, 1, -1);
   _grid->addWidget(_initialsLit,2, 0, 1, 1);
   _grid->addItem(_initialsBox,  2, 1, 1, -1);
-  _grid->addWidget(_active,       2, 2, 1, -1);
+  _grid->addWidget(_active,     2, 2, 1, -1);
   _grid->addItem(_buttonBox,	3, 0, 1, -1);
   _grid->addWidget(_titleLit,   4, 0, 1, 1);
   _grid->addItem(_titleBox,	4, 1, 1, -1);
@@ -748,11 +764,11 @@ void ContactWidget::layout()
     _grid->setColumnStretch(4, 0);
     _grid->setColumnStretch(5, 2);
 
-    _grid->addWidget(_emailLit,	5, 4);
-    _grid->addWidget(_email,	5, 5);
-    _grid->addWidget(_webaddrLit,	5, 4);
-    _grid->addWidget(_webaddr,		6, 0);
-    _grid->addWidget(_address,		6, 1); //, -1, -1);
+    _grid->addWidget(_emailLit, 5, 0);
+    _grid->addItem(_emailBox,	5, 1, 1, 2);
+    _grid->addWidget(_webaddrLit, 5, 3);
+    _grid->addWidget(_webaddr,    5, 4);
+    _grid->addWidget(_address,    6, 1); //, -1, -1);
   }
   else if (_address->isVisibleTo(this))
   {
@@ -761,8 +777,8 @@ void ContactWidget::layout()
     _grid->setColumnStretch(2, 3);
 
     _grid->addWidget(_address,		5, 2, 5, -1);
-    _grid->addWidget(_emailLit,		5, 0);
-    _grid->addWidget(_email,		5, 1);
+    _grid->addWidget(_emailLit,         5, 0);
+    _grid->addItem(_emailBox,	        5, 1, 1, 1);
     _grid->addWidget(_webaddrLit,	6, 0);
     _grid->addWidget(_webaddr,		6, 1);
     _grid->addItem(_phoneGrid,          7, 0, -1, 2);
@@ -778,8 +794,8 @@ void ContactWidget::layout()
 
     _grid->addWidget(_webaddrLit,	6, 4);
     _grid->addWidget(_webaddr,		5, 5);
-    _grid->addWidget(_emailLit,		7, 2);
-    _grid->addWidget(_email,		7, 3);
+    _grid->addWidget(_emailLit,         7, 0);
+    _grid->addItem(_emailBox,	        7, 1, 1, 2);
     _grid->addWidget(_address,		8, 0, 1, -1);
     _grid->addItem(_phoneGrid,          9, 0, -1, 2);
   }
@@ -820,7 +836,7 @@ void ContactWidget::check()
      }
      else if (answer==1)
      {
-       _address->setAddrChange(QString("CHANGEALL"));  
+       _address->setAddrChange(QString("CHANGEALL"));
        _change->setText("CHANGEALL");
      }
   }
@@ -1000,19 +1016,19 @@ void ContactWidget::sLaunchWebaddr()
 
 ///////////////////////////////////////////////////////////////////////////////
 
-ContactList::ContactList(QWidget* pParent, const char* pName, bool, Qt::WindowFlags) 
+ContactList::ContactList(QWidget* pParent, const char* pName, bool, Qt::WindowFlags)
   : VirtualList(pParent, 0)
 {
   setAttribute(Qt::WA_DeleteOnClose);
   setWindowTitle(tr("Contacts"));
-  
+
   _searchAcctId = -1;
 
   if (!pName)
       setObjectName("ContactList");
   else
       setObjectName(pName);
-  
+
   _searchAcct = new QCheckBox();
   _dialogLyt->addWidget(_searchAcct);
   _searchAcct->hide();
@@ -1114,7 +1130,7 @@ ContactSearch::ContactSearch(QWidget* pParent, Qt::WindowFlags pFlags)
 {
   setAttribute(Qt::WA_DeleteOnClose);
   setWindowTitle(tr("Contacts"));
-  
+
   // remove the stuff we won't use
   disconnect(_searchNumber,	SIGNAL(toggled(bool)), this, SLOT(sFillList()));
   disconnect(_searchName,	SIGNAL(toggled(bool)), this, SLOT(sFillList()));
@@ -1139,7 +1155,7 @@ ContactSearch::ContactSearch(QWidget* pParent, Qt::WindowFlags pFlags)
   _searchEmail	= new XCheckBox(tr("Search Email Address"),this);
   _searchWebAddr	= new XCheckBox(tr("Search Web Address"),this);
   _searchInactive	= new XCheckBox(tr("Show Inactive Contacts"),this);
-  
+
   _searchFirst->setObjectName("_searchName");
   _searchLast->setObjectName("_searchLast");
   _searchCRMAcct->setObjectName("_searchCRMAcct");
@@ -1157,7 +1173,7 @@ ContactSearch::ContactSearch(QWidget* pParent, Qt::WindowFlags pFlags)
   selectorsLyt->addWidget(_searchEmail,    1, 1);
   selectorsLyt->addWidget(_searchWebAddr,  2, 1);
   selectorsLyt->addWidget(_searchInactive, 3, 1);
-  
+
   _searchAcct = new QCheckBox();
   _dialogLyt->addWidget(_searchAcct);
   _searchAcct->hide();
@@ -1383,7 +1399,7 @@ void ContactWidget::sBuildPhones()
   cmap.clear();
   getp.prepare("SELECT cntctphone_crmrole_id, cntctphone_phone "
                "FROM cntctphone "
-               "JOIN crmrole ON crmrole_id=cntctphone_crmrole_id " 
+               "JOIN crmrole ON crmrole_id=cntctphone_crmrole_id "
                "WHERE cntctphone_cntct_id=:cntctid "
                "ORDER BY crmrole_sort;");
   getp.bindValue(":cntctid", _id);
@@ -1412,7 +1428,7 @@ void ContactWidget::sBuildPhones()
   {
     sAddNewPhoneRow();
   }
-} 
+}
 
 void ContactWidget::sAddNewPhoneRow()
 {
@@ -1442,7 +1458,7 @@ void ContactWidget::sAddNewPhoneRow()
     _phoneGrid->addWidget(rem, _rowId, 2);
     _phoneGrid->addWidget(_add, _rowId, 3);
   }
-  
+
   cb->show();
   ph->show();
   rem->show();

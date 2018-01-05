@@ -332,8 +332,10 @@ protected:
   XLineEdit* _phone2;
   QLabel* _faxLit;
   XLineEdit* _fax;
+  QHBoxLayout* _emailBox;
   QLabel* _emailLit;
   XComboBox* _email;
+  QCheckBox* _emailopt;
   QLabel* _webaddrLit;
   XLineEdit* _webaddr;
   QCheckBox* _active;

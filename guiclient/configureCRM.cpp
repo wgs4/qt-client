@@ -62,6 +62,7 @@ configureCRM::configureCRM(QWidget* parent, const char* name, bool /*modal*/, Qt
   _requireProjectAssignment->setChecked(_metrics->boolean("RequireProjectAssignment"));
   _projectWarningDays->setValue(_metrics->value("ProjectDueDateWarning").toInt());
   _requireUniqueEmails->setChecked(_metrics->boolean("EnforceUniqueContactEmails"));
+  _defaultEmailopt->setChecked(_metrics->boolean("DefaultEmailOptIn"));
 
   if (! _metrics->value("DefaultAddressCountry").isEmpty())
     _country->setText(_metrics->value("DefaultAddressCountry"));
@@ -179,6 +180,7 @@ bool configureCRM::sSave()
     }
   }
   _metrics->set("EnforceUniqueContactEmails", _requireUniqueEmails->isChecked());
+  _metrics->set("DefaultEmailOptIn", _defaultEmailopt->isChecked());
 
   if (_metrics->boolean("EnableBatchManager"))
   {

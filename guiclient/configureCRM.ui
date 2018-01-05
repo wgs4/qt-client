@@ -209,10 +209,20 @@ to be bound by its terms.</comment>
            <item>
             <widget class="QCheckBox" name="_requireUniqueEmails">
              <property name="toolTip">
-              <string>Require unique email addresses across Contacts</string>
+              <string>Require unique email addresses across Contacts.  System checks uniqueness when activating this setting.</string>
              </property>
              <property name="text">
               <string>Require Unique Contact Email Addresses</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="_defaultEmailopt">
+             <property name="toolTip">
+              <string>When adding email addresses default the Opt In/Opt out setting for that email (check yes to opt in).</string>
+             </property>
+             <property name="text">
+              <string>Email Addresses Default Opt In / Opt Out</string>
              </property>
             </widget>
            </item>

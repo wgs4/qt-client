@@ -213,7 +213,6 @@ class XTUPLEWIDGETS_EXPORT AddressCluster : public VirtualCluster
 	QLabel*		_longitudeLit;
 	QLabel*		_latitudeLit;
 	QLabel*		_accuracyLit;
-	QLabel*		_mktgLit;
 	QCheckBox*	_mktg;
 	QCheckBox*	_active;
 
