@@ -30,7 +30,7 @@
      CRMAcctSearch can control lots of OR'ed search criteria + activeOnly
  */
 static QString _listAndSearchQueryString(
-      "SELECT *, getcontactphone(cntct_id, 'Office') AS contact_phone, formataddr(addr.addr_id) AS street"
+      "SELECT *, getcontactphone(cntct.cntct_id, 'Office') AS contact_phone, formataddr(addr.addr_id) AS street"
       "  FROM ("
       "<? if exists('crmaccount') ?>"
       "    SELECT crmacct_id AS id,         crmacct_number AS number,"
