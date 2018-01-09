@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -26,7 +26,7 @@ customerGroup::customerGroup(QWidget* parent, const char* name, bool modal, Qt::
 
   connect(_new, SIGNAL(clicked()), this, SLOT(sNew()));
   connect(_delete, SIGNAL(clicked()), this, SLOT(sDelete()));
-  connect(_save, SIGNAL(clicked()), this, SLOT(sSave()));
+  connect(_save, SIGNAL(clicked()), this, SLOT(sSaveClicked()));
   connect(_close, SIGNAL(clicked()), this, SLOT(sClose()));
   connect(_name, SIGNAL(editingFinished()), this, SLOT(sCheck()));
 
@@ -51,7 +51,7 @@ enum SetResponse customerGroup::set(const ParameterList &pParams)
   QVariant param;
   bool     valid;
 
-  param = pParams.value("custgrp_id", &valid);
+  param = pParams.value("groups_id", &valid);
   if (valid)
   {
     _custgrpid = param.toInt();
@@ -64,10 +64,11 @@ enum SetResponse customerGroup::set(const ParameterList &pParams)
     if (param.toString() == "new")
     {
       _mode = cNew;
+      _saved = false;
 
-      customeret.exec("SELECT NEXTVAL('custgrp_custgrp_id_seq') AS _custgrp_id;");
+      customeret.exec("SELECT NEXTVAL('groups_groups_id_seq') AS _groups_id;");
       if (customeret.first())
-        _custgrpid = customeret.value("_custgrp_id").toInt();
+        _custgrpid = customeret.value("_groups_id").toInt();
       else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Retrieving Customer Group Information"),
                                     customeret, __FILE__, __LINE__))
       {
@@ -107,14 +108,14 @@ void customerGroup::sCheck()
   _name->setText(_name->text().trimmed());
   if ((_mode == cNew) && (_name->text().length()))
   {
-    customerCheck.prepare( "SELECT custgrp_id "
+    customerCheck.prepare( "SELECT groups_id "
                "FROM custgrp "
-               "WHERE (UPPER(custgrp_name)=UPPER(:custgrp_name));" );
-    customerCheck.bindValue(":custgrp_name", _name->text());
+               "WHERE (UPPER(groups_name)=UPPER(:groups_name));" );
+    customerCheck.bindValue(":groups_name", _name->text());
     customerCheck.exec();
     if (customerCheck.first())
     {
-      _custgrpid = customerCheck.value("custgrp_id").toInt();
+      _custgrpid = customerCheck.value("groups_id").toInt();
       _mode = cEdit;
       populate();
 
@@ -136,10 +137,10 @@ void customerGroup::sClose()
   if (_mode == cNew)
   {
     customerClose.prepare( "DELETE FROM custgrpitem "
-               "WHERE (custgrpitem_custgrp_id=:custgrp_id);"
+               "WHERE (groupsitem_groups_id=:groups_id);"
                "DELETE FROM custgrp "
-               "WHERE (custgrp_id=:custgrp_id);" );
-    customerClose.bindValue(":custgrp_id", _custgrpid);
+               "WHERE (groups_id=:groups_id);" );
+    customerClose.bindValue(":groups_id", _custgrpid);
     customerClose.exec();
     if (customerClose.lastError().type() != QSqlError::NoError)
     {
@@ -151,7 +152,12 @@ void customerGroup::sClose()
   reject();
 }
 
-void customerGroup::sSave()
+void customerGroup::sSaveClicked()
+{
+  sSave(false);
+}
+
+void customerGroup::sSave(bool pPartial)
 {
   XSqlQuery customerSave;
 
@@ -162,12 +168,12 @@ void customerGroup::sSave()
   if(GuiErrorCheck::reportErrors(this,tr("Cannot Save Customer Group"),errors))
       return;
 
-  customerSave.prepare("SELECT custgrp_id"
+  customerSave.prepare("SELECT groups_id"
             "  FROM custgrp"
-            " WHERE((custgrp_name=:custgrp_name)"
-            "   AND (custgrp_id != :custgrp_id))");
-  customerSave.bindValue(":custgrp_id", _custgrpid);
-  customerSave.bindValue(":custgrp_name", _name->text());
+            " WHERE((groups_name=:groups_name)"
+            "   AND (groups_id != :groups_id))");
+  customerSave.bindValue(":groups_id", _custgrpid);
+  customerSave.bindValue(":groups_name", _name->text());
   customerSave.exec();
   if(customerSave.first())
   {
@@ -177,19 +183,19 @@ void customerGroup::sSave()
     return;
   }
 
-  if (_mode == cNew)
+  if (_mode == cNew && !_saved)
     customerSave.prepare( "INSERT INTO custgrp "
-               "(custgrp_id, custgrp_name, custgrp_descrip) "
+               "(groups_id, groups_name, groups_descrip) "
                "VALUES "
-               "(:custgrp_id, :custgrp_name, :custgrp_descrip);" );
+               "(:groups_id, :groups_name, :groups_descrip);" );
   else if (_mode == cEdit)
     customerSave.prepare( "UPDATE custgrp "
-               "SET custgrp_name=:custgrp_name, custgrp_descrip=:custgrp_descrip "
-               "WHERE (custgrp_id=:custgrp_id);" );
+               "SET groups_name=:groups_name, groups_descrip=:groups_descrip "
+               "WHERE (groups_id=:groups_id);" );
 
-  customerSave.bindValue(":custgrp_id", _custgrpid);
-  customerSave.bindValue(":custgrp_name", _name->text());
-  customerSave.bindValue(":custgrp_descrip", _descrip->text().trimmed());
+  customerSave.bindValue(":groups_id", _custgrpid);
+  customerSave.bindValue(":groups_name", _name->text());
+  customerSave.bindValue(":groups_descrip", _descrip->text().trimmed());
   customerSave.exec();
   if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Saving Customer Group"),
                                 customerSave, __FILE__, __LINE__))
@@ -197,14 +203,17 @@ void customerGroup::sSave()
     return;
   }
 
-  done(_custgrpid);
+  _saved = true;
+
+  if (!pPartial)
+    done(_custgrpid);
 }
 
 void customerGroup::sDelete()
 {
   XSqlQuery customerDelete;
   customerDelete.prepare( "DELETE FROM custgrpitem "
-             "WHERE (custgrpitem_id=:custgrpitem_id);" );
+             "WHERE (groupsitem_id=:custgrpitem_id);" );
   customerDelete.bindValue(":custgrpitem_id", _custgrpitem->id());
   customerDelete.exec();
   if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Deleting Customer From Group"),
@@ -221,18 +230,24 @@ void customerGroup::sNew()
   XSqlQuery customerNew;
   ParameterList params;
 
+  if (!_saved)
+    sSave(true);
+
   CRMAcctSearch *newdlg = new CRMAcctSearch(this);
   newdlg->setSubtype(CRMAcctLineEdit::Cust);
 
   int custid;
   if ((custid = newdlg->exec()) != XDialog::Rejected)
   {
-    customerNew.prepare( "SELECT custgrpitem_id "
+    if (custid == -1)
+      return;
+
+    customerNew.prepare( "SELECT groupsitem_id "
                "FROM custgrpitem "
-               "WHERE ( (custgrpitem_custgrp_id=:custgrpitem_custgrp_id)"
-               " AND (custgrpitem_cust_id=:custgrpitem_cust_id) );" );
-    customerNew.bindValue(":custgrpitem_custgrp_id", _custgrpid);
-    customerNew.bindValue(":custgrpitem_cust_id", custid);
+               "WHERE ( (groupsitem_groups_id=:groupsitem_groups_id)"
+               " AND (groupsitem_reference_id=:groupsitem_reference_id) );" );
+    customerNew.bindValue(":groupsitem_groups_id", _custgrpid);
+    customerNew.bindValue(":groupsitem_reference_id", custid);
     customerNew.exec();
     if (customerNew.first())
       return;
@@ -243,11 +258,11 @@ void customerGroup::sNew()
     }
 
     customerNew.prepare( "INSERT INTO custgrpitem "
-               "(custgrpitem_custgrp_id, custgrpitem_cust_id) "
+               "(groupsitem_groups_id, groupsitem_reference_id) "
                "VALUES "
-               "(:custgrpitem_custgrp_id, :custgrpitem_cust_id);" );
-    customerNew.bindValue(":custgrpitem_custgrp_id", _custgrpid);
-    customerNew.bindValue(":custgrpitem_cust_id", custid);
+               "(:groupsitem_groups_id, :groupsitem_reference_id);" );
+    customerNew.bindValue(":groupsitem_groups_id", _custgrpid);
+    customerNew.bindValue(":groupsitem_reference_id", custid);
     customerNew.exec();
     if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Adding Customer To Group"),
                                   customerNew, __FILE__, __LINE__))
@@ -262,12 +277,12 @@ void customerGroup::sNew()
 void customerGroup::sFillList()
 {
   XSqlQuery customerFillList;
-  customerFillList.prepare( "SELECT custgrpitem_id, cust_number, cust_name "
+  customerFillList.prepare( "SELECT groupsitem_id, cust_number, cust_name "
              "FROM custgrpitem, custinfo "
-             "WHERE ( (custgrpitem_cust_id=cust_id) "
-             " AND (custgrpitem_custgrp_id=:custgrp_id) ) "
+             "WHERE ( (groupsitem_reference_id=cust_id) "
+             " AND (groupsitem_groups_id=:groups_id) ) "
              "ORDER BY cust_number;" );
-  customerFillList.bindValue(":custgrp_id", _custgrpid);
+  customerFillList.bindValue(":groups_id", _custgrpid);
   customerFillList.exec();
   _custgrpitem->populate(customerFillList);
   if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Retrieving Customer Group Information"),
@@ -280,15 +295,15 @@ void customerGroup::sFillList()
 void customerGroup::populate()
 {
   XSqlQuery customerpopulate;
-  customerpopulate.prepare( "SELECT custgrp_name, custgrp_descrip "
+  customerpopulate.prepare( "SELECT groups_name, groups_descrip "
              "FROM custgrp "
-             "WHERE (custgrp_id=:custgrp_id);" );
-  customerpopulate.bindValue(":custgrp_id", _custgrpid);
+             "WHERE (groups_id=:groups_id);" );
+  customerpopulate.bindValue(":groups_id", _custgrpid);
   customerpopulate.exec();
   if (customerpopulate.first())
   {
-    _name->setText(customerpopulate.value("custgrp_name").toString());
-    _descrip->setText(customerpopulate.value("custgrp_descrip").toString());
+    _name->setText(customerpopulate.value("groups_name").toString());
+    _descrip->setText(customerpopulate.value("groups_descrip").toString());
     _save->setEnabled(true);
     _new->setEnabled(true);
   }

@@ -384,9 +384,9 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
     typeDescrip.insert(XComboBox::CustomerGroups,
                        new XComboBoxDescrip(XComboBox::CustomerGroups,
                        "customerGroups", "MaintainCustomerGroups",
-                       "SELECT custgrp_id, custgrp_name, custgrp_name"
+                       "SELECT groups_id AS custgrp_id, groups_name AS custgrp_name, groups_name AS custgrp_name"
                        "  FROM custgrp"
-                       " ORDER BY custgrp_name;", "custgrp"));
+                       " ORDER BY groups_name;", "custgrp"));
     typeDescrip.insert(XComboBox::CustomerTypes,
                        new XComboBoxDescrip(XComboBox::CustomerTypes,
                        "customerTypes", "MaintainCustomerTypes",

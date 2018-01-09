@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -28,8 +28,8 @@ customerGroups::customerGroups(QWidget* parent, const char* name, Qt::WindowFlag
   connect(_delete, SIGNAL(clicked()), this, SLOT(sDelete()));
   connect(_view, SIGNAL(clicked()), this, SLOT(sView()));
 
-  _custgrp->addColumn(tr("Name"), _itemColumn, Qt::AlignLeft, true, "custgrp_name");
-  _custgrp->addColumn(tr("Description"),   -1, Qt::AlignLeft, true, "custgrp_descrip");
+  _custgrp->addColumn(tr("Name"), _itemColumn, Qt::AlignLeft, true, "groups_name");
+  _custgrp->addColumn(tr("Description"),   -1, Qt::AlignLeft, true, "groups_descrip");
   
   if (_privileges->check("MaintainCustomerGroups"))
   {
@@ -66,10 +66,10 @@ void customerGroups::sDelete()
   
   XSqlQuery customerDelete;
   customerDelete.prepare( "DELETE FROM custgrpitem "
-             "WHERE (custgrpitem_custgrp_id=:custgrp_id); "
+             "WHERE (groupsitem_groups_id=:groups_id); "
              "DELETE FROM custgrp "
-             "WHERE (custgrp_id=:custgrp_id);" );
-  customerDelete.bindValue(":custgrp_id", _custgrp->id());
+             "WHERE (groups_id=:groups_id);" );
+  customerDelete.bindValue(":groups_id", _custgrp->id());
   customerDelete.exec();
 
   sFillList();
@@ -90,7 +90,7 @@ void customerGroups::sEdit()
 {
   ParameterList params;
   params.append("mode", "edit");
-  params.append("custgrp_id", _custgrp->id());
+  params.append("groups_id", _custgrp->id());
 
   customerGroup newdlg(this, "", true);
   newdlg.set(params);
@@ -102,7 +102,7 @@ void customerGroups::sView()
 {
   ParameterList params;
   params.append("mode", "view");
-  params.append("custgrp_id", _custgrp->id());
+  params.append("groups_id", _custgrp->id());
 
   customerGroup newdlg(this, "", true);
   newdlg.set(params);
@@ -111,7 +111,7 @@ void customerGroups::sView()
 
 void customerGroups::sFillList()
 {
-  _custgrp->populate( "SELECT custgrp_id, custgrp_name, custgrp_descrip "
+  _custgrp->populate( "SELECT groups_id, groups_name, groups_descrip "
                       "FROM custgrp "
-                      "ORDER BY custgrp_name;" );
+                      "ORDER BY groups_name;" );
 }
