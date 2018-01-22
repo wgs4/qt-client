@@ -454,6 +454,7 @@ bool issueToShipping::sIssueLineBalance(int id, int altId)
 
   XSqlQuery issueDetail;
   issueDetail.prepare("SELECT calcIssueToShippingLineBalance(:orderType, :orderitemId) AS balance, "
+                       "  orderitem_qty_invuomratio, "
                        "  isControlledItemsite(orderitem_itemsite_id) AS controlled, "
                        "  isControlledItemsite(wo_itemsite_id) AS woItemControlled, "
                        "  orderitem_itemsite_id AS itemsite_id, wo_id, wo_itemsite_id, "
@@ -530,7 +531,7 @@ bool issueToShipping::sIssueLineBalance(int id, int altId)
   parentItemlocdist.prepare("SELECT createItemlocdistParent(:itemsite_id, :qty, :orderType, :orderitemId, "
     ":itemlocSeries, NULL, NULL, :transType) AS result;");
   parentItemlocdist.bindValue(":itemsite_id", itemsiteId);
-  parentItemlocdist.bindValue(":qty", balance * -1);
+  parentItemlocdist.bindValue(":qty", balance * issueDetail.value("orderitem_qty_invuomratio").toDouble() * -1);
   parentItemlocdist.bindValue(":orderitemId", id);
   parentItemlocdist.bindValue(":itemlocSeries", itemlocSeries);
   parentItemlocdist.bindValue(":orderType", _order->type());
@@ -720,33 +721,6 @@ bool issueToShipping::sIssueLineBalance(int id, int altId)
       return false;
     }
 
-  	// If Transfer Order then insert special pre-assign records for the lot/serial#
-  	// so they are available when the Transfer Order is received
-  	if (_order->type() == "TO")
-  	{
-        XSqlQuery lsdetail;
-        lsdetail.prepare("INSERT INTO lsdetail "
-  	                     " (lsdetail_itemsite_id, lsdetail_created, lsdetail_source_type, "
-  	  				           "  lsdetail_source_id, lsdetail_source_number, lsdetail_ls_id, lsdetail_qtytoassign, "
-                         "  lsdetail_expiration, lsdetail_warrpurc ) "
-  					             "SELECT invhist_itemsite_id, NOW(), 'TR', "
-  					             "   :orderitemid, invhist_ordnumber, invdetail_ls_id, (invdetail_qty * -1.0), "
-                         "   invdetail_expiration, invdetail_warrpurc "
-  					             "FROM invhist JOIN invdetail ON (invdetail_invhist_id=invhist_id) "
-  					             "WHERE invhist_series=:itemlocseries;");
-        lsdetail.bindValue(":orderitemid", id);
-        lsdetail.bindValue(":itemlocseries", itemlocSeries);
-        lsdetail.exec();
-        if (lsdetail.lastError().type() != QSqlError::NoError)
-        {
-          rollback.exec();
-          cleanup.exec();
-          ErrorReporter::error(QtCriticalMsg, this, tr("Error Issuing Item"),
-                               lsdetail, __FILE__, __LINE__);
-          return false;
-        }
-  	}
-	
     issue.exec("COMMIT;");
   }
   else if (issue.lastError().type() != QSqlError::NoError)

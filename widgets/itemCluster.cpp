@@ -279,6 +279,7 @@ ItemLineEdit::ItemLineEdit(QWidget* pParent, const char* pName) :
   _id = -1;
   _configured = false;
   _fractional = false;
+  _crmacct = 0;
   _delegate = new ItemLineEditDelegate(this);
 
   connect(_aliasAct, SIGNAL(triggered()), this, SLOT(sAlias()));
@@ -578,7 +579,7 @@ void ItemLineEdit::sHandleCompleter()
     numQ.prepare(QString("SELECT *"
                          "  FROM (%1) data"
                          " WHERE (POSITION(:number IN item_number)=1)"
-                         " LIMIT 10")
+                         " ORDER BY item_number LIMIT 10")
                  .arg(QString(_sql)).remove(";"));
     numQ.bindValue(":number", stripped);
   }
@@ -798,8 +799,9 @@ void ItemLineEdit::sParse()
            _useValidationQuery, _useQuery);
   if (_completerId)
   {
-    setId(_completerId);
+    int id = _completerId;
     _completerId = 0;
+    setId(id);
   }
   else if (!_parsed)
   {

@@ -11,6 +11,7 @@
 #ifndef INCIDENT_H
 #define INCIDENT_H
 
+#include "applock.h"
 #include "guiclient.h"
 #include "xdialog.h"
 #include <QStringList>
@@ -40,6 +41,7 @@ public:
 public slots:
     virtual SetResponse set( const ParameterList & pParams );
     virtual void sCancel();
+    virtual void setViewMode();
     virtual void sCRMAcctChanged(const int);
     virtual void sDeleteTodoItem();
     virtual void sEditTodoItem();
@@ -51,10 +53,13 @@ public slots:
     virtual void sSave();
     virtual void sPrint();
     virtual void sViewTodoItem();
+    virtual void sIncidentHistory();
     virtual void sReturn();
     virtual void sViewAR();
     virtual void sAssigned();
     virtual void sNewCharacteristic();
+
+    virtual void setVisible(bool);
 
 signals:
     void populated();
@@ -70,6 +75,8 @@ private:
     bool	_saved;
     QString     _ardoctype;
     QStringList	_statusCodes;
+    bool        _close;
+    AppLock     _lock;
     
 };
 

@@ -50,6 +50,8 @@
 #include "errorReporter.h"
 #include "login2.h"
 #include "storedProcErrorLookup.h"
+#include "metasql.h"
+#include "mqlutil.h"
 
 #include "systemMessage.h"
 #include "menuProducts.h"
@@ -812,19 +814,10 @@ void GUIClient::showEvent(QShowEvent *event)
     _shown = true;
     // We only want the scripting to work on the NEO menu
     // START script code
-      XSqlQuery sq;
-      sq.prepare("SELECT script_source "
-                 "  FROM script "
-                 "JOIN (SELECT c.oid, n.nspname AS schema "
-                 "  FROM pg_class AS c "
-                 "  JOIN pg_namespace AS n ON c.relnamespace=n.oid) AS schema_table "
-                 "ON script.tableoid=schema_table.oid "
-                 "JOIN (SELECT regexp_split_to_table AS pkgname, row_number() over () AS seq "
-                 "  FROM regexp_split_to_table(buildsearchpath(), ',')) AS path "
-                 "ON pkgname = schema "
-                 " WHERE script_enabled AND script_name = 'initMenu' "
-                 "ORDER BY script_order, seq;");
-      sq.exec();
+      ParameterList params;
+      params.append("jsonlist", "{\"1\": \"initMenu\"}");
+      MetaSQLQuery mql = mqlLoad("scripts", "fetch");
+      XSqlQuery sq = mql.toQuery(params);
       QScriptEngine * engine = 0;
       QScriptEngineDebugger * debugger = 0;
       bool found_one = false;
@@ -1619,17 +1612,24 @@ QString translationFile(QString localestr, const QString component)
 QString translationFile(QString localestr, const QString component, QString &version)
 {
   QStringList paths;
+
   paths << QStandardPaths::standardLocations(QStandardPaths::AppLocalDataLocation)
         << QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
+
 #if defined Q_OS_MAC
   paths << QApplication::applicationDirPath() + "/../Resources";
 #else
-  paths << QApplication::applicationDirPath()
-        << "/usr/lib/postbooks";
+  paths << QApplication::applicationDirPath();
 #endif
+
+#if defined Q_OS_LINUX
+  paths << "/usr/lib/postbooks";
+#endif
+
   (void)paths.removeDuplicates();
-  for (int i = paths.length(); i > 0; i--)
-    paths.insert(i, paths.at(i - 1) + "/dict");
+
+  for (int i=0; i < paths.length(); i++)
+    paths[i] = paths[i] + "/dict";
 
   QString filename = component + "." + localestr;
   QString versiondir;
@@ -1645,7 +1645,10 @@ QString translationFile(QString localestr, const QString component, QString &ver
       return testDir + versiondir + "/" + filename;
   }
 
-  QString dir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+  if (component=="xTuple" || component=="openrpt" || component=="reports")
+    return "";
+
+  QString dir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/dict";
   QDir mkdir(dir);
   if (!mkdir.exists())
     mkdir.mkpath(dir);
@@ -1659,9 +1662,9 @@ QString translationFile(QString localestr, const QString component, QString &ver
                "  LEFT OUTER JOIN country ON dict_country_id=country_id "
                " WHERE nspname=:extension "
                "   AND lang_abbr2=:lang "
-               "   AND (country_abbr=:country OR :country IS NULL) "
+               "   AND COALESCE(country_abbr, '')=COALESCE(:country, '') "
                "   AND dict_version=:version;");
-  data.bindValue(":extension", component=="xTuple" ? "public" : component);
+  data.bindValue(":extension", component);
   data.bindValue(":lang", localestr.split("_")[0]);
   if (localestr.contains("_"))
     data.bindValue(":country", localestr.split("_")[1].toUpper());
