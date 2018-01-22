@@ -134,7 +134,7 @@ void ContactWidget::init()
     _email->insertEditor(XComboBox::Adhoc, this, SLOT(sEditEmailList()));
     _emailopt           = new QCheckBox(tr("Opt In"), this);
     _emailopt->setObjectName("_emailopt");
-    _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
+    _emailopt->setChecked(_x_metrics && _x_metrics->boolean("DefaultEmailOptIn"));
 
     _emailBox->addWidget(_email, 2);
     _emailBox->addWidget(_emailopt, 0);
@@ -478,7 +478,7 @@ void ContactWidget::clear()
   _initials->clear();
   _title->clear();
   _email->clear();
-  _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
+  _emailopt->setChecked(_x_metrics && _x_metrics->boolean("DefaultEmailOptIn"));
   _webaddr->clear();
   _address->clear();
   _active->setChecked(true);

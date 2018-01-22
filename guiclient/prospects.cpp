@@ -34,6 +34,7 @@ prospects::prospects(QWidget* parent, const char*, Qt::WindowFlags fl)
   parameterWidget()->append(tr("Show Inactive"), "showInactive", ParameterWidget::Exists);
   parameterWidget()->append(tr("Prospect Number Pattern"), "prospect_number_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Prospect Name Pattern"), "prospect_name_pattern", ParameterWidget::Text);
+  parameterWidget()->appendComboBox(tr("Prospect Group"), "pspctgrp", XComboBox::ProspectGroups);
   parameterWidget()->append(tr("Owner"), "owner", ParameterWidget::User);
   parameterWidget()->append(tr("Assigned"), "assigned", ParameterWidget::User);
   parameterWidget()->appendComboBox(tr("Source"), "source", XComboBox::OpportunitySources);

@@ -2,13 +2,13 @@
 <ui version="4.0">
  <comment>This file is part of the xTuple ERP: PostBooks Edition, a free and
 open source Enterprise Resource Planning software suite,
-Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
+Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
 It is licensed to you under the Common Public Attribution License
 version 1.0, the full text of which (including xTuple-specific Exhibits)
 is available at www.xtuple.com/CPAL.  By using this software, you agree
 to be bound by its terms.</comment>
- <class>customerGroup</class>
- <widget class="QDialog" name="customerGroup">
+ <class>crmGroup</class>
+ <widget class="QDialog" name="crmGroup">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -18,7 +18,7 @@ to be bound by its terms.</comment>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Customer Group</string>
+   <string>Group</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -194,9 +194,9 @@ to be bound by its terms.</comment>
      </property>
 
      <item>
-      <widget class="QLabel" name="_memberCustomersLit">
+      <widget class="QLabel" name="_memberLit">
        <property name="text">
-        <string>Member Customers:</string>
+        <string>Members:</string>
        </property>
       </widget>
      </item>
@@ -209,7 +209,7 @@ to be bound by its terms.</comment>
         <number>0</number>
        </property>
        <item>
-        <widget class="XTreeWidget" name="_custgrpitem"/>
+        <widget class="XTreeWidget" name="_grpitem"/>
        </item>
        <item>
         <layout class="QVBoxLayout">
@@ -289,7 +289,7 @@ to be bound by its terms.</comment>
  <tabstops>
   <tabstop>_name</tabstop>
   <tabstop>_descrip</tabstop>
-  <tabstop>_custgrpitem</tabstop>
+  <tabstop>_grpitem</tabstop>
   <tabstop>_delete</tabstop>
   <tabstop>_new</tabstop>
   <tabstop>_close</tabstop>

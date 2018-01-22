@@ -1,49 +1,53 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
  * to be bound by its terms.
  */
 
-#ifndef EMPGROUP_H
-#define EMPGROUP_H
+#ifndef CRMGROUP_H
+#define CRMGROUP_H
 
 #include "guiclient.h"
 #include "xdialog.h"
 #include <parameter.h>
 
-#include "ui_empGroup.h"
+#include "crmGroups.h"
 
-class empGroup : public XDialog, public Ui::empGroup
+#include "ui_crmGroup.h"
+
+class crmGroup : public XDialog, public Ui::crmGroup
 {
     Q_OBJECT
 
 public:
-    empGroup(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
-    ~empGroup();
-
-    static  bool userHasPriv(const int = cView);
-    virtual void setVisible(bool);
+    crmGroup(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    ~crmGroup();
 
 public slots:
-    virtual bool close();
-    virtual void populate();
     virtual enum SetResponse set(const ParameterList & pParams );
     virtual void sCheck();
-    virtual void sSave(const bool = true);
+    virtual void sClose();
+    virtual void sSaveClicked();
+    virtual void sSave(bool pPartial);
     virtual void sDelete();
     virtual void sNew();
     virtual void sFillList();
+    virtual void populate();
 
 protected slots:
     virtual void languageChange();
 
 private:
     int _mode;
-    int _empgrpid;
+    int _grpid;
+    bool _saved;
+
+    static QMap<int, struct GroupMap*> _grpMap;
+    GroupMap *_elem;
 };
 
-#endif // EMPGROUP_H
+#endif // CRMGROUP_H

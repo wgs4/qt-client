@@ -22,6 +22,7 @@
 #include <QFont>
 #endif
 
+#include "format.h"
 #include "parameterwidget.h"
 #include "widgets.h"
 #include "xcombobox.h"
@@ -41,6 +42,7 @@
 #include "shiptocluster.h"
 #include "ordercluster.h"
 #include "wocluster.h"
+#include "xdoublevalidator.h"
 
 #define DEBUG false
 
@@ -111,7 +113,7 @@ ParameterWidget::ParameterWidget(QWidget *pParent, const char *pName)  :
   connect(_filterButton,          SIGNAL(toggled(bool)), this, SLOT(setFiltersVisible(bool)));
   connect(_filterList, SIGNAL(currentIndexChanged(int)), this, SLOT(applySaved(int)));
   connect(_filterList, SIGNAL(currentIndexChanged(int)), this, SLOT(setFiltersDefault()));
-  connect(_filterSignalMapper,      SIGNAL(mapped(int)), this, SLOT(removeParam(int)));
+  connect(_filterSignalMapper,      SIGNAL(mapped(int)), this, SLOT(removeFilter(int)));
   connect(_manageButton,              SIGNAL(clicked()), this, SLOT(sManageFilters()));
   connect(_saveButton,                SIGNAL(clicked()), this, SLOT(save()));
   connect(this,                       SIGNAL(updated()), this, SLOT(toggleSave()));
@@ -226,7 +228,7 @@ void ParameterWidget::addParam()
 {
   XComboBox   *xcomboBox     = new XComboBox(_filterGroup);
   QToolButton *toolButton    = new QToolButton(_filterGroup);
-  QLineEdit   *lineEdit      = new QLineEdit(_filterGroup);
+  QLineEdit   *lineEdit      = new XLineEdit(_filterGroup);
   QGridLayout *gridLayout    = new QGridLayout();
   QVBoxLayout *xcomboLayout  = new QVBoxLayout();
   QHBoxLayout *widgetLayout1 = new QHBoxLayout();
@@ -412,6 +414,17 @@ void ParameterWidget::appendComboBox(QString pName, QString pParam, QString pQue
     pp->enabled = true;
     _params.insert(_params.count(), pp);
   }
+}
+
+/** @brief Remove a filter from the set of available filters.
+  @param pName      The user-visible name for this filter to distinguish
+                    it from other filters in the same set
+*/
+void ParameterWidget::removeParam(QString pName)
+{
+  int pidx = paramIndex(pName);
+  _params.remove(pidx);
+  repopulateComboboxes();
 }
 
 void ParameterWidget::applySaved(int pId, int filter_id)
@@ -880,12 +893,12 @@ void ParameterWidget::applySaved(int pId, int filter_id)
           break;
       default:
         {
-        QLineEdit *lineEdit = qobject_cast<QLineEdit*>(found);
-        if (lineEdit != 0)
-        {
-          lineEdit->setText(pp->defaultValue.toString());
-          storeFilterValue(-1, lineEdit);
-        }
+          QLineEdit *lineEdit = qobject_cast<QLineEdit*>(found);
+          if (lineEdit != 0)
+          {
+            lineEdit->setText(pp->defaultValue.toString());
+            storeFilterValue(-1, lineEdit);
+          }
         }
         break;
       }
@@ -1219,6 +1232,15 @@ void ParameterWidget::changeFilterObject(int index)
       connect(checkBox, SIGNAL(stateChanged(int)), this, SLOT( storeFilterValue(int) ) );
     }
     break;
+  case Numeric:
+    {
+      QLineEdit *lineEdit = new QLineEdit(_filterGroup);
+      newWidget = lineEdit;
+      lineEdit->setValidator(new XDoubleValidator(0, 99999999,  decimalPlaces("salesprice"), this));
+
+      connect(lineEdit, SIGNAL(textChanged(QString)), this, SLOT( storeFilterValue() ) );
+    }
+    break;
   default:
     {
       QLineEdit *lineEdit = new QLineEdit(_filterGroup);
@@ -1348,7 +1370,7 @@ void ParameterWidget::addUsedType()
   _usedTypes[row] = mybox->currentText();
 }
 
-void ParameterWidget::removeParam(int pRow)
+void ParameterWidget::removeFilter(int pRow)
 {
   QLayoutItem *test;
   QLayoutItem *test2;

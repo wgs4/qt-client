@@ -146,6 +146,9 @@ static QString countryMQL("SELECT country_id, country_name, country_name"
                           "  FROM country"
                           " <? if exists('Qt') ?>WHERE country_qt_number IS NOT NULL<? endif ?>"
                           " ORDER BY country_name;");
+static QString crmgroupMQL("SELECT groups_id, groups_name, groups_name"
+                           " FROM <? literal('group') ?> "
+                           " ORDER BY groups_name;");
 static QString crmroleMQL("SELECT crmrole_id, crmrole_name, crmrole_name"
                           "  FROM crmrole"
                           "  WHERE true"
@@ -347,6 +350,10 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
                        new XComboBoxDescrip(XComboBox::ContactCommentTypes,
                        "commentTypes", "MaintainCommentTypes",
                        cmnttypeMQL, "cmnttype", true, "source_name", "T"));
+    typeDescrip.insert(XComboBox::ContactGroups,
+                       new XComboBoxDescrip(XComboBox::ContactGroups,
+                       QString(), QString(),
+                       crmgroupMQL, QString(), false, "group", "cntctgrp"));
     typeDescrip.insert(XComboBox::Contracts,
                        new XComboBoxDescrip(XComboBox::Contracts,
                        "", "",
@@ -383,10 +390,8 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
                        cmnttypeMQL, "cmnttype", true, "source_name", "C"));
     typeDescrip.insert(XComboBox::CustomerGroups,
                        new XComboBoxDescrip(XComboBox::CustomerGroups,
-                       "customerGroups", "MaintainCustomerGroups",
-                       "SELECT groups_id AS custgrp_id, groups_name AS custgrp_name, groups_name AS custgrp_name"
-                       "  FROM custgrp"
-                       " ORDER BY groups_name;", "custgrp"));
+                       QString(), QString(),
+                       crmgroupMQL, QString(), false, "group", "custgrp"));
     typeDescrip.insert(XComboBox::CustomerTypes,
                        new XComboBoxDescrip(XComboBox::CustomerTypes,
                        "customerTypes", "MaintainCustomerTypes",
@@ -395,6 +400,10 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
                        "       custtype_code"
                        "  FROM custtype"
                        " ORDER BY custtype_code;", "custtype"));
+    typeDescrip.insert(XComboBox::EmployeeGroups,
+                       new XComboBoxDescrip(XComboBox::EmployeeGroups,
+                       QString(), QString(),
+                       crmgroupMQL, QString(), false, "group", "empgrp"));
     typeDescrip.insert(XComboBox::EmployeeCommentTypes,
                        new XComboBoxDescrip(XComboBox::EmployeeCommentTypes,
                        "commentTypes", "MaintainCommentTypes",
@@ -562,6 +571,10 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
                        "       prodcat_code"
                        "  FROM prodcat"
                        " ORDER BY prodcat_code;", "prodcat"));
+    typeDescrip.insert(XComboBox::ProspectGroups,
+                       new XComboBoxDescrip(XComboBox::ProspectGroups,
+                       QString(), QString(),
+                       crmgroupMQL, QString(), false, "group", "pspctgrp"));
     typeDescrip.insert(XComboBox::ProfitCenters,
                        new XComboBoxDescrip(XComboBox::ProfitCenters,
                        "profitCenters", "MaintainChartOfAccounts",

@@ -45,6 +45,7 @@ contacts::contacts(QWidget* parent, const char*, Qt::WindowFlags fl)
     parameterWidget()->append(tr("Owner"), "owner_username", ParameterWidget::User);
     parameterWidget()->append(tr("Owner Pattern"), "owner_usr_pattern", ParameterWidget::Text);
   }
+  parameterWidget()->appendComboBox(tr("Contact Group"), "cntctgrp", XComboBox::ContactGroups);
   parameterWidget()->append(tr("Account"), "crmacct_id", ParameterWidget::Crmacct);
   parameterWidget()->append(tr("Name Pattern"), "cntct_name_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Phone Pattern"), "cntct_phone_pattern", ParameterWidget::Text);
