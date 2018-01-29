@@ -14,6 +14,7 @@
 #include <QSqlError>
 #include <QVariant>
 
+#include "addresscluster.h"
 #include "crmacctcluster.h"
 #include "contactcluster.h"
 #include "errorReporter.h"
@@ -264,8 +265,10 @@ void crmGroup::sNew()
   if (!_saved)
     sSave(true);
 
-  CRMAcctSearch *newdlg = new CRMAcctSearch(this);
+  CRMAcctSearch *newdlg  = new CRMAcctSearch(this);
   ContactSearch *newdlg2 = new ContactSearch(this);
+  AddressSearch *newdlg3 = new AddressSearch(this);
+
   QString uiName = _elem->search;
   if (uiName == "CRMAcctSearch")
   {
@@ -274,6 +277,8 @@ void crmGroup::sNew()
   }
   else if  (uiName == "ContactSearch")
      refid = newdlg2->exec();
+  else if  (uiName == "AddressSearch")
+     refid = newdlg3->exec();
 
   if (refid < 1)
     return;

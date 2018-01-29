@@ -142,6 +142,33 @@ void displayPrivate::sFilterChanged()
   _filterChanged = true;
 }
 
+void displayPrivate::sSavedFilterApplied(int pFilter, QString pColumns)
+{
+  QString     savedString;
+  QStringList savedParts;
+  QString     part, key, val;
+  bool        _forgetfulCache;
+
+  // Have to turn off list forgetfulness otherwise we override user preferences
+  _forgetfulCache = _list->_forgetful;
+  if (!_list->_forgetful)
+    _list->sToggleForgetfulness();
+
+  savedString = pColumns != "" ? pColumns : _x_preferences->value(_list->_settingsName + "/columnsShown");
+
+  savedParts = savedString.split("|", QString::SkipEmptyParts);
+  for (int i = 0; i < savedParts.size(); i++)
+  {
+    part = savedParts.at(i);
+    key  = part.left(part.indexOf(","));
+    val  = part.right(part.length() - part.indexOf(",") - 1);
+    _list->setColumnVisible(_list->column(key), (val == "on" ? true : false));
+  }
+
+  if (_forgetfulCache != _list->_forgetful)
+    _list->sToggleForgetfulness();
+}
+
 void displayPrivate::print(ParameterList pParams, bool showPreview, bool forceSetParams)
 {
   int numCopies = 1;
@@ -425,6 +452,7 @@ void display::showEvent(QShowEvent * e)
   // don't overwrite the user's filter when the window is minimized
   if (! _data->_filterChanged)
   {
+    connect(parameterWidget(), SIGNAL(filterApplySaved(int, QString)), _data, SLOT(sSavedFilterApplied(int, QString)), Qt::UniqueConnection);
     parameterWidget()->applyDefaultFilterSet();
     connect(parameterWidget(), SIGNAL(filterChanged()), _data, SLOT(sFilterChanged()), Qt::UniqueConnection);
   }
@@ -538,6 +566,15 @@ void display::setupCharacteristics(QString uses)
   QStringList ulist;
   ulist << uses;
   _data->setupCharacteristics(ulist);
+}
+
+QString display::listColumnVisibility()
+{
+  QString savedString = "";
+  for (int i = 0; i < _data->_list->header()->count(); i++)
+    savedString.append(_data->_list->column(i) + "," + (_data->_list->header()->isSectionHidden(i) ? "off" : "on") + "|");
+
+  return savedString;
 }
 
 void display::setReportName(const QString & reportName)

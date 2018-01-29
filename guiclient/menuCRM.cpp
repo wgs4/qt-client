@@ -129,7 +129,9 @@ menuCRM::menuCRM(GUIClient *Pparent) :
     // CRM | Address
     { "menu",		tr("A&ddress"),		(char*)addressMenu,	crmMenu,		"true", NULL, NULL, true	, NULL },
     { "crm.address",	tr("&New..."),		SLOT(sAddress()),	addressMenu,	"MaintainAddresses", NULL, NULL, true	, NULL },
-    { "crm.addresses",	tr("&List..."),	SLOT(sAddresses()),	addressMenu,	"MaintainAddresses ViewAddresses", NULL, NULL, true , NULL },
+    { "crm.addresses",	tr("&List..."),	        SLOT(sAddresses()),	addressMenu,	"MaintainAddresses ViewAddresses", NULL, NULL, true , NULL },
+    { "separator",		NULL,				NULL,	addressMenu,	"true", NULL, NULL, true	, NULL },
+    { "crm.addressGroups", tr("&Groups..."),  SLOT(sAddressGroups()),   addressMenu,   "MaintainAddressGroups ViewAddressGroups",	NULL, NULL, true, NULL },
 
     // CRM | Prospect
     { "menu",	tr("&Prospect"),              (char*)prospectCRMMenu,	crmMenu,	"true",	NULL, NULL, true, NULL },
@@ -318,6 +320,16 @@ void menuCRM::sAddress()
 void menuCRM::sAddresses()
 {
   omfgThis->handleNewWindow(new addresses());
+}
+
+void menuCRM::sAddressGroups()
+{
+  ParameterList params;
+  params.append("groupType", crmGroups::Address);
+
+  crmGroups *newdlg = new crmGroups();
+  newdlg->set(params);
+  omfgThis->handleNewWindow(newdlg);
 }
 
 void menuCRM::sIncidentWorkbench()

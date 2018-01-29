@@ -433,6 +433,7 @@ void ParameterWidget::applySaved(int pId, int filter_id)
   XSqlQuery qry;
   QString query;
   QString filterValue;
+  QString filterColumns;
   QDate today = QDate::currentDate();
   int xid;
 
@@ -454,7 +455,7 @@ void ParameterWidget::applySaved(int pId, int filter_id)
   if (classname.isEmpty())
     classname = parent()->metaObject()->className();
 
-  query = " SELECT filter_value, "
+  query = " SELECT filter_value, filter_columns, "
           "  CASE WHEN (filter_username IS NULL) THEN true "
           "  ELSE false END AS shared "
           " FROM filter "
@@ -468,6 +469,7 @@ void ParameterWidget::applySaved(int pId, int filter_id)
   if (qry.first())
   {
     filterValue = qry.value("filter_value").toString();
+    filterColumns = qry.value("filter_columns").toString();
     _shared = qry.value("shared").toBool();
   }
 
@@ -907,6 +909,7 @@ void ParameterWidget::applySaved(int pId, int filter_id)
     }//end of while _defaultTypes
   }
 
+  emit filterApplySaved(filter_id, filterColumns);
   emit updated();
 }
 
@@ -1401,6 +1404,7 @@ void ParameterWidget::removeFilter(int pRow)
 void ParameterWidget::save()
 {
   QString filter = "";
+  QString columns = "";
   QString variantString;
   QVariant tempVar;
   QDate today = QDate::currentDate();
@@ -1438,6 +1442,11 @@ void ParameterWidget::save()
       + ":" + split[1] + "`";
   }
 
+  // If the parent of the parameter is a display we may also want to save the column visibility
+  if (parent()->inherits("display"))
+    QMetaObject::invokeMethod(parent(), "listColumnVisibility", Qt::DirectConnection,
+                              Q_RETURN_ARG(QString, columns));
+
   QString classname(parent()->objectName());
   if (classname.isEmpty())
     classname = parent()->metaObject()->className();
@@ -1451,6 +1460,8 @@ void ParameterWidget::save()
     params.append("shared", true);
   if (!_x_privileges->check("AllowSharedFilterEdit"))
     params.append("disableshare", true);
+  if (columns.size())
+    params.append("columns", columns);
   filterSave newdlg(this);
   newdlg.set(params);
   filter_id = newdlg.exec();

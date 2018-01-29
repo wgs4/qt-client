@@ -43,6 +43,7 @@ class menuCRM : public QObject
     void sProjects();
     void sDspOrderActivityByProject();
     void sAddress();
+    void sAddressGroups();
     void sAddresses();
     void sCRMAccount();
     void sCRMAccounts();

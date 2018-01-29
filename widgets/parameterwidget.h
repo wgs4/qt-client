@@ -75,6 +75,7 @@ class XTUPLEWIDGETS_EXPORT ParameterWidget : public QWidget, public Ui::Paramete
 
   signals:
     void cleared();
+    void filterApplySaved(int, QString);
     void filterChanged();
     void filterSetSaved();
     void updated();

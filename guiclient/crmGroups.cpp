@@ -42,6 +42,7 @@ QMap<int, struct GroupMap *> &crmGroups::groupMap() {
     addToMap(Prospect, tr("Prospect"), "MaintainProspectGroups", "pspctgrp", "pspctgrpitem", "CRMAcctSearch", CRMAcctLineEdit::Prospect,"PSPCT", XComboBox::ProspectGroups);
     addToMap(Employee, tr("Employee"), "MaintainEmployeeGroups", "empgrp",   "empgrpitem",   "CRMAcctSearch", CRMAcctLineEdit::Employee,"EMP",   XComboBox::EmployeeGroups);
     addToMap(Contact,  tr("Contact"),  "MaintainContactGroups",  "cntctgrp", "cntctgrpitem", "ContactSearch", CRMAcctLineEdit::Crmacct, "T",     XComboBox::ContactGroups);
+    addToMap(Address,  tr("Address"),  "MaintainAddressGroups",  "addrgrp",  "addrgrpitem",  "AddressSearch", CRMAcctLineEdit::Crmacct, "ADDR",  XComboBox::AddressGroups);
   }
   return _grpMap;
 }

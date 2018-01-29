@@ -234,6 +234,10 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
                        new XComboBoxDescrip(XComboBox::AddressCommentTypes,
                        "commentTypes", "MaintainCommentTypes",
                        cmnttypeMQL, "cmnttype", true, "source_name", "ADDR"));
+    typeDescrip.insert(XComboBox::AddressGroups,
+                       new XComboBoxDescrip(XComboBox::AddressGroups,
+                       QString(), QString(),
+                       crmgroupMQL, QString(), false, "group", "addrgrp"));
     typeDescrip.insert(XComboBox::APBankAccounts,
                        new XComboBoxDescrip(XComboBox::APBankAccounts,
                        "bankAccounts", "MaintainBankAccounts",

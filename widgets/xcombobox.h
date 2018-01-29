@@ -51,7 +51,7 @@ class XTUPLEWIDGETS_EXPORT XComboBox : public QComboBox
     Q_ENUM(Defaults)
     enum XComboBoxTypes
       {
-      AddressCommentTypes, Adhoc,
+      AddressCommentTypes, AddressGroups, Adhoc,
       APBankAccounts,	APTerms, ARBankAccounts,
       ARCMReasonCodes, ARDMReasonCodes,
       ARTerms, AccountingPeriods, Agent,
