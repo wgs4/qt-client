@@ -45,7 +45,7 @@ crmaccount::crmaccount(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _todoList->list()->hideColumn("crmacct_number");
   _todoList->list()->hideColumn("crmacct_name");
   _todoList->parameterWidget()->setDefault(tr("User"), QVariant(), true);
-  _todoList->parameterWidget()->append("", "hasContext", ParameterWidget::Exists, true);
+  _todoList->parameterWidget()->append("hasContext", "hasContext", ParameterWidget::Exists, true);
   _todoList->setParameterWidgetVisible(false);
   _todoList->setQueryOnStartEnabled(false);
   _todoList->_projects->setForgetful(true);
@@ -60,7 +60,7 @@ crmaccount::crmaccount(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _contacts->setCloseVisible(false);
   _contacts->list()->hideColumn("crmacct_number");
   _contacts->list()->hideColumn("crmacct_name");
-  _contacts->parameterWidget()->append("", "hasContext", ParameterWidget::Exists, true);
+  _contacts->parameterWidget()->append("hasContext", "hasContext", ParameterWidget::Exists, true);
   _contacts->setParameterWidgetVisible(false);
   _contacts->setQueryOnStartEnabled(false);
   _contacts->set(params);
@@ -68,7 +68,7 @@ crmaccount::crmaccount(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _addresses = new addresses(this, "addresses", Qt::Widget);
   _addressesPlaceholder->addWidget(_addresses);
   _addresses->setCloseVisible(false);
-  _addresses->parameterWidget()->append("", "hasContext", ParameterWidget::Exists, true);
+  _addresses->parameterWidget()->append("hasContext", "hasContext", ParameterWidget::Exists, true);
   _addresses->setParameterWidgetVisible(false);
   _addresses->setQueryOnStartEnabled(false);
   _addresses->set(params);
