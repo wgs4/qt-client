@@ -82,7 +82,7 @@ void buildCRMGroups::buildParameters()
 
   // Remove extra parameters first (if they exist) then add back if the type applies
   extras << tr("Sales Rep") << tr("Sales Greater Than") << tr("Sales Less Than") << tr("Item Group")
-         << tr("Item") << tr("Open Quotes");
+         << tr("Item") << tr("Open Quotes") << tr("Allow Marketing");
 
   extras << _charList;
 
@@ -159,10 +159,15 @@ void buildCRMGroups::addCharacteristics()
     name = chars.value("char_name").toString();
     _charList << name;
 
-    if (chartype == characteristic::Text || chartype == characteristic::Number)
+    if (chartype == characteristic::Text)
     {
       _charidstext.append(chars.value("char_id").toInt());
       _params->append(name, column, ParameterWidget::Text);
+    }
+    else if (chartype == characteristic::Number)
+    {
+      _charidstext.append(chars.value("char_id").toInt());
+      _params->append(name, column, ParameterWidget::Numeric);
     }
     else if (chartype == characteristic::List)
     {
