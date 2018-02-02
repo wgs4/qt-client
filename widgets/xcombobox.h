@@ -54,7 +54,7 @@ class XTUPLEWIDGETS_EXPORT XComboBox : public QComboBox
       AddressCommentTypes, AddressGroups, Adhoc,
       APBankAccounts,	APTerms, ARBankAccounts,
       ARCMReasonCodes, ARDMReasonCodes,
-      ARTerms, AccountingPeriods, Agent,
+      ARTerms, AccountGroups, AccountingPeriods, Agent,
       AllCommentTypes, AllProjects,
       BBOMHeadCommentTypes, BBOMItemCommentTypes,
       BOMHeadCommentTypes, BOMItemCommentTypes,

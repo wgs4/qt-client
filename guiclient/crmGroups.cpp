@@ -38,6 +38,7 @@ bool crmGroups::addToMap(int id, QString _title, QString _priv, QString _table, 
 
 QMap<int, struct GroupMap *> &crmGroups::groupMap() {
   if (_grpMap.isEmpty()) {
+    addToMap(Account, tr("Account"), "MaintainAccountGroups", "crmacctgrp",  "crmacctgrpitem", "CRMAcctSearch", CRMAcctLineEdit::Crmacct, "CRMA",XComboBox::AccountGroups);
     addToMap(Customer, tr("Customer"), "MaintainCustomerGroups", "custgrp",  "custgrpitem",  "CRMAcctSearch", CRMAcctLineEdit::Cust,    "C",     XComboBox::CustomerGroups);
     addToMap(Prospect, tr("Prospect"), "MaintainProspectGroups", "pspctgrp", "pspctgrpitem", "CRMAcctSearch", CRMAcctLineEdit::Prospect,"PSPCT", XComboBox::ProspectGroups);
     addToMap(Employee, tr("Employee"), "MaintainEmployeeGroups", "empgrp",   "empgrpitem",   "CRMAcctSearch", CRMAcctLineEdit::Employee,"EMP",   XComboBox::EmployeeGroups);

@@ -280,6 +280,8 @@
 #include "dspWoMaterialsByWorkOrder.h"
 #include "dspWoSchedule.h"
 #include "duplicateAccountNumbers.h"
+#include "dynamicfilters.h"
+#include "dynamicfilter.h"
 #include "editOwners.h"
 #include "employee.h"
 #include "employees.h"

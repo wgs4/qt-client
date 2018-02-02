@@ -118,6 +118,8 @@ menuCRM::menuCRM(GUIClient *Pparent) :
     { "menu",		tr("&Account"),		(char*)accountsMenu,	crmMenu,		"true", NULL, NULL, true	, NULL },
     { "crm.crmaccount",		tr("&New..."),	SLOT(sCRMAccount()),	accountsMenu,	"MaintainPersonalCRMAccounts MaintainAllCRMAccounts", NULL, NULL, true , NULL },
     { "crm.crmaccounts",	tr("&List..."),	SLOT(sCRMAccounts()),	accountsMenu,	"MaintainPersonalCRMAccounts ViewPersonalCRMAccounts MaintainAllCRMAccounts ViewAllCRMAccounts", new QPixmap(":/images/accounts.png"), toolBar, true , tr("List Accounts") },
+    { "separator",		NULL,				NULL,	accountsMenu,	"true", NULL, NULL, true	, NULL },
+    { "crm.crmaccountGroups",   tr("&Groups..."),  SLOT(sCRMAccountGroups()),   accountsMenu,   "MaintainAccountGroups ViewAccountGroups",	NULL, NULL, true, NULL },
       
     // CRM | Contact
     { "menu",		tr("&Contact"),		(char*)contactsMenu,	crmMenu,		"true", NULL, NULL, true	, NULL },
@@ -252,6 +254,16 @@ void menuCRM::sCRMAccount()
 void menuCRM::sCRMAccounts()
 {
   omfgThis->handleNewWindow(new crmaccounts());
+}
+
+void menuCRM::sCRMAccountGroups()
+{
+  ParameterList params;
+  params.append("groupType", crmGroups::Account);
+
+  crmGroups *newdlg = new crmGroups();
+  newdlg->set(params);
+  omfgThis->handleNewWindow(newdlg);
 }
 
 void menuCRM::sEditOwners()

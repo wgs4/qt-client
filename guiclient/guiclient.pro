@@ -265,6 +265,8 @@ FORMS =   absoluteCalendarItem.ui               \
           dspTaxHistory.ui              \
           dspTaxReturn.ui               \
           duplicateAccountNumbers.ui    \
+          dynamicfilters.ui             \
+          dynamicfilter.ui              \
           editOwners.ui                 \
           employee.ui                   \
           enterMiscCount.ui             \
@@ -841,6 +843,8 @@ HEADERS = ../common/format.h                    \
           dspTaxHistory.h                       \
           dspTaxReturn.h                        \
           duplicateAccountNumbers.h             \
+          dynamicfilters.h                      \
+          dynamicfilter.h                       \
           editOwners.h                          \
           employee.h                            \
           employees.h                           \
@@ -1463,6 +1467,8 @@ SOURCES = absoluteCalendarItem.cpp              \
           dspTaxHistory.cpp                     \
           dspTaxReturn.cpp                      \
           duplicateAccountNumbers.cpp           \
+          dynamicfilters.cpp                    \
+          dynamicfilter.cpp                     \
           editOwners.cpp                        \
           employee.cpp                          \
           employees.cpp                         \

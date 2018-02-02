@@ -53,7 +53,7 @@ public:
     ~crmGroups();
 
 //  if you add to this then add to the GroupMap[] in the .cpp
-    enum GroupTypes {Customer, Prospect, Employee, Contact, Address};
+    enum GroupTypes {Account, Customer, Prospect, Employee, Contact, Address};
 
     static QMap<int, struct GroupMap*> &groupMap();
     static QMap<int, struct GroupMap*> _grpMap;

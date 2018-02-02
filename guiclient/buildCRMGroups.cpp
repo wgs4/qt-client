@@ -82,9 +82,9 @@ void buildCRMGroups::buildParameters()
 
   // Remove extra parameters first (if they exist) then add back if the type applies
   extras << tr("Sales Rep") << tr("Sales Greater Than") << tr("Sales Less Than") << tr("Item Group")
-         << tr("Item") << tr("Open Quotes") << tr("Allow Marketing");
+         << tr("Item") << tr("Open Quotes") << tr("Customer Types");
 
-  extras << _charList;
+  extras << _charList << _filterList;
 
   for (int i = 0; i < extras.size(); i++)
   {
@@ -97,6 +97,7 @@ void buildCRMGroups::buildParameters()
   {
   case crmGroups::Customer:
     {
+      _params->appendComboBox(extras.at(6), "custtype_id", XComboBox::CustomerTypes);
       _params->appendComboBox(extras.at(0), "salesrep_id", XComboBox::SalesReps);
       _params->append(extras.at(1), "sales_greater", ParameterWidget::Numeric);
       _params->append(extras.at(2), "sales_less", ParameterWidget::Numeric);
@@ -126,6 +127,7 @@ void buildCRMGroups::buildParameters()
   }
 
   addCharacteristics();
+  addDynamicFilters();
 }
 
 void buildCRMGroups::addCharacteristics()
@@ -190,6 +192,30 @@ void buildCRMGroups::addCharacteristics()
   }
 }
 
+void buildCRMGroups::addDynamicFilters()
+{
+  XSqlQuery filters;
+  QString column;
+  QString name;
+
+  _filterList.clear();
+  _filterParams.clear();
+
+  filters.prepare("SELECT dynamicfilter_id, dynamicfilter_name"
+                  " FROM dynamicfilter "
+                  " WHERE dynamicfilter_object = :object");
+  filters.bindValue(":object", _elem->title);
+  filters.exec();
+  while (filters.next())
+  {
+    _filterParams.append(filters.value("dynamicfilter_id").toInt());
+    name = filters.value("dynamicfilter_name").toString();
+    _filterList << name;
+    column = QString("filter%1").arg(filters.value("dynamicfilter_id").toString());
+    _params->append(name, column, ParameterWidget::Exists);
+  }
+}
+
 void buildCRMGroups::sHandleButton()
 {
   bool chk;
@@ -203,6 +229,7 @@ void buildCRMGroups::sGenerateGroupRecords()
   XSqlQuery query;
   ParameterList params;
   QString sql;
+  QString idField;
   int inserted;
 
   QString msg = tr("Are you sure you want to update the %1 %2 Group with the results of this selection?")
@@ -222,6 +249,7 @@ void buildCRMGroups::sGenerateGroupRecords()
   {
     params.append("source_table", query.value("source_table").toString());
     params.append("source_id", query.value("source_key_field").toString());
+    idField = query.value("source_key_field").toString();
     params.append("charass", query.value("source_charass").toString());
   }
 
@@ -280,6 +308,27 @@ void buildCRMGroups::sGenerateGroupRecords()
   }
   if (clauses.count())
     params.append("charClause", clauses.join(" AND ").prepend(" AND "));
+
+  // Handle Dynamic Filters (convert exists Parameter to literal WHERE clause)
+  QStringList filters;
+
+  foreach (QVariant filterid, _filterParams)
+  {
+    column = QString("filter%1").arg(filterid.toString());
+    param = params.value(column, &valid);
+    if (valid)
+    {
+      query.prepare("SELECT dynamicfilter_filter FROM dynamicfilter WHERE dynamicfilter_id = :filterid;");
+      query.bindValue(":filterid",  filterid);
+      query.exec();
+      if (query.first())
+        filters.append(QString("%1 IN (%2)")
+                  .arg(idField)
+                  .arg(query.value("dynamicfilter_filter").toString()));
+    }
+  }
+  if (filters.count())
+    params.append("filterClause", filters.join(" AND ").prepend(" AND "));
 
   XSqlQuery rollback;
   rollback.prepare("ROLLBACK;");

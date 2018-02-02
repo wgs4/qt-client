@@ -33,6 +33,7 @@ public slots:
     virtual void sGenerateGroupRecords();
     virtual void buildParameters();
     virtual void addCharacteristics();
+    virtual void addDynamicFilters();
 
 protected slots:
     virtual void languageChange();
@@ -45,6 +46,9 @@ private:
     QList<QVariant> _charidslist;
     QList<QVariant> _charidsdate;
     QStringList _charList;
+    QStringList _filterList;
+    QList<QVariant> _filterParams;
+
 };
 
 #endif // BUILDCRMGROUPS_H

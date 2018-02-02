@@ -262,6 +262,10 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
                        new XComboBoxDescrip(XComboBox::ARTerms,
                        "termses", "MaintainTerms",
                        termsMQL, "terms", true, "isAR"));
+    typeDescrip.insert(XComboBox::AccountGroups,
+                       new XComboBoxDescrip(XComboBox::AccountGroups,
+                       QString(), QString(),
+                       crmgroupMQL, QString(), false, "group", "crmacctgrp"));
     typeDescrip.insert(XComboBox::AccountingPeriods,
                        new XComboBoxDescrip(XComboBox::AccountingPeriods,
                        "accountingPeriods", "MaintainAccountingPeriods",
