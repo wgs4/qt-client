@@ -107,7 +107,6 @@ void dynamicfilter::sCheckFilterValidity()
   {
     params.append("source_table", query.value("source_table").toString());
     params.append("source_id", query.value("source_key_field").toString());
-    params.append("filter", _filter->toPlainText().trimmed());
   }
   else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Rerieving %1 Group Source").arg(_elem->title),
                                   query, __FILE__, __LINE__))
@@ -115,8 +114,16 @@ void dynamicfilter::sCheckFilterValidity()
     _isValid = false;
     return;
   }
+
+  // Test the query for errors together with some SQL injection prevention
+  QRegExp rx("(INSERT|UPDATE|DELETE)");
+  rx.setCaseSensitivity(Qt::CaseInsensitive);
+  QString cleanFilter =  _filter->toPlainText().trimmed();
+  cleanFilter = cleanFilter.replace(rx, "");
+  params.append("filter", cleanFilter);
   sql = "SELECT count(*) FROM <? literal('source_table') ?> "
-        "WHERE <? literal('source_id') ?> IN (<? literal('filter') ?>);";
+        "WHERE <? literal('source_id') ?> "
+        "IN (<? literal('filter') ?>);";
   MetaSQLQuery chkq(sql);
   query = chkq.toQuery(params);
 
@@ -161,42 +168,34 @@ void dynamicfilter::sSave()
     return;
 
   if (_mode == cNew)
-  {
-    dynamicfilterSave.exec("SELECT NEXTVAL('dynamicfilter_dynamicfilter_id_seq') AS _dynamicfilter_id");
-    if (dynamicfilterSave.first())
-      _dynamicfilterid = dynamicfilterSave.value("_dynamicfilter_id").toInt();
-    else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Saving Dynamic Filter"),
-                                  dynamicfilterSave, __FILE__, __LINE__))
-    {
-      return;
-    }
-
     dynamicfilterSave.prepare( "INSERT INTO dynamicfilter "
-               "(dynamicfilter_id, dynamicfilter_name, dynamicfilter_descrip, dynamicfilter_object, dynamicfilter_filter) "
+               "(dynamicfilter_name, dynamicfilter_descrip, dynamicfilter_object, dynamicfilter_filter) "
                "VALUES "
-               "(:dynamicfilter_id, :dynamicfilter_name, :dynamicfilter_descrip, :dynamicfilter_object, :dynamicfilter_filter);" );
-
-  }
+               "(:dynamicfilter_name, :dynamicfilter_descrip, :dynamicfilter_object, :dynamicfilter_filter); " );
   else if (_mode == cEdit)
     dynamicfilterSave.prepare( "UPDATE dynamicfilter "
                "SET dynamicfilter_name=:dynamicfilter_name, dynamicfilter_descrip=:dynamicfilter_descrip,"
                "    dynamicfilter_object=:dynamicfilter_object, dynamicfilter_filter=:dynamicfilter_filter "
-               "WHERE (dynamicfilter_id=:dynamicfilter_id);" );
+               "WHERE dynamicfilter_id=:dynamicfilter_id " );
 
   dynamicfilterSave.bindValue(":dynamicfilter_id", _dynamicfilterid);
   dynamicfilterSave.bindValue(":dynamicfilter_name", _name->text());
   dynamicfilterSave.bindValue(":dynamicfilter_descrip", _descrip->text());
   dynamicfilterSave.bindValue(":dynamicfilter_object", _crmGroup->code());
-  dynamicfilterSave.bindValue(":dynamicfilter_filter", _filter->toPlainText().trimmed());
+
+  // SQL injection prevention
+  QRegExp rx("(INSERT|UPDATE|DELETE)");
+  rx.setCaseSensitivity(Qt::CaseInsensitive);
+  QString cleanFilter =  _filter->toPlainText().trimmed();
+  cleanFilter = cleanFilter.replace(rx, "");
+  dynamicfilterSave.bindValue(":dynamicfilter_filter", cleanFilter);
 
   dynamicfilterSave.exec();
   if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Saving Dynamic Filter"),
                                 dynamicfilterSave, __FILE__, __LINE__))
-  {
     return;
-  }
 
-  done(_dynamicfilterid);
+  done(1);
 }
 
 void dynamicfilter::populate()

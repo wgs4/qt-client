@@ -38,7 +38,6 @@ private:
     int _mode;
     int _dynamicfilterid;
     bool _isValid;
-
 };
 
 #endif // DYNAMICFILTER_H
