@@ -29584,10 +29584,6 @@ Total</source>
         <source>Error Deleting Item Source Information</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>[ Not Site Restricted ]</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dspItemsWithoutItemSources</name>
@@ -34194,149 +34190,6 @@ Total</source>
 </context>
 <context>
     <name>dspReturnAuthorizations</name>
-    <message>
-        <source>Return Authorization Lookup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Return Authorizations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Return #</source>
-        <translation type="unfinished">Devolución #</translation>
-    </message>
-    <message>
-        <source>Created</source>
-        <translation type="unfinished">Creado</translation>
-    </message>
-    <message>
-        <source>Original Order#</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Customer</source>
-        <translation type="unfinished">Cliente</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished">Estado</translation>
-    </message>
-    <message>
-        <source>Disposition</source>
-        <translation type="unfinished">Disponer con</translation>
-    </message>
-    <message>
-        <source>Item Number</source>
-        <translation type="unfinished">Código Producto</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished">Descripción</translation>
-    </message>
-    <message>
-        <source>Order UOM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Authorized</source>
-        <translation type="unfinished">Autorizado</translation>
-    </message>
-    <message>
-        <source>Received</source>
-        <translation type="unfinished">Recibido</translation>
-    </message>
-    <message>
-        <source>Credited</source>
-        <translation type="unfinished">Abonado</translation>
-    </message>
-    <message>
-        <source>Auth. Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Credited Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Site</source>
-        <translation type="unfinished">Sitio</translation>
-    </message>
-    <message>
-        <source>Class Code</source>
-        <translation type="unfinished">Código de Clase</translation>
-    </message>
-    <message>
-        <source>Item</source>
-        <translation type="unfinished">Producto</translation>
-    </message>
-    <message>
-        <source>Date From</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Date To</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit...</source>
-        <translation type="unfinished">Editar...</translation>
-    </message>
-    <message>
-        <source>View...</source>
-        <translation type="unfinished">Ver...</translation>
-    </message>
-    <message>
-        <source>Undefined</source>
-        <translation type="unfinished">Indefinido</translation>
-    </message>
-    <message>
-        <source>Credit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Return</source>
-        <translation type="unfinished">Devolución</translation>
-    </message>
-    <message>
-        <source>Replace</source>
-        <translation type="unfinished">Reemplazar</translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished">Servicio</translation>
-    </message>
-    <message>
-        <source>Substitute</source>
-        <translation type="unfinished">Sustituto</translation>
-    </message>
-    <message>
-        <source>Closed</source>
-        <translation type="unfinished">Cerrado</translation>
-    </message>
-    <message>
-        <source>Expired</source>
-        <translation type="unfinished">Vencido</translation>
-    </message>
-    <message>
-        <source>Unauthorized</source>
-        <translation type="unfinished">Sin autorización</translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation type="unfinished">Abierto</translation>
-    </message>
-    <message>
-        <source>Access Denied</source>
-        <translation type="unfinished">Acceso Denegado</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You may not view or edit this Return Authorization as it references a Site for which you have not been granted privileges.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>dspReturnAuthorizationsByItem</name>
     <message>
         <source>Return Authorization Lookup</source>
         <translation type="unfinished"></translation>
@@ -47230,18 +47083,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
     </message>
     <message>
         <source>Error Setting Quantity On Hand Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to Retrieve the Next itemloc_series_seq</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detail Distribution was Cancelled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Creating itemlocdist Records</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

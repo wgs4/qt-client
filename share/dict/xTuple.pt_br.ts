@@ -29578,10 +29578,6 @@ Total</source>
         <source>Error Deleting Item Source Information</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>[ Not Site Restricted ]</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dspItemsWithoutItemSources</name>
@@ -47075,18 +47071,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
     </message>
     <message>
         <source>Error Setting Quantity On Hand Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to Retrieve the Next itemloc_series_seq</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detail Distribution was Cancelled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Creating itemlocdist Records</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -26,8 +26,6 @@ INCLUDEPATH += ../scriptapi \
 
 DEPENDPATH  += $${INCLUDEPATH}
 
-INSTALLS = certificates dictionaries translations
-
 win32-msvc* {
   PRE_TARGETDEPS += ../lib/xtuplecommon.$${XTLIBEXT}    \
                     ../lib/xtuplescriptapi.lib          \

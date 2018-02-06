@@ -47089,18 +47089,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
         <source>Error Creating itemlocdist Records</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Failed to Retrieve the Next itemloc_series_seq</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detail Distribution was Cancelled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Creating itemlocdist Records</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>item</name>

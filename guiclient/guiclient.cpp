@@ -1621,9 +1621,6 @@ QString translationFile(QString localestr, const QString component, QString &ver
 #else
   paths << QApplication::applicationDirPath();
 #endif
-  (void)paths.removeDuplicates();
-  for (int i = paths.length(); i > 0; i--)
-    paths.insert(i, paths.at(i - 1) + "/dict");
 
 #if defined Q_OS_LINUX
   paths << "/usr/lib/postbooks";

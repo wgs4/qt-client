@@ -29570,10 +29570,6 @@ Total</source>
         <source>Error Deleting Item Source Information</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>[ Not Site Restricted ]</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dspItemsWithoutItemSources</name>
@@ -34180,149 +34176,6 @@ Total</source>
 </context>
 <context>
     <name>dspReturnAuthorizations</name>
-    <message>
-        <source>Return Authorization Lookup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Return Authorizations</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Return #</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Created</source>
-        <translation type="unfinished">Создан</translation>
-    </message>
-    <message>
-        <source>Original Order#</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Customer</source>
-        <translation type="unfinished">Клиент</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished">Статус</translation>
-    </message>
-    <message>
-        <source>Disposition</source>
-        <translation type="unfinished">Порядок</translation>
-    </message>
-    <message>
-        <source>Item Number</source>
-        <translation type="unfinished">Артикул</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished">Описание</translation>
-    </message>
-    <message>
-        <source>Order UOM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Authorized</source>
-        <translation type="unfinished">Авторизован</translation>
-    </message>
-    <message>
-        <source>Received</source>
-        <translation type="unfinished">Получено</translation>
-    </message>
-    <message>
-        <source>Credited</source>
-        <translation type="unfinished">В кредит</translation>
-    </message>
-    <message>
-        <source>Auth. Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Credited Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Site</source>
-        <translation type="unfinished">Место</translation>
-    </message>
-    <message>
-        <source>Class Code</source>
-        <translation type="unfinished">Код Класса</translation>
-    </message>
-    <message>
-        <source>Item</source>
-        <translation type="unfinished">Позиция</translation>
-    </message>
-    <message>
-        <source>Date From</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Date To</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit...</source>
-        <translation type="unfinished">Изменить...</translation>
-    </message>
-    <message>
-        <source>View...</source>
-        <translation type="unfinished">Просмотр...</translation>
-    </message>
-    <message>
-        <source>Undefined</source>
-        <translation type="unfinished">Непределён</translation>
-    </message>
-    <message>
-        <source>Credit</source>
-        <translation type="unfinished">Кредит</translation>
-    </message>
-    <message>
-        <source>Return</source>
-        <translation type="unfinished">Возврат</translation>
-    </message>
-    <message>
-        <source>Replace</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished">Сервис</translation>
-    </message>
-    <message>
-        <source>Substitute</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Closed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Expired</source>
-        <translation type="unfinished">Просрочен</translation>
-    </message>
-    <message>
-        <source>Unauthorized</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Access Denied</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You may not view or edit this Return Authorization as it references a Site for which you have not been granted privileges.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>dspReturnAuthorizationsByItem</name>
     <message>
         <source>Return Authorization Lookup</source>
         <translation type="unfinished"></translation>
@@ -47210,18 +47063,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
     </message>
     <message>
         <source>Error Setting Quantity On Hand Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to Retrieve the Next itemloc_series_seq</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detail Distribution was Cancelled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Creating itemlocdist Records</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

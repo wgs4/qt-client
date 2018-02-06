@@ -29570,10 +29570,6 @@ Total</source>
         <source>Error Deleting Item Source Information</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>[ Not Site Restricted ]</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dspItemsWithoutItemSources</name>
@@ -44174,51 +44170,52 @@ Do you wish to convert %1 %2 at the rate effective on %3?</source>
 <context>
     <name>groups</name>
     <message>
-        <source>Default Menus</source>
+        <source>Roles:</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;Fechar</translation>
+    </message>
+    <message>
+        <source>List Roles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show Inventory Menu</source>
+        <source>&amp;Print</source>
+        <translation>&amp;Imprimir</translation>
+    </message>
+    <message>
+        <source>&amp;New</source>
+        <translation>&amp;Novo</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation>&amp;Editar</translation>
+    </message>
+    <message>
+        <source>&amp;View</source>
+        <translation>&amp;Visualizar</translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <translation>&amp;Apagar</translation>
+    </message>
+    <message>
+        <source>The selected Group cannot be deleted as there are one or more Users currently assigned to it.
+You must reassign these Users before you may delete the selected Group.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show Inventory Toolbar</source>
-        <translation type="unfinished"></translation>
+        <source>Description</source>
+        <translation>Descrição</translation>
     </message>
     <message>
-        <source>Show Manufacture Menu</source>
-        <translation type="unfinished"></translation>
+        <source>Name</source>
+        <translation>Nome</translation>
     </message>
     <message>
-        <source>Show Manufacture Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Products Menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Products Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show CRM Menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show CRM Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Schedule Menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Schedule Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Sales Menu</source>
+        <source>Cannot Delete Group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -47066,18 +47063,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
     </message>
     <message>
         <source>Error Setting Quantity On Hand Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to Retrieve the Next itemloc_series_seq</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detail Distribution was Cancelled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Creating itemlocdist Records</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

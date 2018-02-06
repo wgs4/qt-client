@@ -23014,22 +23014,6 @@ to be deleted.</source>
         <source>Cannot set Parameters</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Reversed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reverse Application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>A/R Application has been reversed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Reversing A/P Application</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dspAPOpenItemsByVendor</name>
@@ -23408,22 +23392,6 @@ This Item is already selected for payment.</source>
     </message>
     <message>
         <source>Cannot Set Parameters</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reversed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reverse Application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>A/R Application has been reversed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Reversing A/R Application</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -47113,18 +47081,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
     </message>
     <message>
         <source>Error Setting Quantity On Hand Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to Retrieve the Next itemloc_series_seq</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detail Distribution was Cancelled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Creating itemlocdist Records</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

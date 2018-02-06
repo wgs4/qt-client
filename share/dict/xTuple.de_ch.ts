@@ -23012,22 +23012,6 @@ to be deleted.</source>
         <source>Cannot set Parameters</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Reversed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reverse Application</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>A/R Application has been reversed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Reversing A/P Application</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dspAPOpenItemsByVendor</name>
@@ -34202,149 +34186,6 @@ Total</source>
 </context>
 <context>
     <name>dspReturnAuthorizations</name>
-    <message>
-        <source>Return Authorization Lookup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Return Authorizations</source>
-        <translation type="unfinished">Rückgabegenehmigungen</translation>
-    </message>
-    <message>
-        <source>Return #</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Created</source>
-        <translation type="unfinished">erstellt</translation>
-    </message>
-    <message>
-        <source>Original Order#</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Customer</source>
-        <translation type="unfinished">Kunde</translation>
-    </message>
-    <message>
-        <source>Status</source>
-        <translation type="unfinished">Status</translation>
-    </message>
-    <message>
-        <source>Disposition</source>
-        <translation type="unfinished">Disposition</translation>
-    </message>
-    <message>
-        <source>Item Number</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Order UOM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Authorized</source>
-        <translation type="unfinished">Autorisiert</translation>
-    </message>
-    <message>
-        <source>Received</source>
-        <translation type="unfinished">Eingang</translation>
-    </message>
-    <message>
-        <source>Credited</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Auth. Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Credited Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Site</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Class Code</source>
-        <translation type="unfinished">Klassencode</translation>
-    </message>
-    <message>
-        <source>Item</source>
-        <translation type="unfinished">Artikel</translation>
-    </message>
-    <message>
-        <source>Date From</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Date To</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit...</source>
-        <translation type="unfinished">Bearbeiten...</translation>
-    </message>
-    <message>
-        <source>View...</source>
-        <translation type="unfinished">Anzeigen...</translation>
-    </message>
-    <message>
-        <source>Undefined</source>
-        <translation type="unfinished">undefiniert</translation>
-    </message>
-    <message>
-        <source>Credit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Return</source>
-        <translation type="unfinished">Antwort</translation>
-    </message>
-    <message>
-        <source>Replace</source>
-        <translation type="unfinished">Ersetzt</translation>
-    </message>
-    <message>
-        <source>Service</source>
-        <translation type="unfinished">Dienstleistung</translation>
-    </message>
-    <message>
-        <source>Substitute</source>
-        <translation type="unfinished">Vertretung</translation>
-    </message>
-    <message>
-        <source>Closed</source>
-        <translation type="unfinished">Geschlossen</translation>
-    </message>
-    <message>
-        <source>Expired</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unauthorized</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation type="unfinished">Offen</translation>
-    </message>
-    <message>
-        <source>Access Denied</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You may not view or edit this Return Authorization as it references a Site for which you have not been granted privileges.</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>dspReturnAuthorizationsByItem</name>
     <message>
         <source>Return Authorization Lookup</source>
         <translation type="unfinished"></translation>
@@ -47246,18 +47087,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
         <source>Error Creating itemlocdist Records</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Failed to Retrieve the Next itemloc_series_seq</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detail Distribution was Cancelled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Creating itemlocdist Records</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>item</name>
@@ -57052,31 +56881,23 @@ the amount received. You must correct this before you may post this Cash Receipt
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>No Unposted Cash Receipts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Post Cash Receipts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Post</source>
+        <translation>&amp;Freigeben</translation>
+    </message>
+    <message>
         <source>&amp;Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
         <source>Error Posting Cash Receipts Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Posting Cash Receipt...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The selected Cash Receipt cannot be posted as the A/R Account cannot be determined.
-You must make a A/R Account Assignment for the Customer Type to which this Customer
-is assigned for you may post this Cash Receipt.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The selected Cash Receipt cannot be posted as the Bank Account cannot be determined.
-You must make a Bank Account Assignment for this Cash Receipt before you may post it.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The selected Cash Receipt cannot be posted due to an unknown error.
-Contact you Systems Administrator.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

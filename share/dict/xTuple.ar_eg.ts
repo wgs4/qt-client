@@ -29574,10 +29574,6 @@ Total</source>
         <source>Error Deleting Item Source Information</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>[ Not Site Restricted ]</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dspItemsWithoutItemSources</name>
@@ -44182,48 +44178,49 @@ Do you wish to convert %1 %2 at the rate effective on %3?</source>
         <translation></translation>
     </message>
     <message>
-        <source>Default Menus</source>
+        <source>&amp;Print</source>
+        <translation>طباعة</translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation>&amp;اغلاق</translation>
+    </message>
+    <message>
+        <source>Roles:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show Inventory Menu</source>
+        <source>&amp;New</source>
+        <translation>&amp;جديد</translation>
+    </message>
+    <message>
+        <source>The selected Group cannot be deleted as there are one or more Users currently assigned to it.
+You must reassign these Users before you may delete the selected Group.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show Inventory Toolbar</source>
+        <source>Name</source>
+        <translation>الاسم</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation>الوصف</translation>
+    </message>
+    <message>
+        <source>Cannot Delete Group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show Manufacture Menu</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Delete</source>
+        <translation>حذف</translation>
     </message>
     <message>
-        <source>Show Manufacture Toolbar</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Edit</source>
+        <translation>&amp;تحرير</translation>
     </message>
     <message>
-        <source>Show Products Menu</source>
-        <translation type="unfinished">عرض قائمة  المنتجات</translation>
-    </message>
-    <message>
-        <source>Show Products Toolbar</source>
-        <translation type="unfinished">عرض شريط مهام  المنتجات</translation>
-    </message>
-    <message>
-        <source>Show CRM Menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show CRM Toolbar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Schedule Menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Show Schedule Toolbar</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;View</source>
+        <translation>عرض</translation>
     </message>
 </context>
 <context>
@@ -47070,18 +47067,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
     </message>
     <message>
         <source>Error Setting Quantity On Hand Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to Retrieve the Next itemloc_series_seq</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detail Distribution was Cancelled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Creating itemlocdist Records</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -588,11 +588,6 @@ void VirtualClusterLineEdit::sHandleCompleter()
         if (DEBUG) qDebug() << "width changed to" << width;
       }
     }
-    if (_hasActive)
-    {
-      view->resizeColumnToContents(activeDCol);
-      width += view->columnWidth(activeDCol);
-    }
   }
   else
     model->clear();

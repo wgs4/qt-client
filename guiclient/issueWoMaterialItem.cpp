@@ -164,26 +164,6 @@ void issueWoMaterialItem::sIssue()
                             parentSeries, __FILE__, __LINE__);
     return;
   }
-
-  // Stage distribution cleanup function to be called on error
-  XSqlQuery cleanup;
-  cleanup.prepare("SELECT deleteitemlocseries(:itemlocSeries, TRUE);");
-
-  // Get the parent series id
-  XSqlQuery parentSeries;
-  parentSeries.prepare("SELECT NEXTVAL('itemloc_series_seq') AS result;");
-  parentSeries.exec();
-  if (parentSeries.first() && parentSeries.value("result").toInt() > 0)
-  {
-    itemlocSeries = parentSeries.value("result").toInt();
-    cleanup.bindValue(":itemlocSeries", itemlocSeries);
-  }
-  else
-  {
-    ErrorReporter::error(QtCriticalMsg, this, tr("Failed to Retrieve the Next itemloc_series_seq"),
-                            parentSeries, __FILE__, __LINE__);
-    return;
-  }
   
   issueIssue.prepare("SELECT womatl_wo_id, womatl_id, itemsite_id, item_number, warehous_code, "
             "       (COALESCE((SELECT SUM(itemloc_qty) "

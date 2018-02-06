@@ -132,9 +132,6 @@ void returnWoMaterialBatch::sReturn()
               items.value("womatl_qtyiss").toDouble() < items.value("qty").toDouble() : 
               items.value("womatl_qtyiss").toDouble() > items.value("qty").toDouble()))
             continue;
-          }
-
-          cleanup.bindValue(":itemlocSeries", itemlocSeries);
 
           int itemlocSeries;
 

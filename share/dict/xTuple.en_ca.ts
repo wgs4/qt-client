@@ -1421,14 +1421,6 @@ Address:</source>
         <source>Project Task</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Fixed Asset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Maintenance Order</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ConfigAuthorizeDotNetProcessor</name>
@@ -29560,10 +29552,6 @@ Total</source>
         <source>Error Deleting Item Source Information</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>[ Not Site Restricted ]</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>dspItemsWithoutItemSources</name>
@@ -44156,13 +44144,6 @@ Do you wish to convert %1 %2 at the rate effective on %3?</source>
         <source>Show Accounting Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>groups</name>
-    <message>
-        <source>List Roles</source>
-        <translation></translation>
-    </message>
     <message>
         <source>Error deleting group</source>
         <translation type="unfinished"></translation>
@@ -47064,18 +47045,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
     </message>
     <message>
         <source>Error Setting Quantity On Hand Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Failed to Retrieve the Next itemloc_series_seq</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Detail Distribution was Cancelled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Creating itemlocdist Records</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -57284,20 +57253,6 @@ may be posted.</source>
         <source>Error Posting Credit Memo %1</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>%1 Credit Memos succeeded.
-%2 Credit Memos failed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Credit Memo %1 failed with:
-%2
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>postInvoices</name>
     <message>
         <source>%1 Credit Memos succeeded.
 %2 Credit Memos failed.</source>
