@@ -400,8 +400,9 @@ enum SetResponse salesOrderItem:: set(const ParameterList &pParams)
   {
     _custid = param.toInt();
     setSales.prepare("SELECT COALESCE(cust_preferred_warehous_id, -1) AS preferredwarehousid, "
-              "(cust_number || '-' || cust_name) as f_name "
+              "(cust_number || '-' || cust_name) as f_name, crmacct_id "
               "  FROM custinfo"
+              "  JOIN crmacct ON (crmacct_cust_id = cust_id) "
               " WHERE (cust_id=:cust_id); ");
     setSales.bindValue(":cust_id", _custid);
     setSales.exec();
@@ -410,6 +411,7 @@ enum SetResponse salesOrderItem:: set(const ParameterList &pParams)
       if (setSales.value("preferredwarehousid").toInt() != -1)
         _preferredWarehouseid = setSales.value("preferredwarehousid").toInt();
       _custName = setSales.value("f_name").toString();
+      _item->setCRMAcctId(setSales.value("crmacct_id").toInt());
     }
     else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Retrieving Customer Information"),
                                   setSales, __FILE__, __LINE__))
@@ -697,6 +699,7 @@ enum SetResponse salesOrderItem:: set(const ParameterList &pParams)
     _comments->setReadOnly(viewMode);
     _taxtype->setEnabled(!viewMode);
     _itemcharView->setEnabled(!viewMode);
+    _socharView->setEnabled(!viewMode);
     _promisedDate->setEnabled(!viewMode);
     _qtyUOM->setEnabled(!viewMode);
     _priceUOM->setEnabled(!viewMode);
@@ -716,13 +719,17 @@ enum SetResponse salesOrderItem:: set(const ParameterList &pParams)
     populate();
 
     if (ISQUOTE(_mode))
+    {
       setSales.prepare("SELECT a.quitem_id AS id"
                        "  FROM quitem AS a, quitem as b"
                        " WHERE ((a.quitem_quhead_id=b.quitem_quhead_id)"
                        "   AND  (b.quitem_id=:id))"
                        " ORDER BY a.quitem_linenumber "
                        " LIMIT 1;");
+      _socharView->setType("QI");
+    }
     else
+    {
       setSales.prepare("SELECT a.coitem_id AS id"
                        "  FROM coitem AS a, coitem AS b"
                        " WHERE ((a.coitem_cohead_id=b.coitem_cohead_id)"
@@ -730,6 +737,8 @@ enum SetResponse salesOrderItem:: set(const ParameterList &pParams)
                        "   AND  (b.coitem_id=:id))"
                        " ORDER BY a.coitem_linenumber, a.coitem_subnumber"
                        " LIMIT 1;");
+      _socharView->setType("SI");
+    }
     setSales.bindValue(":id", _soitemid);
     setSales.exec();
     if (!setSales.first() || setSales.value("id").toInt() == _soitemid)
@@ -739,6 +748,8 @@ enum SetResponse salesOrderItem:: set(const ParameterList &pParams)
     {
       return UndefinedError;
     }
+
+    _socharView->setId(_soitemid);
 
     if (ISQUOTE(_mode))
       setSales.prepare("SELECT a.quitem_id AS id"
@@ -841,6 +852,8 @@ void salesOrderItem::prepare()
     if (salesprepare.first())
     {
       _soitemid = salesprepare.value("_coitem_id").toInt();
+      _socharView->setType("SI");
+      _socharView->setId(_soitemid);
       _comments->setId(_soitemid);
     }
     else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Retrieving Item Information"),
@@ -883,7 +896,11 @@ void salesOrderItem::prepare()
     //  Grab the next quitem_id
     salesprepare.exec("SELECT NEXTVAL('quitem_quitem_id_seq') AS _quitem_id");
     if (salesprepare.first())
+    {
       _soitemid = salesprepare.value("_quitem_id").toInt();
+      _socharView->setType("QI");
+      _socharView->setId(_soitemid);
+    }
     else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Retrieving Quote Information"),
                                   salesprepare, __FILE__, __LINE__))
     {
@@ -939,6 +956,7 @@ void salesOrderItem::clear()
   }
 
   _soitemid = -1;
+  _socharView->setId(-1);
   _modified = false;
   _partialsaved = false;
   _supplyOrderType = "";
@@ -1778,11 +1796,25 @@ void salesOrderItem::sListPrices()
     else  // markup or list cost
       _priceMode = "M";
 
-    _baseUnitPrice->setLocalValue(price);
-    _customerPrice->setLocalValue(price);
+    double charTotal = 0;
 
-    _netUnitPrice->setLocalValue(price);
+    if (_item->isConfigured())
+    {
+      QModelIndex idx;
+
+      for (int i = 0; i < _itemchar->rowCount(); i++)
+      {
+        idx        = _itemchar->index(i, CHAR_PRICE);
+        charTotal += _itemchar->data(idx, Qt::DisplayRole).toDouble();
+      }
+    }
+
+    _baseUnitPrice->setLocalValue(price);
+    _customerPrice->setLocalValue(price + charTotal);
+
+    _netUnitPrice->setLocalValue(price + charTotal);
     _listPrice->setBaseValue(newdlg._selectedBasis * (_priceinvuomratio / _priceRatio));
+    _listPrice->setLocalValue(_listPrice->localValue() + charTotal);
 
     sCalculateDiscountPrcnt();
     _qtyOrderedCache = _qtyOrdered->toDouble();
@@ -2035,6 +2067,7 @@ void salesOrderItem::sPopulatePrices(bool update, bool allPrices, double charTot
         {
           _netUnitPrice->setLocalValue(price + charTotal);
           _listPrice->setBaseValue(itemprice.value("itemprice_listprice").toDouble() * (_priceinvuomratio / _priceRatio));
+          _listPrice->setLocalValue(_listPrice->localValue() + charTotal);
         }
 
         sCalculateDiscountPrcnt();
@@ -2147,12 +2180,12 @@ void salesOrderItem::sPopulateItemInfo(int pItemid)
         sDeterminePrice();
 
       _priceRatio        = salesPopulateItemInfo.value("invpricerat").toDouble(); // Always ratio from default price uom
-      _invuomid          = salesPopulateItemInfo.value("item_inv_uom_id").toInt();
+      _invuomid          = salesPopulateItemInfo.value("item_price_uom_id").toInt();
       _invIsFractional   = salesPopulateItemInfo.value("item_fractional").toBool();
       _priceinvuomratio  = _priceRatio; // the ration from the currently selected price uom
-      _qtyinvuomratio    = 1.0;
+      _qtyinvuomratio    = _priceRatio;
 
-      _qtyUOM->setId(salesPopulateItemInfo.value("item_inv_uom_id").toInt());
+      _qtyUOM->setId(salesPopulateItemInfo.value("item_price_uom_id").toInt());
       _priceUOM->setId(salesPopulateItemInfo.value("item_price_uom_id").toInt());
 
       _taxtype->setId(salesPopulateItemInfo.value("taxtype_id").toInt());
@@ -2197,7 +2230,8 @@ void salesOrderItem::sPopulateItemInfo(int pItemid)
               " ELSE "
               "   formatDate(charass_value::date) "
               "END AS f_charass_value, "
-              " charass_value, charass_price "
+              " charass_value, charass_price, "
+              " charass_value AS charass_value_qttooltiprole "
               "FROM ("
               "SELECT "
               "  char_id, "
@@ -2216,10 +2250,12 @@ void salesOrderItem::sPopulateItemInfo(int pItemid)
               "   WHERE ((charass_char_id=char_id)"
               "   AND (charuse_char_id=char_id AND charuse_target_type=:sotype)"
               "   AND (charass_target_type='I')"
-              "   AND (charass_target_id=:item_id) ) "
+              "   AND (charass_target_id=:item_id) )"
               "   UNION SELECT char_id, char_type, char_name, char_order "
               "   FROM charass, char "
               "   WHERE ((charass_char_id=char_id) "
+              "   AND charass_char_id IN (SELECT charuse_char_id FROM charuse"
+              "                           WHERE charuse_target_type = 'I')"
               "   AND  (charass_target_type = :sotype AND charass_target_id=:coitem_id)) ) AS data"
               "  LEFT OUTER JOIN charass  si ON ((:coitem_id=si.charass_target_id)"
               "                              AND (:sotype=si.charass_target_type)"
@@ -2265,6 +2301,9 @@ void salesOrderItem::sPopulateItemInfo(int pItemid)
     {
       return;
     }
+
+    _itemcharView->resizeColumnToContents(CHAR_ID);
+    _itemcharView->resizeColumnToContents(CHAR_VALUE);
 
     // Setup widgets and signals needed to handle configuration
     if (_item->isConfigured())
@@ -4114,7 +4153,7 @@ void salesOrderItem::populate()
     _shippedToDate->setDouble(item.value("qtyshipped").toDouble());
 
     _item->setId(item.value("item_id").toInt());  // should precede _taxtype/code
-    _invuomid = item.value("item_inv_uom_id").toInt();
+    _invuomid = item.value("item_price_uom_id").toInt();
     _qtyUOM->setId(item.value("qty_uom_id").toInt());
     _priceUOM->setId(item.value("price_uom_id").toInt());
     _priceUOMCache = _priceUOM->id();
@@ -4521,24 +4560,45 @@ void salesOrderItem::sCancel()
   if ( (_mode == cEdit) || (_mode == cNew) )
   {
     XSqlQuery existpo;
-    existpo.prepare("SELECT 1"  // cheaper than EXISTS?
-                    " FROM poitem JOIN coitem ON (coitem_order_id = poitem_id)"
-                    " WHERE ((coitem_id = :soitem_id)"
-                    "   AND  (coitem_order_type='P'));" );
+    existpo.prepare("SELECT poitem_id "
+                    "  FROM coitem JOIN poitem ON coitem_order_type='P' "
+                    "                         AND coitem_order_id=poitem_id "
+                    " WHERE coitem_id=:soitem_id;");
     existpo.bindValue(":soitem_id", _soitemid);
     existpo.exec();
-    if (existpo.first())
+    if (existpo.first() && QMessageBox::question(this, tr("Delete Purchase Order Item?"),
+                                                 tr("Do you wish to delete the Purchase Order Item "
+                                                    "linked to this Sales Order Item? The associated "
+                                                    "Purchase Order will also be deleted if no other "
+                                                    "Purchase Order Item exists for that Purchase "
+                                                    "Order."),
+                                                 QMessageBox::Yes,
+                                                 QMessageBox::No | QMessageBox::Default)
+                           == QMessageBox::Yes)
     {
-      QMessageBox::warning(this, tr("Can not delete PO"),
-                           tr("Purchase Order linked to this Sales Order "
-                              "Item will not be affected. The Purchase Order "
-                              "should be closed or deleted manually if necessary."));
+      XSqlQuery deletepo;
+      deletepo.prepare("SELECT deletepoitem(:poitemid) AS result;");
+      deletepo.bindValue(":poitemid", existpo.value("poitem_id").toInt());
+      deletepo.exec();
+      if (deletepo.first() && deletepo.value("result").toInt() < 0)
+      {
+        XSqlQuery closepo;
+        closepo.prepare("UPDATE poitem "
+                        "   SET poitem_status='C' "
+                        " WHERE poitem_id=:poitemid");
+        closepo.bindValue(":poitem", existpo.value("poitem_id").toInt());
+        closepo.exec();
+        if (ErrorReporter::error(QtCriticalMsg, this, tr("Error closing P/O Line"),
+                                 closepo, __FILE__, __LINE__))
+          return;
+      }
+      else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error deleting P/O Item"),
+                                    deletepo, __FILE__, __LINE__))
+        return;
     }
     else if (ErrorReporter::error(QtCriticalMsg, this, tr("Getting Linked P/O"),
                                   existpo, __FILE__, __LINE__))
-    {
       return;
-    }
   }
 
   salesCancel.prepare("UPDATE coitem SET coitem_status='X' WHERE (coitem_id=:coitem_id);");
@@ -4705,7 +4765,7 @@ void salesOrderItem::sQtyUOMChanged()
 
   if (_qtyUOM->id() == _invuomid)
   {
-    _qtyinvuomratio = 1.0;
+    _qtyinvuomratio = _priceRatio;
     if (_invIsFractional)
       _qtyOrdered->setValidator(omfgThis->qtyVal());
     else
@@ -4787,7 +4847,7 @@ void salesOrderItem::sPriceUOMChanged()
   }
 
   if (_priceUOM->id() == _invuomid)
-    _priceinvuomratio = 1.0;
+    _priceinvuomratio = _priceRatio;
   else
   {
     XSqlQuery invuom;

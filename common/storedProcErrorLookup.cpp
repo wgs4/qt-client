@@ -630,6 +630,19 @@ const struct {
                            "these Accounts before you may delete the selected "
                            "Profit Center." ),                          0, "" },
 
+  { "deleteProject",      -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "One or more "
+                           "Quote's refer to this project."),                   0, "" },
+  { "deleteProject",      -2, QT_TRANSLATE_NOOP("storedProcErrorLookup", "One or more "
+                           "Sales Orders refer to this project."),              0, "" },
+  { "deleteProject",      -3, QT_TRANSLATE_NOOP("storedProcErrorLookup", "One or more "
+                           "Work Orders refer to this project."),               0, "" },
+  { "deleteProject",      -4, QT_TRANSLATE_NOOP("storedProcErrorLookup", "One or more "
+                           "Purchase Requests refer to this project."),         0, "" },
+  { "deleteProject",      -5, QT_TRANSLATE_NOOP("storedProcErrorLookup", "One or more "
+                           "Purchase order Items refer to this project."),      0, "" },
+  { "deleteProject",      -6, QT_TRANSLATE_NOOP("storedProcErrorLookup", "One or more "
+                           "Invoices refer to this project."),                  0, "" },
+
   { "deleteProspect",	-1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "The selected Prospect cannot be deleted as "
 			       "there are still Quotes for it. You must delete "
 			       "all of this Prospect's Quotes before you may "
@@ -908,6 +921,8 @@ const struct {
 				     "because it is still open."),     0, "" },
   { "freezeAccountingPeriod", -2, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot freeze this Accounting Period "
 				     "because it is already frozen."), 0, "" },
+
+  { "getAssocLotSerialIds", -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "pItemlocdistId is required."), 0, "" },
 
   { "insertGLTransaction", -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "G/L Transaction can not be posted because "
              "the debit and credit accounts reference two different companies."), 0, "" },

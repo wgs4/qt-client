@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2016 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -81,7 +81,7 @@ workOrder::workOrder(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _wonumber = -1;
   _oldPriority = _priority->value();
 
-  _lastWarehousid = _warehouse->id();
+  _lastWarehousid = -1;
   _lastItemid = -1;
   _comments->setReadOnly(true);
 //  _documents->setReadOnly(true);
@@ -111,6 +111,8 @@ workOrder::workOrder(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _itemcharView->setModel(_itemchar);
   ItemCharacteristicDelegate * delegate = new ItemCharacteristicDelegate(this);
   _itemcharView->setItemDelegate(delegate);
+
+  _wocharView->setType("W");
 
   if (!_metrics->boolean("MultiWhs"))
   {
@@ -218,6 +220,7 @@ enum SetResponse workOrder::set(const ParameterList &pParams)
   if (valid)
   {
     _woid = param.toInt();
+    _wocharView->setId(_woid);
     emit newId(_woid);
   }
 
@@ -290,6 +293,7 @@ enum SetResponse workOrder::set(const ParameterList &pParams)
       _close->setText(tr("&Close"));
       _project->setEnabled(false);
       _itemcharView->setEnabled(false);
+      _wocharView->setEnabled(false);
       _jobCosGroup->setEnabled(false);
     }
 
@@ -501,6 +505,7 @@ void workOrder::sCreate()
     }
   
     _woid = workCreate.value("result").toInt();
+    _wocharView->setId(_woid);
     emit newId(_woid);
   
     workCreate.prepare("SELECT updateCharAssignment('W', :target_id, :char_id, :char_value);");
@@ -542,6 +547,7 @@ void workOrder::sCreate()
       if (workCreate.first())
       {
         _woid = workCreate.value("wo_id").toInt();
+        _wocharView->setId(_woid);
         emit newId(_woid);
       }
       else
@@ -767,6 +773,8 @@ void workOrder::sPopulateItemChar( int pItemid )
       _itemchar->setData(idx, pItemid, Qt::UserRole);
       row++;
     }
+
+    sPopulateLeadTime(_warehouse->id());
   }
 }
 
@@ -1516,7 +1524,6 @@ void workOrder::sIssueMatlBatch()
                 "   AND (womatl_itemsite_id=itemsite_id) "
                 "   AND (itemsite_item_id=item_id) "
                 "   AND (itemsite_warehous_id=warehous_id) "
-                "   AND ((itemsite_controlmethod IN ('L', 'S')) OR (itemsite_loccntrl)) "
                 "   AND (womatl_issuemethod IN ('S', 'M')) "
                 "   AND (womatl_wo_id=:wo_id)); ");
   items.bindValue(":wo_id", _woIndentedList->id());
@@ -2295,7 +2302,8 @@ void workOrder::populate()
     _assembly->setEnabled(false);
     _disassembly->setEnabled(false);
     _warehouse->setEnabled(false);
-    _comments->setReadOnly(false);
+    if (_mode != cView)
+      _comments->setReadOnly(false);
     _documents->setReadOnly(false);
     _leadTimeLit->hide();
     _leadTime->hide();

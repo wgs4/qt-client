@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -119,6 +119,7 @@ crmaccount::crmaccount(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _taxauthId    = -1;
   _username     = "";
   _vendId       = -1;
+  _closed       = false;
   _comments->setId(-1);
   _documents->setId(-1);
   _charass->setId(-1);
@@ -183,7 +184,7 @@ enum SetResponse crmaccount::set(const ParameterList &pParams)
       XSqlQuery insq;
       insq.prepare("INSERT INTO crmacct(crmacct_number, crmacct_name,"
                    "                    crmacct_active, crmacct_type)"
-                   "  SELECT CASE WHEN :number > 1 THEN "
+                   "  SELECT CASE WHEN :number >= 1 THEN "
                    "           CAST(:number AS TEXT) "
                    "         ELSE 'TEMPORARY' || (last_value + 1) "
                    "         END, "
@@ -234,6 +235,30 @@ enum SetResponse crmaccount::set(const ParameterList &pParams)
   {
     _mode = cView;
     setViewMode();
+  }
+
+  _closed = false;
+
+  foreach (QWidget* widget, QApplication::allWidgets())
+  {
+    if (!widget->isWindow() || !widget->isVisible())
+      continue;
+
+    crmaccount *w = qobject_cast<crmaccount*>(widget);
+
+    if (w && w->id()==_crmacctId)
+    {
+      w->setFocus();
+
+      if (omfgThis->showTopLevel())
+      {
+        w->raise();
+        w->activateWindow();
+      }
+
+      _closed = true;
+      break;
+    }
   }
 
   sHandleChildButtons();
@@ -1338,4 +1363,12 @@ void crmaccount::sUser()
   user *newdlg = new user(this);
   newdlg->set(params);
   omfgThis->handleNewWindow(newdlg);
+}
+
+void crmaccount::setVisible(bool visible)
+{
+  if (_closed)
+    close();
+  else
+    XWidget::setVisible(visible);
 }

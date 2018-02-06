@@ -14,9 +14,12 @@
 #include <QPushButton>
 #include <QScriptEngine>
 #include <QScriptEngineDebugger>
+#include <QScrollArea>
 
 #include "getscreen.h"
 #include "include.h"
+#include "metasql.h"
+#include "mqlutil.h"
 #include "scripttoolbox.h"
 #include "setup.h"
 #include "xt.h"
@@ -506,23 +509,22 @@ void setup::setCurrentIndex(XTreeWidgetItem* item)
         QUiLoader loader;
         QByteArray ba = screenq.value("uiform_source").toByteArray();
         QBuffer uiFile(&ba);
-        if (!uiFile.open(QIODevice::ReadOnly))
-          QMessageBox::critical(0, tr("Could not load UI"),
-                                tr("<p>There was an error loading the UI Form "
-                                   "from the database."));
+
+         if (!uiFile.open(QIODevice::ReadOnly))
+            QMessageBox::critical(0, tr("Could not load UI"),
+                 tr("<p>There was an error loading the UI Form "
+                    "from the database."));
+
+
         w = loader.load(&uiFile);
         w->setObjectName(uiName);
         uiFile.close();
 
         // Load scripts if applicable
-        XSqlQuery scriptq;
-        scriptq.prepare("SELECT script_source, script_order"
-                        "  FROM script"
-                        " WHERE((script_name=:script_name)"
-                        "   AND (script_enabled))"
-                        " ORDER BY script_order;");
-        scriptq.bindValue(":script_name", uiName);
-        scriptq.exec();
+        ParameterList params;
+        params.append("jsonlist", QString("{\"1\": \"%1\"}").arg(uiName));
+        MetaSQLQuery mql = mqlLoad("scripts", "fetch");
+        XSqlQuery scriptq = mql.toQuery(params);
 
         QScriptEngine* engine = new QScriptEngine();
         if (_preferences->boolean("EnableScriptDebug"))
@@ -574,7 +576,10 @@ void setup::setCurrentIndex(XTreeWidgetItem* item)
       }
       int idx = _stack->count();
       _itemMap[uiName].index = idx;
-      _stack->addWidget(w);
+      QScrollArea *scroll = new QScrollArea();
+      scroll->setWidget(w);
+      scroll->setWidgetResizable(true);
+      _stack->addWidget(scroll);
       _stack->setCurrentIndex(idx);
 
       _stackLit->setText(label.arg(item->text(0)));

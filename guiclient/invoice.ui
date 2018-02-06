@@ -2,7 +2,7 @@
 <ui version="4.0">
  <comment>This file is part of the xTuple ERP: PostBooks Edition, a free and
 open source Enterprise Resource Planning software suite,
-Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
 It is licensed to you under the Common Public Attribution License
 version 1.0, the full text of which (including xTuple-specific Exhibits)
 is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -1261,6 +1261,20 @@ to be bound by its terms.</comment>
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="_commentsTab">
+      <attribute name="title">
+       <string>Co&amp;mments</string>
+      </attribute>
+      <layout class="QGridLayout">
+       <item row="0" column="0">
+        <widget class="Comments" name="_comments">
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="notesTab">
       <attribute name="title">
        <string>Notes</string>
@@ -1426,11 +1440,10 @@ to be bound by its terms.</comment>
   </customwidget>
  </customwidgets>
  <tabstops>
+  <tabstop>_invoiceDate</tabstop>
   <tabstop>_cust</tabstop>
   <tabstop>_copyToShipto</tabstop>
-  <tabstop>_tabWidget</tabstop>
   <tabstop>_invoiceNumber</tabstop>
-  <tabstop>_invoiceDate</tabstop>
   <tabstop>_terms</tabstop>
   <tabstop>_orderNumber</tabstop>
   <tabstop>_orderDate</tabstop>

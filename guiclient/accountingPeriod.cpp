@@ -14,6 +14,7 @@
 #include <QSqlError>
 #include <QVariant>
 #include "errorReporter.h"
+#include "guiErrorCheck.h"
 
 #include "storedProcErrorLookup.h"
 #include "unpostedGLTransactions.h"
@@ -86,6 +87,15 @@ enum SetResponse accountingPeriod::set(const ParameterList &pParams)
             pdate = pdate.addDays(1);
             pmonth = pdate.month();
           }
+
+          XSqlQuery setYear;
+          setYear.prepare("SELECT yearperiod_id "
+                          "  FROM yearperiod "
+                          " WHERE :date BETWEEN yearperiod_start AND yearperiod_end;");
+          setYear.bindValue(":date", pdate);
+          setYear.exec();
+          if (setYear.first())
+            _year->setId(setYear.value("yearperiod_id").toInt());
         }
         sHandleNumber();
         connect(_year, SIGNAL(newID(int)), this, SLOT(sHandleNumber()));
@@ -129,12 +139,12 @@ void accountingPeriod::sHandleNumber()
 
 void accountingPeriod::sSave()
 {
-  if (_startDate->date() >= _endDate->date())
-  {
-    QMessageBox::critical( this, tr("Cannot Save Period"),
-          tr("The start date must be less than the end date.") );
-    return;
-  }
+  QList<GuiErrorCheck> errors;
+    errors<< GuiErrorCheck(_startDate->date() >= _endDate->date(), _endDate,
+                           tr("The start date must be less than the end date."))
+    ;
+    if (GuiErrorCheck::reportErrors(this, tr("Cannot Save Period"), errors))
+      return;
 
   XSqlQuery saveAccounting;
   if (_mode == cNew)

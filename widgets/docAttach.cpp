@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -16,6 +16,7 @@
 #include <QFileInfo>
 #include <QFormLayout>
 #include <QMessageBox>
+#include <QMimeDatabase>
 #include <QString>
 #include <QUiLoader>
 #include <QUrl>
@@ -61,6 +62,8 @@ class docAttachPrivate {
       map.insert(Documents::Opportunity,       new StackDescriptor(p->_oppPage,     p->_opp));
       map.insert(Documents::Project,           new StackDescriptor(p->_projPage,    p->_proj));
       map.insert(Documents::PurchaseOrder,     new StackDescriptor(p->_poPage,      p->_po));
+      map.insert(Documents::Quote,             new StackDescriptor(p->_quPage,      p->_qu));
+      map.insert(Documents::ReturnAuth,        new StackDescriptor(p->_raPage,      p->_ra));
       map.insert(Documents::SalesOrder,        new StackDescriptor(p->_soPage,      p->_so));
       map.insert(Documents::Vendor,            new StackDescriptor(p->_vendPage,    p->_vend));
       map.insert(Documents::Uninitialized,     new StackDescriptor(p->_urlPage,     p->_url));
@@ -126,7 +129,7 @@ class docAttachPrivate {
  */
 
 docAttach::docAttach(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)
-  : QDialog(parent, fl)
+  : QDialog(parent, fl), ScriptableWidget(this)
 {
   setupUi(this);
   setObjectName(name ? name : "docAttach");
@@ -145,11 +148,12 @@ docAttach::docAttach(QWidget* parent, const char* name, bool modal, Qt::WindowFl
   _sourcetype = "";
   _sourceid = -1;
   _targetid = -1;
-  _urlid = -1;
+  _id = -1;
   _mode = "new";
 
   _po->setAllowedTypes(OrderLineEdit::Purchase);
   _so->setAllowedTypes(OrderLineEdit::Sales);
+  _ra->setAllowedTypes(OrderLineEdit::Return);
 
   _docType->populate("SELECT * FROM"
                      "(SELECT source_docass_num, source_descrip, source_name"
@@ -173,6 +177,41 @@ docAttach::docAttach(QWidget* parent, const char* name, bool modal, Qt::WindowFl
 docAttach::~docAttach()
 {
   // no need to delete child widgets, Qt does it all for us
+}
+
+int docAttach::id()
+{
+  return _id;
+}
+
+QString docAttach::mode()
+{
+  return _mode;
+}
+
+QString docAttach::purpose()
+{
+  return _purpose;
+}
+
+int docAttach::sourceId()
+{
+  return _sourceid;
+}
+
+QString docAttach::sourceType()
+{
+  return _sourcetype;
+}
+
+int docAttach::targetId()
+{
+  return _targetid;
+}
+
+QString docAttach::targetType()
+{
+  return _targettype;
 }
 
 void docAttach::languageChange()
@@ -201,15 +240,17 @@ void docAttach::set(const ParameterList &pParams)
   {
     if (DEBUG) qDebug() << "got url_id" << param;
     XSqlQuery qry;
-    _urlid = param.toInt();
-    qry.prepare("SELECT url_source, url_source_id, url_title, url_url, url_stream "
+    _id = param.toInt();
+    qry.prepare("SELECT url_source, url_source_id, url_title, url_url, url_stream, url_mime_type, docass_target_id "
                 "  FROM url"
+                "  JOIN docass ON url_id = docass_id"
                 " WHERE (url_id=:url_id);" );
-    qry.bindValue(":url_id", _urlid);
+    qry.bindValue(":url_id", _id);
     qry.exec();
     if(qry.first())
     {
       setWindowTitle(tr("Edit Attachment Link"));
+      _targetid = qry.value("docass_target_id").toInt();
       QUrl url(qry.value("url_url").toString());
       if (url.scheme().isEmpty())
         url.setScheme("file");
@@ -226,6 +267,7 @@ void docAttach::set(const ParameterList &pParams)
         _docType->setId(-2);
         _filetitle->setText(qry.value("url_title").toString());
         _file->setText(url.toString());
+        _mimeType->setText(qry.value("url_mime_type").toString());
         if (qry.value("url_stream").toString().length())
         {
           _fileList->setEnabled(false);
@@ -250,8 +292,15 @@ void docAttach::set(const ParameterList &pParams)
   }
 }
 
+void docAttach::showEvent(QShowEvent *e)
+{
+  loadScriptEngine();
+  QWidget::showEvent(e);
+}
+
 void docAttach::sHandleNewId(int id)
 {
+  _id = id;
   _save->setEnabled(id != -1);
 }
 
@@ -351,7 +400,7 @@ void docAttach::sSave()
       return;
     }
 
-     _targettype = "URL";
+     _targettype = _saveDbCheck->isChecked() ? "FILE" : "URL";
      title = _filetitle->text();
      url = QUrl(_file->text());
      if (url.scheme().isEmpty())
@@ -373,6 +422,22 @@ void docAttach::sSave()
       url.setScheme("http");
   }
 
+  XSqlQuery rollback;
+  rollback.prepare("ROLLBACK;");
+
+  emit saveBeforeBegin();
+  if (_saveStatus==Failed)
+    return;
+
+  XSqlQuery begin("BEGIN;");
+
+  emit saveAfterBegin();
+  if (_saveStatus==Failed)
+  {
+    rollback.exec();
+    return;
+  }
+
   if (_targettype == "IMG")
   {
     // First determine if the id is in the image table, and not one of it's inherited versions
@@ -380,8 +445,18 @@ void docAttach::sSave()
     XSqlQuery qq;
     qq.prepare("SELECT image_id FROM ONLY image WHERE image_id=:image_id");
     qq.bindValue(":image_id", _targetid);
-    if(qq.exec() && !qq.first())
+    qq.exec();
+    if(!qq.first())
     {
+      if (ErrorReporter::error(QtCriticalMsg, 0, tr("Error saving"),
+                               qq, __FILE__, __LINE__))
+      {
+        emit saveBeforeRollback(&qq);
+        rollback.exec();
+        emit saveAfterRollback(&qq);
+        return;
+      }
+
       qq.exec("SELECT nextval(('\"image_image_id_seq\"'::text)::regclass) AS newid;");
       if(qq.first())
       {
@@ -391,22 +466,42 @@ void docAttach::sSave()
                    "  FROM image WHERE image_id=:image_id;");
         qq.bindValue(":newid", newid);
         qq.bindValue(":image_id", _targetid);
-        if(qq.exec())
-          _targetid = newid;
+        qq.exec();
+        if (ErrorReporter::error(QtCriticalMsg, 0, tr("Error saving"),
+                                 qq, __FILE__, __LINE__))
+        {
+          emit saveBeforeRollback(&qq);
+          rollback.exec();
+          emit saveAfterRollback(&qq);
+          return;
+        }
+        _targetid = newid;
+      }
+      else if (ErrorReporter::error(QtCriticalMsg, 0, tr("Error saving"),
+                               qq, __FILE__, __LINE__))
+      {
+        emit saveBeforeRollback(&qq);
+        rollback.exec();
+        emit saveAfterRollback(&qq);
+        return;
       }
     }
      // For now images are handled differently because of legacy structures...
     newDocass.prepare( "INSERT INTO imageass "
                        "( imageass_source, imageass_source_id, imageass_image_id, imageass_purpose ) "
                        "VALUES "
-                       "( :docass_source_type, :docass_source_id, :docass_target_id, :docass_purpose );" );
+                       "( :docass_source_type, :docass_source_id, :docass_target_id, :docass_purpose )"
+                       " RETURNING imageass_id AS docass_id, imageass_image_id AS docass_target_id;" );
   }
-  else if (_targettype == "URL")
+  else if (_targettype == "URL" || _targettype == "FILE")
   {
     if(!url.isValid())
     {
       QMessageBox::warning( this, tr("Must Specify valid path"),
                             tr("You must specify a path before you may save.") );
+      emit saveBeforeRollback(new XSqlQuery());
+      rollback.exec();
+      emit saveAfterRollback(new XSqlQuery());
       return;
     }
 
@@ -421,6 +516,9 @@ void docAttach::sSave()
       {
         QMessageBox::warning( this, tr("File Error"),
                              tr("File %1 was not found and will not be saved.").arg(url.toLocalFile()));
+        emit saveBeforeRollback(new XSqlQuery());
+        rollback.exec();
+        emit saveAfterRollback(new XSqlQuery());
         return;
       }
       QFile sourceFile(url.toLocalFile());
@@ -429,6 +527,9 @@ void docAttach::sSave()
         QMessageBox::warning( this, tr("File Open Error"),
                              tr("Could not open source file %1 for read.")
                                 .arg(url.toLocalFile()));
+        emit saveBeforeRollback(new XSqlQuery());
+        rollback.exec();
+        emit saveAfterRollback(new XSqlQuery());
         return;
       }
       bytarr = sourceFile.readAll();
@@ -436,33 +537,55 @@ void docAttach::sSave()
       url.setScheme("");
     }
 
-    // TODO: replace use of URL view
     if (_mode == "new" && bytarr.isNull())
-      newDocass.prepare( "INSERT INTO url "
-                         "( url_source, url_source_id, url_title, url_url, url_stream ) "
-                         "VALUES "
-                         "( :docass_source_type, :docass_source_id, :title, :url, :stream );" );
+    {
+      newDocass.prepare( "INSERT INTO docass ("
+                         "  docass_source_id, docass_source_type,"
+                         "  docass_target_id, docass_target_type,"
+                         "  docass_purpose"
+                         ") VALUES ("
+                         "  :docass_source_id, :docass_source_type,"
+                         "  createurl(:title, :url), 'URL'::text,"
+                         "  'S'::bpchar"
+                         ") RETURNING docass_id, docass_target_id;");
+    }
     else if (_mode == "new")
-      newDocass.prepare( "INSERT INTO url "
-                         "( url_source, url_source_id, url_title, url_url, url_stream ) "
-                         "VALUES "
-                         "( :docass_source_type, :docass_source_id, :title, :url, :stream );" );
+    {
+      newDocass.prepare( "INSERT INTO docass ("
+                         "  docass_source_id, docass_source_type,"
+                         "  docass_target_id, docass_target_type,"
+                         "  docass_purpose"
+                         ") VALUES ("
+                         "  :docass_source_id, :docass_source_type,"
+                         "  createfile(:title, :url, :stream, :mime_type), 'FILE'::text,"
+                         "  'S'::bpchar"
+                         ") RETURNING docass_id, docass_target_id;");
+
+      QMimeDatabase mimeDb;
+      QMimeType mime = mimeDb.mimeTypeForFileNameAndData(_filetitle->text(), bytarr);
+
+      newDocass.bindValue(":stream", bytarr);
+      newDocass.bindValue(":mime_type", mime.name());
+    }
     else
-      newDocass.prepare( "UPDATE url SET "
-                         "  url_title = :title, "
-                         "  url_url = :url "
-                         "WHERE (url_id=:url_id);" );
-    newDocass.bindValue(":url_id", _urlid);
+    {
+      newDocass.prepare( "UPDATE url SET"
+                         "  url_title = :title,"
+                         "  url_url = :url"
+                         " WHERE (url_id=:url_id);");
+    }
+
+    newDocass.bindValue(":url_id", _id);
     newDocass.bindValue(":title", title);
     newDocass.bindValue(":url", url.toString());
-    newDocass.bindValue(":stream", bytarr);
   }
   else
   {
     newDocass.prepare( "INSERT INTO docass "
                        "( docass_source_type, docass_source_id, docass_target_type, docass_target_id, docass_purpose ) "
                        "VALUES "
-                       "( :docass_source_type, :docass_source_id, :docass_target_type, :docass_target_id, :docass_purpose );" );
+                       "( :docass_source_type, :docass_source_id, :docass_target_type, :docass_target_id, :docass_purpose )"
+                       " RETURNING docass_id, docass_target_id;");
     newDocass.bindValue(":docass_target_type", _targettype);
   }
 
@@ -471,6 +594,9 @@ void docAttach::sSave()
   {
     QMessageBox::critical(this,tr("Invalid Selection"),
                           tr("You may not attach a document to itself."));
+    emit saveBeforeRollback(new XSqlQuery());
+    rollback.exec();
+    emit saveAfterRollback(new XSqlQuery());
     return;
   }
 
@@ -480,6 +606,60 @@ void docAttach::sSave()
   newDocass.bindValue(":docass_purpose", _purpose);
 
   newDocass.exec();
+
+  if (ErrorReporter::error(QtCriticalMsg, 0, tr("Error saving"),
+                           newDocass, __FILE__, __LINE__))
+  {
+    emit saveBeforeRollback(&newDocass);
+    rollback.exec();
+    emit saveAfterRollback(&newDocass);
+    return;
+  }
+
+  if (newDocass.first() &&
+      newDocass.value("docass_id").toInt() > 0 &&
+      newDocass.value("docass_target_id").toInt() > 0)
+  {
+    _id = newDocass.value("docass_id").toInt();
+    _targetid = newDocass.value("docass_target_id").toInt();
+  }
+
+  emit saveBeforeCommit();
+
+  if (_saveStatus==Failed)
+  {
+    rollback.exec();
+    return;
+  }
+
+  XSqlQuery commit("COMMIT;");
+
+  bool tryAgain = false;
+
+  do
+  {
+    emit saveAfterCommit();
+    if (_saveStatus==Failed)
+    {
+      QMessageBox failure(QMessageBox::Critical, tr("Script Error"),
+                          tr("A script has failed after the main window saved successfully. How do "
+                             "you wish to proceed?"));
+      QPushButton* retry = failure.addButton(tr("Retry"), QMessageBox::NoRole);
+      failure.addButton(tr("Ignore"), QMessageBox::YesRole);
+      QPushButton* cancel = failure.addButton(QMessageBox::Cancel);
+      failure.setDefaultButton(cancel);
+      failure.setEscapeButton((QAbstractButton*)cancel);
+      failure.exec();
+      if (failure.clickedButton() == (QAbstractButton*)retry)
+      {
+        setSaveStatus(OK);
+        tryAgain = true;
+      }
+      else if (failure.clickedButton() == (QAbstractButton*)cancel)
+        return;
+    }
+  }
+  while (tryAgain);
 
   accept();
   return;

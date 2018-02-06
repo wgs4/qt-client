@@ -19,11 +19,11 @@
 #include <QVariant>
 
 #include <metasql.h>
-#include "mqlutil.h"
+#include <mqlutil.h>
 
 #include <openreports.h>
 
-#include <currcluster.h>
+#include "currcluster.h"
 
 #include "applyARCreditMemo.h"
 #include "arOpenItem.h"
@@ -36,6 +36,7 @@
 #include "dspSalesOrderStatus.h"
 #include "dspShipmentsBySalesOrder.h"
 #include "getGLDistDate.h"
+#include "guiErrorCheck.h"
 #include "invoice.h"
 #include "incident.h"
 #include "printArOpenItem.h"
@@ -385,13 +386,14 @@ void dspAROpenItems::sApplyAropenCM()
 void dspAROpenItems::sCCRefundCM()
 {
   XSqlQuery dspCCRefundCM;
-  if (list()->id("ccard_number") < 0)
-  {
-    QMessageBox::warning(this, tr("Cannot Refund by Credit Card"),
-			 tr("<p>The application cannot refund this "
-			    "transaction using a credit card."));
+
+  QList<GuiErrorCheck> errors;
+  errors<< GuiErrorCheck(list()->id("ccard_number") < 0, _credits,
+                         tr("The application cannot refund this "
+                            "transaction using a credit card."))
+  ;
+  if (GuiErrorCheck::reportErrors(this, tr("Cannot Refund by Credit Card"), errors))
     return;
-  }
   
   int     ccardid = -1;
   double  total   =  0.0;
@@ -885,15 +887,56 @@ void dspAROpenItems::sVoidInvoiceDetails()
     return;
   }
 
+  QVariant voidDate; // starts null
+  while (_privileges->check("ChangeARInvcDistDate"))
+  {
+    getGLDistDate newdlg(this, "", true);
+    newdlg.sSetDefaultLit(tr("Invoice Posting Date"));
+    if (newdlg.exec() == XDialog::Accepted)
+    {
+      voidDate = QVariant(newdlg.date());
+
+      XSqlQuery closedPeriod;
+      closedPeriod.prepare("SELECT period_closed "
+                           "  FROM invchead "
+                           "  JOIN period ON COALESCE(:distdate, invchead_gldistdate, "
+                           "                          invchead_invcdate) BETWEEN "
+                           "                 period_start AND period_end "
+                           " WHERE invchead_id=:invchead_id;");
+      closedPeriod.bindValue(":distdate", voidDate);
+      closedPeriod.bindValue(":invchead_id", list()->currentItem()->id("docnumber"));
+      closedPeriod.exec();
+      if (closedPeriod.first() && !closedPeriod.value("period_closed").toBool())
+        break;
+      else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error voiding invoice"),
+                                    closedPeriod, __FILE__, __LINE__))
+        return;
+      else
+      {
+        if (QMessageBox::question(this, tr("Change Date?"),
+                                  tr("Could not void invoice because the accounting period for the "
+                                     "posting date is closed. Try again with a different date?"),
+                                  QMessageBox::Yes | QMessageBox::No,
+                                  QMessageBox::No) == QMessageBox::Yes)
+          continue;
+        else
+          return;
+      }
+    }
+    else
+      return;
+  }
+
   XSqlQuery rollback;
   rollback.prepare("ROLLBACK;");
 
   dspVoidInvoiceDetails.exec("BEGIN;"); // TODO - remove after voidInvoice no longer returns negative error codes
 
   XSqlQuery post;
-  post.prepare("SELECT voidInvoice(:invchead_id, :itemlocSeries, TRUE) AS result;");
-  post.bindValue(":invchead_id", list()->currentItem()->id("docnumber"));
+  post.prepare("SELECT voidInvoice(:invchead_id, :itemlocSeries, TRUE, :voidDate) AS result;");
+  post.bindValue(":invchead_id",   list()->currentItem()->id("docnumber"));
   post.bindValue(":itemlocSeries", itemlocSeries);
+  post.bindValue(":voidDate",      voidDate);
   post.exec();
   if (post.first())
   {
@@ -1139,6 +1182,7 @@ void dspAROpenItems::sPostCreditMemo()
     
   bool changeDate = false;
   QDate newDate = QDate::currentDate();
+  QDate seriesDate;
 
   if (_privileges->check("ChangeSOMemoPostDate"))
   {
@@ -1148,6 +1192,7 @@ void dspAROpenItems::sPostCreditMemo()
     {
       newDate = newdlg.date();
       changeDate = (newDate.isValid());
+      seriesDate = newdlg.seriesDate();
     }
     else
       return;
@@ -1224,9 +1269,10 @@ void dspAROpenItems::sPostCreditMemo()
   tx.exec("BEGIN;");  // TODO - remove this after postCreditMemo can no longer return negative error codes
     
   XSqlQuery postq;
-  postq.prepare("SELECT postCreditMemo(:cmhead_id, fetchJournalNumber('AR-CM'), :itemlocSeries, TRUE) AS result;");
+  postq.prepare("SELECT postCreditMemo(:cmhead_id, fetchJournalNumber('AR-CM', :seriesDate), :itemlocSeries, TRUE) AS result;");
   postq.bindValue(":cmhead_id", id);
   postq.bindValue(":itemlocSeries", itemlocSeries);
+  postq.bindValue(":seriesDate", seriesDate);
   postq.exec();
   if (postq.first())
   {
@@ -1266,6 +1312,7 @@ void dspAROpenItems::sPostInvoice()
     
   bool changeDate = false;
   QDate newDate = QDate::currentDate();
+  QDate seriesDate;
 
   if (!checkInvoiceSitePrivs(list()->currentItem()->id("docnumber")))
     return;
@@ -1278,13 +1325,16 @@ void dspAROpenItems::sPostInvoice()
     {
       newDate = newdlg.date();
       changeDate = (newDate.isValid());
+      seriesDate = newdlg.seriesDate();
     }
     else
       return;
   }
 
   int journal = -1;
-  dspPostInvoice.exec("SELECT fetchJournalNumber('AR-IN') AS result;");
+  dspPostInvoice.prepare("SELECT fetchJournalNumber('AR-IN', :seriesDate) AS result;");
+  dspPostInvoice.bindValue(":seriesDate", seriesDate);
+  dspPostInvoice.exec();
   if (dspPostInvoice.first())
   {
     journal = dspPostInvoice.value("result").toInt();

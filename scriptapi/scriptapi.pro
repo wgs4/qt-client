@@ -43,6 +43,7 @@ HEADERS += setupscriptapi.h \
     qcoreapplicationproto.h \
     qcryptographichashproto.h \
     qdatawidgetmapperproto.h    \
+    qdateproto.h \
     qdialogbuttonboxproto.h \
     qdialogsetup.h \
     qdirproto.h \
@@ -92,6 +93,8 @@ HEADERS += setupscriptapi.h \
     qmenubarproto.h \
     qmenuproto.h \
     qmessageboxsetup.h \
+    qmimedatabaseproto.h \
+    qmimetypeproto.h \
     qnetworkaccessmanagerproto.h \
     qnetworkinterfaceproto.h \
     qnetworkreplyproto.h \
@@ -176,6 +179,7 @@ SOURCES += setupscriptapi.cpp \
     qcoreapplicationproto.cpp \
     qcryptographichashproto.cpp \
     qdatawidgetmapperproto.cpp  \
+    qdateproto.cpp \
     qdialogbuttonboxproto.cpp \
     qdialogsetup.cpp \
     qdirproto.cpp \
@@ -225,6 +229,8 @@ SOURCES += setupscriptapi.cpp \
     qmenubarproto.cpp \
     qmenuproto.cpp \
     qmessageboxsetup.cpp \
+    qmimedatabaseproto.cpp \
+    qmimetypeproto.cpp \
     qnetworkaccessmanagerproto.cpp \
     qnetworkinterfaceproto.cpp \
     qnetworkreplyproto.cpp \

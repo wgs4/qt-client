@@ -11,6 +11,7 @@
 #include "voucherItem.h"
 
 #include <QMessageBox>
+#include "guiErrorCheck.h"
 #include <QSqlError>
 #include <QVariant>
 
@@ -95,6 +96,29 @@ enum SetResponse voucherItem::set(const ParameterList &pParams)
   {
     _freightToVoucher->setEffective(param.toDate());
     _tax->setEffective(param.toDate());
+  }
+
+  param = pParams.value("mode", &valid);
+  if (valid)
+  {
+    if (param.toString() == "new")
+      _mode = cNew;
+    else if(param.toString() == "view")
+    {
+      _mode = cView;
+      _save->setEnabled(false);
+      _closePoitem->setEnabled(false);
+      _new->setEnabled(false);
+      _delete->setEnabled(false);
+      _freightToVoucher->setEnabled(false);
+      _taxtype->setEnabled(false);
+      _vendDescription->setEnabled(false);
+
+      _edit->setText("View");
+
+      disconnect(_uninvoiced, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(sToggleReceiving(QTreeWidgetItem*)));
+      disconnect(_uninvoiced, SIGNAL(populateMenu(QMenu*, XTreeWidgetItem*)), this, SLOT(sPopulateMenu(QMenu*, XTreeWidgetItem*)));
+    }
   }
 
   param = pParams.value("vohead_id", &valid);
@@ -268,13 +292,6 @@ enum SetResponse voucherItem::set(const ParameterList &pParams)
 void voucherItem::sSave()
 {
   XSqlQuery voucherSave;
-  if (_qtyToVoucher->toDouble() <= 0.0)
-  {
-    QMessageBox::critical( this, tr("Cannot Save Voucher Item"),
-                           tr("You must enter a postive Quantity to Voucher before saving this Voucher Item") );
-    _qtyToVoucher->setFocus();
-    return;
-  }
 
   // Check to make sure there is at least distribution for this Voucher Item
   voucherSave.prepare( "SELECT vodist_id "
@@ -285,12 +302,16 @@ void voucherItem::sSave()
   voucherSave.bindValue(":vohead_id", _voheadid);
   voucherSave.bindValue(":poitem_id", _poitemid);
   voucherSave.exec();
-  if (!voucherSave.first())
-  {
-    QMessageBox::critical( this, tr("Cannot Save Voucher Item"),
-                           tr("You must make at least one distribution for this Voucher Item before you may save it.") );
+
+  QList<GuiErrorCheck> errors;
+  errors<< GuiErrorCheck(_qtyToVoucher->toDouble() <= 0.0, _qtyToVoucher,
+                         tr("You must enter a postive Quantity to Voucher before saving this Voucher Item."))
+        << GuiErrorCheck(!voucherSave.first(), _qtyToVoucher,
+                         tr("You must make at least one distribution for this Voucher Item before you may save it."))
+  ;
+  if (GuiErrorCheck::reportErrors(this, tr("Cannot Save Voucher Item"), errors))
     return;
-  }
+
   if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Saving Voucher Item Information"),
                                 voucherSave, __FILE__, __LINE__))
   {
@@ -456,7 +477,10 @@ void voucherItem::sEdit()
 {
   ParameterList params;
   params.append("vodist_id", _vodist->id());
-  params.append("mode", "edit");
+  if (_mode == cView)
+    params.append("mode", "view");
+  else
+    params.append("mode", "edit");
   params.append("curr_id", _freightToVoucher->id());
   params.append("effective", _freightToVoucher->effective());
 

@@ -12,6 +12,7 @@
 
 #include <QVariant>
 #include <QMessageBox>
+#include "guiErrorCheck.h"
 #include <QSqlError>
 
 #include "distributeInventory.h"
@@ -81,26 +82,29 @@ enum SetResponse returnWoMaterialItem::set(const ParameterList &pParams)
    }
   }
 
+  param = pParams.value("wo_id", &valid);
+  if (valid)
+  {
+    _wo->setId(param.toInt());
+    _wo->setEnabled(false);
+    _womatl->setFocus();
+  }
+
   return NoError;
 }
 
 void returnWoMaterialItem::sReturn()
 {
   int itemlocSeries;
-  if (!_transDate->isValid())
-  {
-    QMessageBox::critical(this, tr("Invalid date"),
-                          tr("You must enter a valid transaction date.") );
-    _transDate->setFocus();
+
+  QList<GuiErrorCheck> errors;
+  errors<< GuiErrorCheck(!_transDate->isValid(), _transDate,
+                         tr("You must enter a valid transaction date."));
+  errors<< GuiErrorCheck(!_wo->isValid(), _wo,
+                         tr("You must select the Work Order from which you wish to return Material"))
+  ;
+  if (GuiErrorCheck::reportErrors(this, tr("Invalid Return"), errors))
     return;
-  }
-  else if (!_wo->isValid())
-  {
-    QMessageBox::critical( this, tr("Select Work Order"),
-                           tr("You must select the Work Order from which you with to return Materal") );
-    _wo->setFocus();
-    return;
-  }
 
   // Stage cleanup function to be called on error
   XSqlQuery cleanup;
@@ -128,7 +132,7 @@ void returnWoMaterialItem::sReturn()
     XSqlQuery parentItemlocdist;
     parentItemlocdist.prepare("SELECT createitemlocdistparent(:itemsite_id, "
                               " itemuomtouom(itemsite_item_id, womatl_uom_id, NULL, :qty), "
-                              " 'WO', womatl_wo_id, :itemlocSeries, NULL, NULL, 'IM') AS result "
+                              " 'WO', womatl_id, :itemlocSeries, NULL, NULL, 'IM') AS result "
                               "FROM womatl "
                               " JOIN itemsite ON womatl_itemsite_id = itemsite_id "
                               "WHERE womatl_id = :womatl_id;");
