@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -151,7 +151,7 @@ void importData::sAdd()
       else if (suffix == "CSV" || suffix == "TSV")
         type = Csv;
 
-      last = new XTreeWidgetItem(_file, last, i, type, QVariant(suffix), QVariant(files[i]));
+      last = new XTreeWidgetItem(_file, last, type, i, QVariant(suffix), QVariant(files[i]));
     }
   }
 }
@@ -188,7 +188,7 @@ void importData::sImportAll()
     XTreeWidgetItem* pItem = _file->topLevelItem(i);
     if (pItem->text("status").isEmpty())
     {
-      if (importOne(pItem->text("filename"), pItem->altId()))
+      if (importOne(pItem->text("filename"), pItem->id()))
         pItem->setText(_file->column("status"), tr("Done"));
       else
         pItem->setText(_file->column("status"), tr("Error"));
@@ -207,7 +207,7 @@ void importData::sImportSelected()
   {
     if (selected[i]->text("status").isEmpty())
     {
-      if (importOne(selected[i]->text("filename"), selected[i]->altId()))
+      if (importOne(selected[i]->text("filename"), selected[i]->id()))
         selected[i]->setText(_file->column("status"), tr("Done"));
       else
         selected[i]->setText(_file->column("status"), tr("Error"));

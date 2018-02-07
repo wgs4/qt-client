@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -18,6 +18,7 @@
 #include "glcluster.h"
 #include <openreports.h>
 #include "errorReporter.h"
+#include "guiErrorCheck.h"
 
 glTransaction::glTransaction(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)
     : XDialog(parent, name, modal, fl)
@@ -39,6 +40,8 @@ glTransaction::glTransaction(QWidget* parent, const char* name, bool modal, Qt::
     QWidget::setTabOrder(_buttonBox->button(QDialogButtonBox::Ok), _buttonBox->button(QDialogButtonBox::Cancel));
 
     _captive = false;
+
+    setupDocuments();
 }
 
 glTransaction::~glTransaction()
@@ -98,37 +101,22 @@ enum SetResponse glTransaction::set(const ParameterList &pParams)
 void glTransaction::sPost()
 {
   XSqlQuery glPost;
-  struct {
-    bool	condition;
-    QString	msg;
-    QWidget*	widget;
-  } error[] = {
-    { _amount->isZero(), tr("<p>You must enter an amount for this G/L "
-			    "Transaction before you may Post it."), _amount },
+  XSqlQuery updDocAss;
 
-    { ! _debit->isValid(), tr("<p>You must select a Debit Account for this G/L "
-			    "Transaction before you may Post it." ), _debit },
-    { ! _credit->isValid(), tr("<p>You must select a Credit Account for this G/L "
-			     "Transaction before you may Post it." ), _credit },
-    { !_metrics->boolean("IgnoreCompany") &&
-      _credit->companyId() != _debit->companyId(),
-      tr("The Accounts must belong to the same Company to Post this transaciton." ), _credit },
-    { _metrics->boolean("MandatoryGLEntryNotes") &&
-      _notes->toPlainText().trimmed().isEmpty(),
-      tr("<p>You must enter some Notes to describe this transaction."), _notes},
-    { true, "", NULL }
-  }; // error[]
-
-  int errIndex;
-  for (errIndex = 0; ! error[errIndex].condition; errIndex++)
+  QList<GuiErrorCheck> errors;
+    errors<< GuiErrorCheck(_amount->isZero(), _amount,
+                           tr("You must enter an amount for this G/L Transaction before you may Post it."))
+          << GuiErrorCheck(! _debit->isValid(), _debit,
+                           tr("You must select a Debit Account for this G/L Transaction before you may Post it."))
+          << GuiErrorCheck(! _credit->isValid(), _credit,
+                           tr("You must select a Credit Account for this G/L Transaction before you may Post it."))
+          << GuiErrorCheck(!_metrics->boolean("IgnoreCompany") && _credit->companyId() != _debit->companyId(), _credit,
+                           tr("The Accounts must belong to the same Company to Post this transaction."))
+          << GuiErrorCheck(_metrics->boolean("MandatoryGLEntryNotes") && _notes->toPlainText().trimmed().isEmpty(), _notes,
+                           tr("You must enter some Notes to describe this transaction."))
     ;
-  if (! error[errIndex].msg.isEmpty())
-  {
-    QMessageBox::critical(this, tr("Cannot Post G/L Journal Entry"),
-			  error[errIndex].msg);
-    error[errIndex].widget->setFocus();
-    return;
-  }
+    if (GuiErrorCheck::reportErrors(this, tr("Cannot Post G/L Journal Entry"), errors))
+      return;
 
   if (! _amount->isBase() &&
       QMessageBox::question(this, tr("G/L Transaction Not In Base Currency"),
@@ -155,6 +143,19 @@ void glTransaction::sPost()
   glPost.exec();
   if (glPost.first())
   {
+//  Now we know the GL Journal sequence - update the document assignments
+    updDocAss.prepare("UPDATE docass SET docass_source_id=:sequence "
+                      " WHERE docass_source_type='JE' "
+                      " AND docass_source_id=:placeholder;");
+    updDocAss.bindValue(":sequence", glPost.value("result").toInt());
+    updDocAss.bindValue(":placeholder", _placeholder);
+    updDocAss.exec();
+    if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Posting G/L Transaction"),
+                                updDocAss, __FILE__, __LINE__))
+    {
+       return;
+    }
+
 //  Print on Post
     if (_print->isChecked())
     {
@@ -197,8 +198,19 @@ void glTransaction::clear()
   _credit->setId(-1);
   _notes->clear();
   _mode = cNew;
+  setupDocuments();
+  _tab->setCurrentIndex(_tab->indexOf(notesTab));
 
   _amount->setFocus();
+}
+
+void glTransaction::setupDocuments()
+{
+// Need a temporary ID to populate the docass table with.  Cannot preset GL id
+// as we need to preserve the journal sequence in case of cancellations
+  _placeholder = (qrand() % 100000 + 1) * -1;
+  _documents->setId(_placeholder);
+  _documents->setType("JE");
 }
 
 void glTransaction::populate()

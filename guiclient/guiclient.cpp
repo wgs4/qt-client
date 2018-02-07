@@ -50,6 +50,8 @@
 #include "errorReporter.h"
 #include "login2.h"
 #include "storedProcErrorLookup.h"
+#include "metasql.h"
+#include "mqlutil.h"
 
 #include "systemMessage.h"
 #include "menuProducts.h"
@@ -812,19 +814,10 @@ void GUIClient::showEvent(QShowEvent *event)
     _shown = true;
     // We only want the scripting to work on the NEO menu
     // START script code
-      XSqlQuery sq;
-      sq.prepare("SELECT script_source "
-                 "  FROM script "
-                 "JOIN (SELECT c.oid, n.nspname AS schema "
-                 "  FROM pg_class AS c "
-                 "  JOIN pg_namespace AS n ON c.relnamespace=n.oid) AS schema_table "
-                 "ON script.tableoid=schema_table.oid "
-                 "JOIN (SELECT regexp_split_to_table AS pkgname, row_number() over () AS seq "
-                 "  FROM regexp_split_to_table(buildsearchpath(), ',')) AS path "
-                 "ON pkgname = schema "
-                 " WHERE script_enabled AND script_name = 'initMenu' "
-                 "ORDER BY script_order, seq;");
-      sq.exec();
+      ParameterList params;
+      params.append("jsonlist", "{\"1\": \"initMenu\"}");
+      MetaSQLQuery mql = mqlLoad("scripts", "fetch");
+      XSqlQuery sq = mql.toQuery(params);
       QScriptEngine * engine = 0;
       QScriptEngineDebugger * debugger = 0;
       bool found_one = false;
@@ -1619,37 +1612,82 @@ QString translationFile(QString localestr, const QString component)
 QString translationFile(QString localestr, const QString component, QString &version)
 {
   QStringList paths;
-#if QT_VERSION >= 0x050400
-  paths << QStandardPaths::standardLocations(QStandardPaths::AppDataLocation)
-        << QStandardPaths::standardLocations(QStandardPaths::AppLocalDataLocation);
-#endif
+
+  paths << QStandardPaths::standardLocations(QStandardPaths::AppLocalDataLocation)
+        << QStandardPaths::standardLocations(QStandardPaths::AppDataLocation);
+
 #if defined Q_OS_MAC
   paths << QApplication::applicationDirPath() + "/../Resources";
 #else
-  paths << QApplication::applicationDirPath()
-        << "/usr/lib/postbooks";
+  paths << QApplication::applicationDirPath();
 #endif
-  (void)paths.removeDuplicates();
-  for (int i = paths.length(); i > 0; i--)
-    paths.insert(i, paths.at(i - 1) + "/dict");
 
-  QTranslator translator;
-  foreach (QString dir, paths)
+#if defined Q_OS_LINUX
+  paths << "/usr/lib/postbooks";
+#endif
+
+  (void)paths.removeDuplicates();
+
+  for (int i=0; i < paths.length(); i++)
+    paths[i] = paths[i] + "/dict";
+
+  QString filename = component + "." + localestr;
+  QString versiondir;
+  if (!version.isEmpty())
+    versiondir = "/" + component + "-" + version;
+
+  foreach (QString testDir, paths)
   {
-    QString filename = component + "." + localestr;
-    if (DEBUG) qDebug() << "looking for translation" << dir << filename;
-    if (translator.load(filename, dir)) // this doesn't install the translation
-    {
-      if (! version.isNull())
-        version = translator.translate(component.toLatin1().data(), "Version");
-      if (DEBUG)
-        qDebug() << "loadable translation" << dir << filename
-                 << "test:" << translator.translate("GUIClient", "Custom");
-      return dir + "/" + filename;
-    }
+    if (DEBUG) qDebug() << "looking for translation" << testDir << filename;
+
+    QFile test(testDir + versiondir + "/" + filename + ".qm");
+    if (test.exists())
+      return testDir + versiondir + "/" + filename;
   }
 
-  return QString::null;
+  if (component=="xTuple" || component=="openrpt" || component=="reports")
+    return "";
+
+  QString dir = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/dict";
+  QDir mkdir(dir);
+  if (!mkdir.exists())
+    mkdir.mkpath(dir);
+
+  XSqlQuery data;
+  data.prepare("SELECT dict_data "
+               "  FROM dict "
+               "  JOIN pg_class ON dict.tableoid=pg_class.oid "
+               "  JOIN pg_namespace ON pg_class.relnamespace=pg_namespace.oid "
+               "  JOIN lang ON dict_lang_id=lang_id "
+               "  LEFT OUTER JOIN country ON dict_country_id=country_id "
+               " WHERE nspname=:extension "
+               "   AND lang_abbr2=:lang "
+               "   AND COALESCE(country_abbr, '')=COALESCE(:country, '') "
+               "   AND dict_version=:version;");
+  data.bindValue(":extension", component);
+  data.bindValue(":lang", localestr.split("_")[0]);
+  if (localestr.contains("_"))
+    data.bindValue(":country", localestr.split("_")[1].toUpper());
+  data.bindValue(":version", version);
+  data.exec();
+  if (data.first())
+  {
+    QDir mkdir(dir + versiondir);
+    if(!mkdir.exists())
+      mkdir.mkpath(dir + versiondir);
+    QFile qm(dir + versiondir + "/" + filename + ".qm");
+    if (qm.open(QIODevice::WriteOnly))
+      qm.write(data.value("dict_data").toByteArray());
+    qm.close();
+
+    return dir + versiondir + "/" + filename;
+  }
+  else
+  {
+    ErrorReporter::error(QtCriticalMsg, 0, "Error loading QM data",
+                         data, __FILE__, __LINE__);
+    return "";
+  }
 }
 
 /** @brief Build a Custom submenu from the @c cmd table.

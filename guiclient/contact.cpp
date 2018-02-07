@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -12,6 +12,7 @@
 
 #include <QMessageBox>
 #include <QVariant>
+#include <QCloseEvent>
 
 #include <metasql.h>
 #include <mqlutil.h>
@@ -37,6 +38,7 @@
 #include "warehouse.h"
 #include "xsqlquery.h"
 #include <time.h>
+#include "guiErrorCheck.h"
 
 struct privSet {
   bool canEdit;
@@ -52,6 +54,7 @@ class contactPrivate
     {
       _activeCache = false;
       _mode        = cView;
+      _close       = false;
     };
 
     ~contactPrivate()
@@ -60,6 +63,8 @@ class contactPrivate
 
     bool     _activeCache;
     int      _mode;
+    bool     _close;
+    AppLock  _lock;
     contact *_parent;
 
     struct privSet rowPrivs(XTreeWidgetItem *row)
@@ -250,6 +255,7 @@ contact::contact(QWidget* parent, const char* name, bool modal, Qt::WindowFlags 
   _owner->setType(UsernameLineEdit::UsersActive);
   _owner->setEnabled(_privileges->check("EditOwner"));
 
+  _cntctid = -1;
 }
 
 contact::~contact()
@@ -275,6 +281,7 @@ enum SetResponse contact::set(const ParameterList &pParams)
     _comments->setId(_contact->id());
     _documents->setId(_contact->id());
     _charass->setId(_contact->id());
+    _cntctid = _contact->id();
     sPopulate();
   }
 
@@ -346,20 +353,23 @@ enum SetResponse contact::set(const ParameterList &pParams)
       _data->_mode = cEdit;
     }
     else if (param.toString() == "view")
-    {
-      _data->_mode = cView;
-
-      _buttonBox->setStandardButtons(QDialogButtonBox::Close);
-
-      _contact->setEnabled(false);
-      _notes->setEnabled(false);
-      _comments->setReadOnly(true);
-      _documents->setReadOnly(true);
-      _charass->setReadOnly(true);
-    }
+      setViewMode();
   }
 
   return NoError;
+}
+
+void contact::setViewMode()
+{
+  _data->_mode = cView;
+
+  _buttonBox->setStandardButtons(QDialogButtonBox::Close);
+
+  _contact->setEnabled(false);
+  _notes->setEnabled(false);
+  _comments->setReadOnly(true);
+  _documents->setReadOnly(true);
+  _charass->setReadOnly(true);
 }
 
 void contact::sPopulateUsesMenu(QMenu* pMenu)
@@ -487,14 +497,22 @@ void contact::sClose()
   reject();
 }
 
+void contact::closeEvent(QCloseEvent *pEvent)
+{
+  if(_data->_mode == cNew && _cntctid == -1)
+    sClose();
+
+  XDialog::closeEvent(pEvent);
+}
+
 void contact::sSave()
 {
-  if (_contact->first().isEmpty() && _contact->last().isEmpty())
-  {
-    QMessageBox::information(this, tr("Contact Blank"),
-                             tr("<p>You must fill in a contact first or last name as a minimum before saving."));
-    return;
-  }
+  QList<GuiErrorCheck> errors;
+    errors<< GuiErrorCheck(_contact->first().isEmpty() && _contact->last().isEmpty(), _contact,
+                           tr("You must fill in a contact first or last name as a minimum before saving."))
+    ;
+    if (GuiErrorCheck::reportErrors(this, tr("Cannot Save Contact"), errors))
+      return;
 
   if (_data->_activeCache && ! _contact->active())
   {
@@ -573,12 +591,39 @@ void contact::sSave()
                          .arg(saveResult), __FILE__, __LINE__);
     return;
   }
-
+  _cntctid = _contact->id();
   done(_contact->id());
 }
 
 void contact::sPopulate()
 {
+  if (!_data->_lock.acquire("cntct", _cntctid, AppLock::Interactive))
+    setViewMode();
+
+  _data->_close = false;
+
+  foreach (QWidget* widget, QApplication::allWidgets())
+  {
+    if (!widget->isWindow() || !widget->isVisible())
+      continue;
+
+    contact *w = qobject_cast<contact*>(widget);
+
+    if (w && w->id()==_cntctid)
+    {
+      w->setFocus();
+
+      if (omfgThis->showTopLevel())
+      {
+        w->raise();
+        w->activateWindow();
+      }
+
+      _data->_close = true;
+      break;
+    }
+  }
+
   _number->setText(_contact->number());
   _active->setChecked(_contact->active());
   _crmAccount->setId(_contact->crmAcctId());
@@ -1242,4 +1287,17 @@ void contact::sViewWarehouse()
   warehouse newdlg(this, "", true);
   newdlg.set(params);
   newdlg.exec();
+}
+
+int contact::id()
+{
+  return _cntctid;
+}
+
+void contact::setVisible(bool visible)
+{
+  if (_data->_close)
+    close();
+  else
+    XDialog::setVisible(visible);
 }

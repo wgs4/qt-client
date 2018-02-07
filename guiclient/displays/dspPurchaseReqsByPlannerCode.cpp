@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -22,6 +22,7 @@
 #include "dspRunningAvailability.h"
 #include "purchaseOrder.h"
 #include "purchaseRequest.h"
+#include "salesOrderItem.h"
 #include "errorReporter.h"
 
 dspPurchaseReqsByPlannerCode::dspPurchaseReqsByPlannerCode(QWidget* parent, const char*, Qt::WindowFlags fl)
@@ -71,6 +72,9 @@ void dspPurchaseReqsByPlannerCode::languageChange()
 
 bool dspPurchaseReqsByPlannerCode::setParams(ParameterList &params)
 {
+  if (!display::setParams(params))
+    return false;
+
   if (!_dates->allValid())
   {
     QMessageBox::warning( this, tr("Enter a Valid Start Date and End Date"),
@@ -89,8 +93,12 @@ bool dspPurchaseReqsByPlannerCode::setParams(ParameterList &params)
   return true;
 }
 
-void dspPurchaseReqsByPlannerCode::sPopulateMenu(QMenu *pMenu, QTreeWidgetItem *, int)
+void dspPurchaseReqsByPlannerCode::sPopulateMenu(QMenu *pMenu, QTreeWidgetItem* pItem, int)
 {
+  XTreeWidgetItem *item = dynamic_cast<XTreeWidgetItem *>(pItem);
+  if(0 == item)
+    return;
+
   QAction *menuItem;
 
   menuItem = pMenu->addAction(tr("Running Availability..."), this, SLOT(sDspRunningAvailability()));
@@ -98,11 +106,21 @@ void dspPurchaseReqsByPlannerCode::sPopulateMenu(QMenu *pMenu, QTreeWidgetItem *
 
   pMenu->addSeparator();
 
+  menuItem = pMenu->addAction(tr("Edit P/R..."), this, SLOT(sEdit()));
+  menuItem->setEnabled(_privileges->check("MaintainPurchaseRequests"));
+
   menuItem = pMenu->addAction(tr("Release P/R..."), this, SLOT(sRelease()));
   menuItem->setEnabled(_privileges->check("MaintainPurchaseOrders"));
 
   menuItem = pMenu->addAction(tr("Delete P/R..."), this, SLOT(sDelete()));
   menuItem->setEnabled(_privileges->check("MaintainPurchaseRequests"));
+
+  if(item->rawValue("parent").toString().indexOf("S/O") == 0)
+  {
+    pMenu->addSeparator();
+    menuItem = pMenu->addAction(tr("View S/O Item"), this, SLOT(sViewSOItem()));
+    menuItem->setEnabled(_privileges->check("MaintainSalesOrders"));
+  }
 }
 
 void dspPurchaseReqsByPlannerCode::sDspRunningAvailability()
@@ -206,3 +224,25 @@ void dspPurchaseReqsByPlannerCode::sDelete()
   omfgThis->sPurchaseRequestsUpdated();
 }
 
+void dspPurchaseReqsByPlannerCode::sViewSOItem()
+{
+  XSqlQuery soitem;
+  soitem.prepare("SELECT pr_order_id AS so FROM pr WHERE pr_id=:pr_id");
+  soitem.bindValue(":pr_id", list()->id());
+  soitem.exec();
+  if (soitem.first())
+  {
+    ParameterList params;
+    params.append("soitem_id", soitem.value("so"));
+    params.append("mode", "view");
+
+    salesOrderItem *newdlg = new salesOrderItem();
+    newdlg->set(params);
+    omfgThis->handleNewWindow(newdlg);
+  }
+  else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error opening Sales Order item"),
+                                      soitem, __FILE__, __LINE__))
+  {
+    return;
+  }
+}

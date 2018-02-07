@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -11,6 +11,7 @@
 #ifndef CONTACT_H
 #define CONTACT_H
 
+#include "applock.h"
 #include "guiclient.h"
 #include "xdialog.h"
 #include <QMenu>
@@ -30,6 +31,8 @@ public:
     contact(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
     ~contact();
 
+    Q_INVOKABLE virtual int id();
+
     QPushButton *_save;
 
 public slots:
@@ -39,6 +42,7 @@ protected slots:
     virtual void languageChange();
 
     virtual void sClose();
+    virtual void setViewMode();
     virtual void sDetachUse();
     virtual void sEditCRMAccount();
     virtual void sEditCustomer();
@@ -80,8 +84,14 @@ protected slots:
     virtual void sViewVendorAddress();
     virtual void sViewWarehouse();
 
+    virtual void setVisible(bool);
+
 protected:
     contactPrivate *_data;
+    virtual void closeEvent(QCloseEvent*);
+
+private:
+    int _cntctid;
 
 };
 

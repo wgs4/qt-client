@@ -26,6 +26,7 @@
 #include "quoteList.h"
 #include "printQuote.h"
 #include "printSoForm.h"
+#include "guiErrorCheck.h"
 
 bool opportunity::userHasPriv(const int pMode, const int pId)
 {
@@ -112,6 +113,7 @@ opportunity::opportunity(QWidget* parent, const char* name, bool modal, Qt::Wind
   _assignedTo->setType(UsernameLineEdit::UsersActive);
 
   _saved = false;
+  _close = false;
 }
 
 /*
@@ -191,35 +193,7 @@ enum SetResponse opportunity::set(const ParameterList &pParams)
       _buttonBox->setFocus();
     }
     else if (param.toString() == "view")
-    {
-      _mode = cView;
-
-      _crmacct->setEnabled(false);
-      _owner->setEnabled(false);
-      _oppstage->setEnabled(false);
-      _oppsource->setEnabled(false);
-      _opptype->setEnabled(false);
-      _notes->setReadOnly(true);
-      _name->setEnabled(false);
-      _targetDate->setEnabled(false);
-      _actualDate->setEnabled(false);
-      _amount->setEnabled(false);
-      _probability->setEnabled(false);
-      _deleteTodoItem->setEnabled(false);
-      _editTodoItem->setEnabled(false);
-      _newTodoItem->setEnabled(false);
-      _deleteSale->setEnabled(false);
-      _editSale->setEnabled(false);
-      _printSale->setEnabled(false);
-      _newSale->setEnabled(false);
-      _attachSale->setEnabled(false);
-
-      _buttonBox->setStandardButtons(QDialogButtonBox::Close);
-      _cntct->setReadOnly(true);
-      _comments->setReadOnly(true);
-      _documents->setReadOnly(true);
-      _charass->setReadOnly(true);
-    }
+      setViewMode();
   }
 
   param = pParams.value("crmacct_id", &valid);
@@ -232,6 +206,37 @@ enum SetResponse opportunity::set(const ParameterList &pParams)
   sHandleTodoPrivs();
   sHandleSalesPrivs();
   return NoError;
+}
+
+void opportunity::setViewMode()
+{
+  _mode = cView;
+
+  _crmacct->setEnabled(false);
+  _owner->setEnabled(false);
+  _oppstage->setEnabled(false);
+  _oppsource->setEnabled(false);
+  _opptype->setEnabled(false);
+  _notes->setReadOnly(true);
+  _name->setEnabled(false);
+  _targetDate->setEnabled(false);
+  _actualDate->setEnabled(false);
+  _amount->setEnabled(false);
+  _probability->setEnabled(false);
+  _deleteTodoItem->setEnabled(false);
+  _editTodoItem->setEnabled(false);
+  _newTodoItem->setEnabled(false);
+  _deleteSale->setEnabled(false);
+  _editSale->setEnabled(false);
+  _printSale->setEnabled(false);
+  _newSale->setEnabled(false);
+  _attachSale->setEnabled(false);
+
+  _buttonBox->setStandardButtons(QDialogButtonBox::Close);
+  _cntct->setReadOnly(true);
+  _comments->setReadOnly(true);
+  _documents->setReadOnly(true);
+  _charass->setReadOnly(true);
 }
 
 void opportunity::sCancel()
@@ -287,20 +292,14 @@ bool opportunity::save(bool partial)
   XSqlQuery opportunityave;
   if (! partial)
   {
-    if(_crmacct->id() == -1)
-    {
-      QMessageBox::critical( this, tr("Incomplete Information"),
-	tr("You must specify the Account that this opportunity is for.") );
+    QList<GuiErrorCheck> errors;
+    errors<< GuiErrorCheck(_crmacct->id() == -1, _crmacct,
+                           tr("You must specify the Account that this opportunity is for."))
+          << GuiErrorCheck(_name->text().trimmed().isEmpty(), _name,
+                           tr("You must specify a Name for this opportunity report."))
+    ;
+    if (GuiErrorCheck::reportErrors(this, tr("Cannot Save Incident"), errors))
       return false;
-    }
-
-    if(_name->text().trimmed().isEmpty())
-    {
-      QMessageBox::critical( this, tr("Incomplete Information"),
-	tr("You must specify a Name for this opportunity report.") );
-      _name->setFocus();
-      return false;
-    }
   }
 
   XSqlQuery rollback;
@@ -415,6 +414,33 @@ bool opportunity::save(bool partial)
 
 void opportunity::populate()
 { 
+  if (!_lock.acquire("ophead", _opheadid, AppLock::Interactive))
+    setViewMode();
+
+  _close = false;
+
+  foreach (QWidget* widget, QApplication::allWidgets())
+  {
+    if (!widget->isWindow() || !widget->isVisible())
+      continue;
+
+    opportunity *w = qobject_cast<opportunity*>(widget);
+
+    if (w && w->id()==_opheadid)
+    {
+      w->setFocus();
+
+      if (omfgThis->showTopLevel())
+      {
+        w->raise();
+        w->activateWindow();
+      }
+
+      _close = true;
+      break;
+    }
+  }
+
   XSqlQuery opportunitypopulate;
   opportunitypopulate.prepare("SELECT ophead_name,"
             "       ophead_crmacct_id,"
@@ -1187,3 +1213,15 @@ void opportunity::sHandleAssigned()
     _assignDate->setDate(omfgThis->dbDate());
 }
 
+int opportunity::id()
+{
+  return _opheadid;
+}
+
+void opportunity::setVisible(bool visible)
+{
+  if (_close)
+    close();
+  else
+    XDialog::setVisible(visible);
+}

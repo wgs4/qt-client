@@ -10,9 +10,10 @@
 
 #include "prepareCheckRun.h"
 
-#include <QMessageBox>
+#include "guiErrorCheck.h"
 #include <QSqlError>
 #include <QVariant>
+#include <QMessageBox>
 
 #include "storedProcErrorLookup.h"
 #include "errorReporter.h"
@@ -57,11 +58,25 @@ enum SetResponse prepareCheckRun::set(const ParameterList &pParams)
 void prepareCheckRun::sPrint()
 {
   XSqlQuery preparePrint;
-  if(!_bankaccnt->isValid())
-  {
-    QMessageBox::warning(this, tr("No Bank Account"), tr("You must select a Bank Account before you may continue."));
+  XSqlQuery checkFuture;
+  bool future = false;
+  
+  QList<GuiErrorCheck> errors;
+  errors<< GuiErrorCheck(!_bankaccnt->isValid(), _bankaccnt,
+                         tr("You must select a Bank Account before you may continue."))
+  ;
+  if (GuiErrorCheck::reportErrors(this, tr("No Bank Account"), errors))
     return;
-  }
+
+  checkFuture.prepare("SELECT EXISTS(SELECT 1 "
+                      "                FROM apselect "
+                      "               WHERE apselect_bankaccnt_id=:bankaccnt_id "
+                      "                 AND apselect_date > :checkDate) AS future;");
+  checkFuture.bindValue(":bankaccnt_id", _bankaccnt->id());
+  checkFuture.bindValue(":checkDate", _checkDate->date());
+  checkFuture.exec();
+  if (checkFuture.first() && checkFuture.value("future").toBool())
+    future = true;
 
   preparePrint.prepare("SELECT createChecks(:bankaccnt_id, :checkDate) AS result;");
   preparePrint.bindValue(":bankaccnt_id", _bankaccnt->id());
@@ -77,6 +92,13 @@ void prepareCheckRun::sPrint()
                              __FILE__, __LINE__);
       return;
     }
+
+    if (future)
+      QMessageBox::warning(this, tr("Vouchers Excluded"),
+                           tr("The system detected voucher(s) dated after the payment date. These "
+                           "have been excluded from the payment run."));
+    else if (result == 0)
+      QMessageBox::warning(this, tr("No Payments"), tr("There are no selected payments to prepare."));
   }
   else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Preparing Check Run for Printing"),
                                 preparePrint, __FILE__, __LINE__))

@@ -18,6 +18,7 @@
 #include "storedProcErrorLookup.h"
 #include "submitAction.h"
 #include "errorReporter.h"
+#include "guiErrorCheck.h"
 
 #define cPostStandardJournal 0x10
 
@@ -64,6 +65,7 @@ glSeries::glSeries(QWidget* parent, const char* name, bool modal, Qt::WindowFlag
   _doctype->addItem("VO");
   _doctype->addItem("WO");
   _doctype->setCurrentIndex(_doctype->findText("JE"));
+  _documents->setType("JE");
 
   _submit = false;
   _journal = 0;
@@ -96,6 +98,7 @@ enum SetResponse glSeries::set(const ParameterList &pParams)
   if (valid)
   {
     _glsequence = param.toInt();
+    _documents->setId(_glsequence);
     glet.prepare("SELECT DISTINCT glseries_distdate, glseries_source,"
 	      "                glseries_doctype,  glseries_docnumber,"
 	      "                glseries_notes"
@@ -141,7 +144,10 @@ enum SetResponse glSeries::set(const ParameterList &pParams)
 
       glet.exec("SELECT fetchGLSequence() AS glsequence;");
       if (glet.first())
+      {
         _glsequence = glet.value("glsequence").toInt();
+        _documents->setId(_glsequence);
+      }
       else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Retrieving G/L Series Information"),
                                     glet, __FILE__, __LINE__))
       {
@@ -199,13 +205,13 @@ enum SetResponse glSeries::set(const ParameterList &pParams)
 
 void glSeries::sNew()
 {
-  if(!_date->isValid())
-  {
-    QMessageBox::information( this, tr("Cannot Maintain G/L Series"),
-                              tr("<p>You must enter a Distribution Date for this Series.") );
-    _date->setFocus();
-    return;
-  }
+
+  QList<GuiErrorCheck> errors;
+    errors<< GuiErrorCheck(!_date->isValid(), _date,
+                           tr("You must enter a Distribution Date for this Series."))
+    ;
+    if (GuiErrorCheck::reportErrors(this, tr("Cannot Maintain G/L Series"), errors))
+      return;
 
   ParameterList params;
   params.append("mode", "new");
@@ -229,13 +235,13 @@ void glSeries::sNew()
 
 void glSeries::sEdit()
 {
-  if(!_date->isValid())
-  {
-    QMessageBox::information( this, tr("Cannot Maintain G/L Series"),
-                              tr("<p>You must enter a Distribution Date for this Series.") );
-    _date->setFocus();
-    return;
-  }
+
+  QList<GuiErrorCheck> errors;
+    errors<< GuiErrorCheck(!_date->isValid(), _date,
+                           tr("You must enter a Distribution Date for this Series."))
+    ;
+    if (GuiErrorCheck::reportErrors(this, tr("Cannot Maintain G/L Series"), errors))
+      return;
 
   ParameterList params;
   params.append("mode", "edit");
@@ -272,21 +278,15 @@ void glSeries::sDelete()
 bool glSeries::update()
 {
   XSqlQuery glupdate;
-  if(!_date->isValid())
-  {
-    QMessageBox::information( this, tr("Cannot Post G/L Series"),
-                              tr("<p>You must enter a Distribution Date for this Series.") );
-    _date->setFocus();
-    return false;
-  }
 
-  if(_metrics->boolean("MandatoryGLEntryNotes") && _notes->toPlainText().trimmed().isEmpty())
-  {
-    QMessageBox::information( this, tr("Cannot Post G/L Series"),
-                              tr("<p>You must enter some Notes to describe this transaction.") );
-    _notes->setFocus();
-    return false;
-  }
+  QList<GuiErrorCheck> errors;
+    errors<< GuiErrorCheck(!_date->isValid(), _date,
+                           tr("You must enter a Distribution Date for this Series."))
+          << GuiErrorCheck(_metrics->boolean("MandatoryGLEntryNotes") && _notes->toPlainText().trimmed().isEmpty(), _notes,
+                           tr("You must enter some Notes to describe this transaction."))
+    ;
+    if (GuiErrorCheck::reportErrors(this, tr("Cannot Post G/L Series"), errors))
+      return false;
 
 // Do not save notes when posting std journal
   if (_mode == cPostStandardJournal)

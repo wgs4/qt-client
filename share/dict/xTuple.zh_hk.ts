@@ -1306,8 +1306,28 @@ Address:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Fixed Asset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Maintenance Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exchange Rate</source>
+        <translation type="unfinished">匯率</translation>
+    </message>
+    <message>
         <source>Incident</source>
         <translation type="unfinished">事件</translation>
+    </message>
+    <message>
+        <source>Invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice Item</source>
+        <translation type="unfinished">發票項目</translation>
     </message>
     <message>
         <source>Item</source>
@@ -1354,6 +1374,10 @@ Address:</source>
         <translation type="unfinished">退貨授權物品</translation>
     </message>
     <message>
+        <source>Rental Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Quote</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1390,6 +1414,10 @@ Address:</source>
         <translation type="unfinished">廠商</translation>
     </message>
     <message>
+        <source>Voucher</source>
+        <translation type="unfinished">憑單</translation>
+    </message>
+    <message>
         <source>Site</source>
         <translation type="unfinished">所在地</translation>
     </message>
@@ -1399,22 +1427,6 @@ Address:</source>
     </message>
     <message>
         <source>Project Task</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Exchange Rate</source>
-        <translation type="unfinished">匯率</translation>
-    </message>
-    <message>
-        <source>Rental Item</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fixed Asset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Maintenance Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3035,19 +3047,19 @@ What would you like to do?</source>
         <translation>不能夠建立檔案 %1.</translation>
     </message>
     <message>
-        <source>[Pick a Document Type]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Getting Document Types</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Error Creating Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cannot find the &apos;%1&apos;&apos; window to create a %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[Pick a Document Type]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Getting Document Types</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3850,12 +3862,20 @@ returned %2
         <translation>批/序號</translation>
     </message>
     <message>
-        <source>A System Error Occurred at %1::%2.</source>
-        <translation>系統錯誤發生於 %1::%2.</translation>
-    </message>
-    <message>
         <source>Lot/Serial # Not Found</source>
         <translation>無法找到批/序編號</translation>
+    </message>
+    <message>
+        <source>Error Getting Lot/Serial Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Inserting Lot/Serial Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Creating Item Location Placeholder</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3991,6 +4011,14 @@ returned %2
     </message>
     <message>
         <source>Locking Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Checking Order Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error setting id</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4848,10 +4876,6 @@ returned %2
         <translation type="unfinished">報價</translation>
     </message>
     <message>
-        <source>A System Error Occurred at %1::%2.</source>
-        <translation>系統錯誤發生於 %1::%2.</translation>
-    </message>
-    <message>
         <source>Quotes</source>
         <translation>報價</translation>
     </message>
@@ -4862,6 +4886,14 @@ returned %2
     <message>
         <source>A System Error Occurred  at %1::%2.</source>
         <translation>系統錯誤發生於 %1::%2.</translation>
+    </message>
+    <message>
+        <source>Error setting id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Getting Quote</source>
+        <translation type="unfinished">獲得報價錯誤</translation>
     </message>
 </context>
 <context>
@@ -5090,10 +5122,6 @@ returned %2
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>A System Error Occurred at %1::%2.</source>
-        <translation>系統錯誤發生於 %1::%2.</translation>
-    </message>
-    <message>
         <source>Substitute</source>
         <translation type="unfinished">替代品</translation>
     </message>
@@ -5119,6 +5147,26 @@ returned %2
     </message>
     <message>
         <source>Deactivate Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Activationg Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Deactivating Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Getting Active Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Getting Revision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Creating Revision</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5416,20 +5464,6 @@ returned %2
     </message>
 </context>
 <context>
-    <name>UsernameList</name>
-    <message>
-        <source>User Name</source>
-        <translation type="unfinished">使用者名稱</translation>
-    </message>
-</context>
-<context>
-    <name>UsernameSearch</name>
-    <message>
-        <source>User Name</source>
-        <translation type="unfinished">使用者名稱</translation>
-    </message>
-</context>
-<context>
     <name>VendorCluster</name>
     <message>
         <source>Vendor #:</source>
@@ -5548,6 +5582,22 @@ returned %2
         <source>Copy record detail</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished">有效</translation>
+    </message>
+    <message>
+        <source>Inactive</source>
+        <translation type="unfinished">無效的</translation>
+    </message>
+    <message>
+        <source>Error setting id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Finding Matching Record</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>VirtualInfo</name>
@@ -5564,12 +5614,12 @@ returned %2
         <translation>描述:</translation>
     </message>
     <message>
-        <source>A System Error Occurred at %1::%2.</source>
-        <translation>系統錯誤發生於 %1::%2.</translation>
-    </message>
-    <message>
         <source>Number:</source>
         <translation>編號</translation>
+    </message>
+    <message>
+        <source>Error Getting Record</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5861,6 +5911,13 @@ returned %2
     <message>
         <source>Watermark</source>
         <translation>水印</translation>
+    </message>
+</context>
+<context>
+    <name>XDocumentWindow</name>
+    <message>
+        <source>XDocumentWindow</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6326,10 +6383,6 @@ returned %2
         <translation>&lt;p&gt;此科目不能儲存因為已存在相同編號.</translation>
     </message>
     <message>
-        <source>&lt;p&gt;You must specify an account number before you may save this record.</source>
-        <translation>&lt;p&gt;你必須指定一個科目編號才能儲存此記錄.</translation>
-    </message>
-    <message>
         <source>Ledger Account Number</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6347,6 +6400,10 @@ returned %2
     </message>
     <message>
         <source>Error Retreiving SubTypes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must specify an account number before you may save this record.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7095,6 +7152,54 @@ Check the database server log for errors.</source>
     </message>
     <message>
         <source>Error Deleting Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Prospect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Prospect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Prospect...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Checking CRM Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Fetching CRM Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Formatting Address</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multiple CRM Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are Multiple CRM Accounts with
+%1
+as an Address. Please select a CRM Account to use for the new Prospect:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Fetching Prospects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multiple Prospects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are multiple Prospects with
+%1
+as an Address. Please select a Prospect to edit:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -9300,18 +9405,6 @@ Are you sure that you want to save this change?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No Focus</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Could not set focus on the Atlas %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;The query is not valid for some reason</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No Maps</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9344,22 +9437,6 @@ Are you sure that you want to save this change?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Could not open Atlas</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Could not open the Atlas file %1 (error %2).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;Could not find any Maps in the Atlas %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid Query</source>
-        <translation>無效查詢</translation>
-    </message>
-    <message>
         <source>CSV File to Atlas Map</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9385,6 +9462,38 @@ Are you sure that you want to save this change?</source>
     </message>
     <message>
         <source>Error Retrieving Atlas Map Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File</source>
+        <translation type="unfinished">檔案</translation>
+    </message>
+    <message>
+        <source>Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Please select an Atlas from the database before saving this Atlas Map.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Reading File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;An error was encountered while trying to read the Atlas file: %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Reading Database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;An error was encountered while trying to read the Atlas %1 from the Database: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Could not find any Maps in the Atlas</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -11281,10 +11390,6 @@ Are you sure that you want to save this change?</source>
         <translation>美國運通</translation>
     </message>
     <message>
-        <source>P&amp;ost</source>
-        <translation>過帳 &amp;P</translation>
-    </message>
-    <message>
         <source>Visa</source>
         <translation>VISA</translation>
     </message>
@@ -11330,6 +11435,14 @@ Are you sure that you want to save this change?</source>
     </message>
     <message>
         <source>Error Posting Cash Receipt Entry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dep&amp;osit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deposit Date</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -14040,6 +14153,10 @@ p, li { white-space: pre-wrap; }
         <source>Error Deleting Map</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished">地點</translation>
+    </message>
 </context>
 <context>
     <name>configureIM</name>
@@ -14996,14 +15113,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The default number of days prior for the Order History start date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Orders Start Date:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>days</source>
         <translation type="unfinished">天</translation>
     </message>
@@ -15022,6 +15131,14 @@ p, li { white-space: pre-wrap; }
     <message>
         <source>On Credit Hold</source>
         <translation type="unfinished">信用暫停中</translation>
+    </message>
+    <message>
+        <source>The default number of days prior for the Order History Start Date (Customer Workbench)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>List SOs Start Date:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -15228,16 +15345,8 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished">名稱</translation>
     </message>
     <message>
-        <source>Contact Blank</source>
-        <translation>空白聯絡人</translation>
-    </message>
-    <message>
         <source>Characteristics</source>
         <translation>特性</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You must fill in a contact first or last name as a minimum before saving.</source>
-        <translation>在儲存之前，你必須輸入姓氏或名字。</translation>
     </message>
     <message>
         <source>Number</source>
@@ -15561,6 +15670,14 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Are you sure that you want to remove this Contact as the Secondary Contact for this Account?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must fill in a contact first or last name as a minimum before saving.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot Save Contact</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -16037,14 +16154,6 @@ p, li { white-space: pre-wrap; }
         <translation>稱謂</translation>
     </message>
     <message>
-        <source>&lt;p&gt;Are you sure that you want to completely delete the selected contact?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete Contact?</source>
-        <translation>刪除聯絡人?</translation>
-    </message>
-    <message>
         <source>Account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -16066,6 +16175,46 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <source>Error Detaching Contact</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Customer</source>
+        <translation type="unfinished">客戶</translation>
+    </message>
+    <message>
+        <source>Prospect</source>
+        <translation type="unfinished">潛在客戶</translation>
+    </message>
+    <message>
+        <source>Edit Prospect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Prospect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Create Prospect...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Contacts?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Are you sure that you want to completely delete the selected contact(s)?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Parent Objects?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are parent objects that use this contact. Do you wish to delete these objects as well?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Fetching CRM Account</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -16258,14 +16407,6 @@ Contract Number you have specified.</source>
     </message>
     <message>
         <source>New Return...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>View mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Not allowed under View mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18337,10 +18478,6 @@ Please verify the Count Tag Qty. and attempt to post again.</source>
 <context>
     <name>createLotSerial</name>
     <message>
-        <source>&lt;p&gt;The number entered is not valid.  Please select from the list of valid numbers.</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Lot/Serial #:</source>
         <translation>批/序編號 #:</translation>
     </message>
@@ -18351,10 +18488,6 @@ Please verify the Count Tag Qty. and attempt to post again.</source>
     <message>
         <source>&amp;OK</source>
         <translation>確定 &amp;O</translation>
-    </message>
-    <message>
-        <source>Invalid Number</source>
-        <translation>無效的編號</translation>
     </message>
     <message>
         <source>Create Lot/Serial #</source>
@@ -18403,14 +18536,6 @@ Please verify the Count Tag Qty. and attempt to post again.</source>
     <message>
         <source>This Serial Number has already been used and cannot be reused.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;The quantity being assigned is greater than the  quantity preassigned to the order being received.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid Qty</source>
-        <translation>無效的數量</translation>
     </message>
     <message>
         <source>&lt;p&gt;You must enter a warranty expiration date for this Lot/Serial number.</source>
@@ -19996,10 +20121,6 @@ creating Planned Orders.</source>
         <translation type="unfinished">有效</translation>
     </message>
     <message>
-        <source>Are you sure you want to delete this Account?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Error deleting Account</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20014,6 +20135,10 @@ creating Planned Orders.</source>
     <message>
         <source>Create Date</source>
         <translation type="unfinished">建立日期</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete these Account(s)?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -22697,6 +22822,38 @@ to be deleted.</source>
         <source>Error URL</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>MIME Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quote #:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Return Authorization #:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error saving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A script has failed after the main window saved successfully. How do you wish to proceed?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Retry</source>
+        <translation type="unfinished">重試</translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>documents</name>
@@ -22752,10 +22909,6 @@ to be deleted.</source>
         <translation>套用至</translation>
     </message>
     <message>
-        <source>Enter Start Date</source>
-        <translation>輸入開始日期</translation>
-    </message>
-    <message>
         <source>Found multiple checks with this check number.</source>
         <translation>找到多張使用這個支票號碼的支票.</translation>
     </message>
@@ -22792,10 +22945,6 @@ to be deleted.</source>
         <translation>來源</translation>
     </message>
     <message>
-        <source>Select Vendor</source>
-        <translation>選擇廠商</translation>
-    </message>
-    <message>
         <source>Could not find the record for this check.</source>
         <translation>無法照到這張支票的紀錄.</translation>
     </message>
@@ -22816,16 +22965,8 @@ to be deleted.</source>
         <translation>檢視「套用至」折讓通知單 ...</translation>
     </message>
     <message>
-        <source>Select Document Type</source>
-        <translation>選擇文件類型</translation>
-    </message>
-    <message>
         <source>You must enter a valid Start Date.</source>
         <translation>請輸入有效的開始日期.</translation>
-    </message>
-    <message>
-        <source>Enter End Date</source>
-        <translation>輸入結束日期</translation>
     </message>
     <message>
         <source>A/P Applications</source>
@@ -22885,6 +23026,10 @@ to be deleted.</source>
     </message>
     <message>
         <source>Error Reversing A/P Application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot set Parameters</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -23084,10 +23229,6 @@ This Item is already selected for payment.</source>
         <translation>客戶名稱</translation>
     </message>
     <message>
-        <source>Enter End Date</source>
-        <translation>輸入結束日期</translation>
-    </message>
-    <message>
         <source>Show Credit Memos</source>
         <translation>顯示貸項通知單</translation>
     </message>
@@ -23110,10 +23251,6 @@ This Item is already selected for payment.</source>
     <message>
         <source>Invoice</source>
         <translation>發票</translation>
-    </message>
-    <message>
-        <source>Enter Start Date</source>
-        <translation>輸入開始日期</translation>
     </message>
     <message>
         <source>Cert. Check</source>
@@ -23158,10 +23295,6 @@ This Item is already selected for payment.</source>
     <message>
         <source>C/R</source>
         <translation>C/R</translation>
-    </message>
-    <message>
-        <source>Select Customer</source>
-        <translation>選擇客戶</translation>
     </message>
     <message>
         <source>You must select a Customer whose A/R Applications you wish to view.</source>
@@ -23248,10 +23381,6 @@ This Item is already selected for payment.</source>
         <translation>客戶編號</translation>
     </message>
     <message>
-        <source>Select Document Type</source>
-        <translation>選擇文件類型</translation>
-    </message>
-    <message>
         <source>You must indicate which Document Type(s) you wish to view.</source>
         <translation>必須指明要檢視哪種文件類型.</translation>
     </message>
@@ -23277,6 +23406,10 @@ This Item is already selected for payment.</source>
     </message>
     <message>
         <source>Error Reversing A/R Application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot Set Parameters</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -23369,10 +23502,6 @@ This Item is already selected for payment.</source>
     <message>
         <source>Name/Desc.</source>
         <translation>名稱/描述</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;The application cannot refund this transaction using a credit card.</source>
-        <translation>程式無法使用信用卡退款.</translation>
     </message>
     <message>
         <source>Credit Card Processing Warning</source>
@@ -23725,6 +23854,26 @@ Would you like to post it anyway?</source>
     </message>
     <message>
         <source>Transaction Cancelled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The application cannot refund this transaction using a credit card.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice Posting Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error voiding invoice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Change Date?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not void invoice because the accounting period for the posting date is closed. Try again with a different date?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -24836,14 +24985,6 @@ Would you like to post it anyway?</source>
         <translation>請輸入有效的開始與結束日期.</translation>
     </message>
     <message>
-        <source>Enter End Date</source>
-        <translation>輸入結束日期</translation>
-    </message>
-    <message>
-        <source>Enter Start Date</source>
-        <translation>輸入開始日期</translation>
-    </message>
-    <message>
         <source>You must enter a valid End Date.</source>
         <translation>請輸入有效的結束日期.</translation>
     </message>
@@ -24881,6 +25022,10 @@ Would you like to post it anyway?</source>
     </message>
     <message>
         <source>Error Reversing Posted Cash Receipt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Date not Entered</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -24971,10 +25116,6 @@ Would you like to post it anyway?</source>
         <translation>USD</translation>
     </message>
     <message>
-        <source>&lt;p&gt;Invalid dates specified. Please specify a valid date range.</source>
-        <translation>&lt;p&gt;指定的日期無效. 請指定有效的日期範圍.</translation>
-    </message>
-    <message>
         <source>Base Amount</source>
         <translation>基準金額</translation>
     </message>
@@ -25024,6 +25165,10 @@ Would you like to post it anyway?</source>
     </message>
     <message>
         <source>Error Voiding Posted Check</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid dates specified. Please specify a valid date range.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -26639,10 +26784,6 @@ Would you like to post it anyway?</source>
 <context>
     <name>dspFinancialReport</name>
     <message>
-        <source>&lt;p&gt;Please make sure all accounting periods are associated with a quarter and fiscal year before using this application.</source>
-        <translation type="unfinished">&lt;p&gt;在使用這個應用程式之前請確定全部的會計期間都有跟季以及會計年間聯繫.</translation>
-    </message>
-    <message>
         <source>Credits %</source>
         <translation>貸方 %</translation>
     </message>
@@ -26735,10 +26876,6 @@ Would you like to post it anyway?</source>
         <translation>月</translation>
     </message>
     <message>
-        <source>Setup Incomplete</source>
-        <translation>設定不完整</translation>
-    </message>
-    <message>
         <source>Report Type:</source>
         <translation>報表類型:</translation>
     </message>
@@ -26803,10 +26940,6 @@ Total</source>
     <message>
         <source>You must select at least one period to report on.</source>
         <translation>你必須至少選擇一個要報告的期間.</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You must select at least one period.</source>
-        <translation>你必須至少選擇一個期間.</translation>
     </message>
     <message>
         <source>Balance Sheet</source>
@@ -26909,6 +27042,14 @@ Total</source>
     </message>
     <message>
         <source>Error Retrieving Financial Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select at least one period.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please make sure all accounting periods are associated with a quarter and fiscal year before using this application.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -29077,15 +29218,210 @@ Total</source>
     </message>
 </context>
 <context>
-    <name>dspItemSources</name>
+    <name>dspItemSourcePrices</name>
+    <message>
+        <source>Item Source Prices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[ Not Site Restricted ]</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <source>Site</source>
-        <translation></translation>
+        <translation type="unfinished">所在地</translation>
+    </message>
+    <message>
+        <source>Drop Ship Only</source>
+        <translation type="unfinished">僅直接貨運</translation>
+    </message>
+    <message>
+        <source>Item</source>
+        <translation type="unfinished">物品</translation>
+    </message>
+    <message>
+        <source>Item Number Pattern</source>
+        <translation type="unfinished">物品編號樣本</translation>
+    </message>
+    <message>
+        <source>Item Description</source>
+        <translation type="unfinished">物品描述</translation>
+    </message>
+    <message>
+        <source>Vendor</source>
+        <translation type="unfinished">廠商</translation>
+    </message>
+    <message>
+        <source>Vendor Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vendor Item Number Pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contract</source>
+        <translation type="unfinished">合約</translation>
+    </message>
+    <message>
+        <source>Contract Number Pattern</source>
+        <translation type="unfinished">合約編號樣本</translation>
+    </message>
+    <message>
+        <source>Manufacturer Pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manufacturer Item Number Pattern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Effective Start</source>
+        <translation type="unfinished">開始有效日期</translation>
+    </message>
+    <message>
+        <source>Effective End</source>
+        <translation type="unfinished">完結有效日期</translation>
+    </message>
+    <message>
+        <source>Expires Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expires End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Inactive</source>
+        <translation type="unfinished">顯示無效的</translation>
+    </message>
+    <message>
+        <source>Item Number</source>
+        <translation type="unfinished">物品編號</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished">描述</translation>
+    </message>
+    <message>
+        <source>UOM</source>
+        <translation type="unfinished">單位</translation>
+    </message>
+    <message>
+        <source>Vendor #</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Contract #</source>
+        <translation type="unfinished">合約 #</translation>
+    </message>
+    <message>
+        <source>Effective</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expires</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vendor Currency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Vendor Item Number</source>
+        <translation type="unfinished">廠商物品編號</translation>
+    </message>
+    <message>
+        <source>Manufacturer</source>
+        <translation type="unfinished">製造商</translation>
+    </message>
+    <message>
+        <source>Manuf. Item#</source>
+        <translation type="unfinished">製造商物品編號</translation>
+    </message>
+    <message>
+        <source>Default</source>
+        <translation type="unfinished">預設</translation>
+    </message>
+    <message>
+        <source>Vendor UOM</source>
+        <translation type="unfinished">廠商單位</translation>
+    </message>
+    <message>
+        <source>UOM Ratio</source>
+        <translation type="unfinished">單位比例</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished">有效</translation>
+    </message>
+    <message>
+        <source>Min. Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order Mult.</source>
+        <translation type="unfinished">訂購乘數</translation>
+    </message>
+    <message>
+        <source>Vendor Ranking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lead Time</source>
+        <translation type="unfinished">準備時間</translation>
+    </message>
+    <message>
+        <source>Qty. Break</source>
+        <translation type="unfinished">數量區間</translation>
+    </message>
+    <message>
+        <source>Base Unit Price</source>
+        <translation type="unfinished">基準單價</translation>
+    </message>
+    <message>
+        <source>Item Currency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unit Price</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order Type</source>
+        <translation type="unfinished">單據類型</translation>
+    </message>
+    <message>
+        <source>Edit Item Source...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Item Source...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&apos;Always&apos;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>&apos;Never&apos;</source>
         <translation type="unfinished">&apos;從不&apos;</translation>
     </message>
+    <message>
+        <source>All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Into Stock</source>
+        <translation type="unfinished">有存貨</translation>
+    </message>
+    <message>
+        <source>Drop Ship</source>
+        <translation type="unfinished">直接貨運</translation>
+    </message>
+</context>
+<context>
+    <name>dspItemSources</name>
     <message>
         <source>&lt;p&gt;This item source is used by existing purchase order records and may not be deleted. Would you like to deactivate it instead?</source>
         <translation type="unfinished">此物品來源已被存有的採購訂單所使用所以不能被刪除. 你要改為將它標記為無效嗎?</translation>
@@ -29093,10 +29429,6 @@ Total</source>
     <message>
         <source>Item Description</source>
         <translation type="unfinished">物品描述</translation>
-    </message>
-    <message>
-        <source>Expires Start</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Vendor</source>
@@ -29111,24 +29443,12 @@ Total</source>
         <translation>描述</translation>
     </message>
     <message>
-        <source>&apos;Always&apos;</source>
-        <translation>&apos;&apos;永遠&apos;&apos;</translation>
-    </message>
-    <message>
         <source>Min. Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Lead Time</source>
         <translation type="unfinished">準備時間</translation>
-    </message>
-    <message>
-        <source>Drop Ship</source>
-        <translation>直接貨運</translation>
-    </message>
-    <message>
-        <source>Drop Ship Only</source>
-        <translation>僅直接貨運</translation>
     </message>
     <message>
         <source>Edit...</source>
@@ -29143,20 +29463,8 @@ Total</source>
         <translation>合約</translation>
     </message>
     <message>
-        <source>Effective End</source>
-        <translation>完結有效日期</translation>
-    </message>
-    <message>
-        <source>Into Stock</source>
-        <translation type="unfinished">有存貨</translation>
-    </message>
-    <message>
         <source>Item Number Pattern</source>
         <translation type="unfinished">物品編號樣本</translation>
-    </message>
-    <message>
-        <source>All</source>
-        <translation>全部</translation>
     </message>
     <message>
         <source>Vendor Name</source>
@@ -29165,10 +29473,6 @@ Total</source>
     <message>
         <source>Item Number</source>
         <translation type="unfinished">物品編號</translation>
-    </message>
-    <message>
-        <source>Effective Start</source>
-        <translation>開始有效日期</translation>
     </message>
     <message>
         <source>Manufacturer Item Number Pattern</source>
@@ -29183,28 +29487,12 @@ Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Base Unit Price</source>
-        <translation>基準單價</translation>
-    </message>
-    <message>
-        <source>Order Type</source>
-        <translation type="unfinished">單據類型</translation>
-    </message>
-    <message>
         <source>Show Inactive</source>
         <translation type="unfinished">顯示無效的</translation>
     </message>
     <message>
-        <source>Item Currency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Delete Item Source</source>
         <translation>刪除物品來源</translation>
-    </message>
-    <message>
-        <source>Unit Price</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>View...</source>
@@ -29213,10 +29501,6 @@ Total</source>
     <message>
         <source>&lt;p&gt;This item source is used by existing purchase order records and may not be deleted.</source>
         <translation type="unfinished">此物品來源已被存有的採購訂單紀錄,不能被刪除.</translation>
-    </message>
-    <message>
-        <source>Qty. Break</source>
-        <translation type="unfinished">數量區間</translation>
     </message>
     <message>
         <source>Are you sure that you want to delete the Item Source for %1?</source>
@@ -29267,10 +29551,6 @@ Total</source>
         <translation>合約編號樣本</translation>
     </message>
     <message>
-        <source>Expires End</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Vendor Currency</source>
         <translation type="unfinished"></translation>
     </message>
@@ -29295,7 +29575,35 @@ Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[ Not Site Restricted ]</source>
+        <source>Show Expired</source>
+        <translation type="unfinished">顯示過期</translation>
+    </message>
+    <message>
+        <source>Show Future</source>
+        <translation type="unfinished">顯示未來</translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished">有效</translation>
+    </message>
+    <message>
+        <source>Always</source>
+        <translation type="unfinished">永遠</translation>
+    </message>
+    <message>
+        <source>Never</source>
+        <translation type="unfinished">從不</translation>
+    </message>
+    <message>
+        <source>Copy...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete...</source>
+        <translation type="unfinished">刪除 ...</translation>
+    </message>
+    <message>
+        <source>Error Deleting Item Source Information</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -32854,6 +33162,137 @@ Total</source>
     </message>
 </context>
 <context>
+    <name>dspProcesses</name>
+    <message>
+        <source>Process/Lock Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Database Processes And Locks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished">有效</translation>
+    </message>
+    <message>
+        <source>Idle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Idle In Transaction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Idle In Transaction (Aborted)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fastpath Function Call</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished">使用者</translation>
+    </message>
+    <message>
+        <source>Application</source>
+        <translation type="unfinished">程式</translation>
+    </message>
+    <message>
+        <source>Start Date</source>
+        <translation type="unfinished">開始日期</translation>
+    </message>
+    <message>
+        <source>End Date</source>
+        <translation type="unfinished">結束日期</translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished">狀態</translation>
+    </message>
+    <message>
+        <source>Table</source>
+        <translation type="unfinished">表格</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished">類型</translation>
+    </message>
+    <message>
+        <source>Current Connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Port</source>
+        <translation type="unfinished">連接阜</translation>
+    </message>
+    <message>
+        <source>Started</source>
+        <translation type="unfinished">開始</translation>
+    </message>
+    <message>
+        <source>Last Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Record</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Orphaned</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error checking if mobilized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Process</source>
+        <translation type="unfinished">處理中</translation>
+    </message>
+    <message>
+        <source>Lock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">是</translation>
+    </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Kill Process</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Release Lock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Fetching Locks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Killing Process</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Releasing Lock</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>dspPurchaseReqsByItem</name>
     <message>
         <source>Create Date</source>
@@ -32949,6 +33388,18 @@ Total</source>
     </message>
     <message>
         <source>Error Releasing Purchase Request(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit P/R...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View S/O Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error opening Sales Order item</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -33064,6 +33515,18 @@ Total</source>
     </message>
     <message>
         <source>Error Releasing Purchase Request(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit P/R...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View S/O Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error opening Sales Order item</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -36065,10 +36528,6 @@ Total</source>
         <translation>稅務區</translation>
     </message>
     <message>
-        <source>Select items to show</source>
-        <translation>選擇要顯示的項目</translation>
-    </message>
-    <message>
         <source>Extension</source>
         <translation>延伸</translation>
     </message>
@@ -36079,10 +36538,6 @@ Total</source>
     <message>
         <source>Tax Authority</source>
         <translation>稅務機構</translation>
-    </message>
-    <message>
-        <source>Enter Valid Start Date</source>
-        <translation>輸入有效開始日期</translation>
     </message>
     <message>
         <source>Tax</source>
@@ -36249,10 +36704,6 @@ Total</source>
         <translation>稅務編碼</translation>
     </message>
     <message>
-        <source>Enter Valid End Date</source>
-        <translation>輸入有效結束日期</translation>
-    </message>
-    <message>
         <source>Tax Type</source>
         <translation>稅務類型</translation>
     </message>
@@ -36300,6 +36751,10 @@ Rate</source>
     <message>
         <source>Cash Receipt</source>
         <translation type="unfinished">現金收款</translation>
+    </message>
+    <message>
+        <source>Cannot Execute Tax History</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -36554,11 +37009,6 @@ Rate</source>
         <translation type="unfinished">文件日期</translation>
     </message>
     <message>
-        <source>&lt;p&gt;The criteria you specified are not complete. Please make sure all fields are correctly filled out before running the report.</source>
-        <translation>你指定的條件不完整. 請確定正確填入所有欄位.
-</translation>
-    </message>
-    <message>
         <source>90+ Days</source>
         <translation>90+ 天</translation>
     </message>
@@ -36650,6 +37100,10 @@ Rate</source>
         <source>Error Retrieving Vendor Information</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>The criteria you specified are not complete. Please make sure all fields are correctly filled out before running the report.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>dspTimePhasedOpenARItems</name>
@@ -36692,10 +37146,6 @@ Rate</source>
     <message>
         <source>Please select one or more Calendar Periods</source>
         <translation>你必須至少選擇一個要報告的期間</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;The criteria you specified are not complete. Please make sure all fields are correctly filled out before running the report.</source>
-        <translation>你指定的條件不完整. 請確定正確填入所有欄位.</translation>
     </message>
     <message>
         <source>Calendar:</source>
@@ -36755,6 +37205,10 @@ Rate</source>
     </message>
     <message>
         <source>Error Retrieving Customer Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The criteria you specified are not complete. Please make sure all fields are correctly filled out before running the report.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -36981,6 +37435,10 @@ Rate</source>
     <message>
         <source>Error Saving Trial Balance Information</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fiscal Year</source>
+        <translation type="unfinished">會計年度</translation>
     </message>
 </context>
 <context>
@@ -37395,10 +37853,6 @@ Rate</source>
         <translation>金額(%1)</translation>
     </message>
     <message>
-        <source>Vendor:</source>
-        <translation>廠商:</translation>
-    </message>
-    <message>
         <source>Doc. Type</source>
         <translation>文件類型</translation>
     </message>
@@ -37443,10 +37897,6 @@ Rate</source>
         <translation>請輸入有效的結束日期.</translation>
     </message>
     <message>
-        <source>Enter Start Date</source>
-        <translation>輸入開始日期</translation>
-    </message>
-    <message>
         <source>Check</source>
         <translation type="unfinished"></translation>
     </message>
@@ -37457,10 +37907,6 @@ Rate</source>
     <message>
         <source>Amount</source>
         <translation>金額</translation>
-    </message>
-    <message>
-        <source>Please select a valid Vendor.</source>
-        <translation>請選擇有效的廠商.</translation>
     </message>
     <message>
         <source>Due Date</source>
@@ -37481,10 +37927,6 @@ Rate</source>
     <message>
         <source>P/O #</source>
         <translation>採購訂單編號</translation>
-    </message>
-    <message>
-        <source>Enter End Date</source>
-        <translation>輸入結束日期</translation>
     </message>
     <message>
         <source>Please enter a valid Start Date.</source>
@@ -37515,11 +37957,15 @@ Rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select Vendor</source>
-        <translation type="unfinished">選擇廠商</translation>
+        <source>On what date did you void the Voucher?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>On what date did you void the Voucher?</source>
+        <source>Cannot set Parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please make a valid vendor selection.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -37540,10 +37986,6 @@ Rate</source>
     <message>
         <source>Earliest</source>
         <translation>最早</translation>
-    </message>
-    <message>
-        <source>Invalid Date</source>
-        <translation>無效的日期</translation>
     </message>
     <message>
         <source>View Invoice...</source>
@@ -37576,10 +38018,6 @@ Rate</source>
     <message>
         <source>Doc. #</source>
         <translation>文件編號</translation>
-    </message>
-    <message>
-        <source>Invalid Account</source>
-        <translation>無效的科目</translation>
     </message>
     <message>
         <source>Debit</source>
@@ -37628,6 +38066,10 @@ Rate</source>
     <message>
         <source>Selected Account:</source>
         <translation>選取的科目:</translation>
+    </message>
+    <message>
+        <source>Invalid Dates</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -38394,6 +38836,10 @@ Rate</source>
     <message>
         <source>Cost Method</source>
         <translation type="unfinished">成本法</translation>
+    </message>
+    <message>
+        <source>Return Material Item...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -40763,6 +41209,14 @@ Would you like to automatically create a credit memo against this return?</sourc
         <source>A Project Type already exists with this number.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cannot delete Terms as they exist on a Sales Order.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot delete Terms as they exist on a Purchase Order.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>errorcatorter</name>
@@ -41419,6 +41873,10 @@ Would you like to automatically create a credit memo against this return?</sourc
         <source>Held For Review</source>
         <translation>持作檢討</translation>
     </message>
+    <message>
+        <source>Expiry:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>externalShipping</name>
@@ -41755,10 +42213,6 @@ End</source>
         <translation>新增群組 &amp;A</translation>
     </message>
     <message>
-        <source>Layout Name is Invalid</source>
-        <translation>格式名稱無效</translation>
-    </message>
-    <message>
         <source>-</source>
         <translation>-</translation>
     </message>
@@ -41991,6 +42445,10 @@ Diff.</source>
         <source>Error Retrieving Financial Layout Information</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cannot Save Financial Report</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>financialLayoutColumns</name>
@@ -42059,10 +42517,6 @@ Diff.</source>
         <translation>差別 %</translation>
     </message>
     <message>
-        <source>&amp;Edit</source>
-        <translation>編輯 &amp;E</translation>
-    </message>
-    <message>
         <source>Month</source>
         <translation>月</translation>
     </message>
@@ -42073,10 +42527,6 @@ Diff.</source>
     <message>
         <source>Description</source>
         <translation>描述</translation>
-    </message>
-    <message>
-        <source>Cannot Save settings</source>
-        <translation>無法儲存設定</translation>
     </message>
     <message>
         <source>Month End</source>
@@ -42100,6 +42550,18 @@ Diff.</source>
     </message>
     <message>
         <source>Error Retrieving Financial Column Layout Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter a name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter a description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot Save Columns</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -42188,6 +42650,18 @@ Diff.</source>
     <message>
         <source>Subtract from Group Total</source>
         <translation>從群組總和中減掉</translation>
+    </message>
+    <message>
+        <source>Please enter a name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please enter a description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot Save Group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -43148,6 +43622,10 @@ You may not create duplicate Forms.</source>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
+    <message>
+        <source>Series Date:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>getLotInfo</name>
@@ -43207,10 +43685,6 @@ You may not create duplicate Forms.</source>
         <translation type="unfinished">分配日期:</translation>
     </message>
     <message>
-        <source>N&amp;otes:</source>
-        <translation>註記 &amp;O</translation>
-    </message>
-    <message>
         <source>Transaction Series:</source>
         <translation>系列紀錄:</translation>
     </message>
@@ -43259,10 +43733,6 @@ You may not create duplicate Forms.</source>
         <translation>系列傳票</translation>
     </message>
     <message>
-        <source>&lt;p&gt;You must enter a Distribution Date for this Series.</source>
-        <translation>&lt;p&gt;必須為這個系列輸入分配日期.</translation>
-    </message>
-    <message>
         <source>&amp;Delete</source>
         <translation>刪除 &amp;D</translation>
     </message>
@@ -43299,10 +43769,6 @@ You may not create duplicate Forms.</source>
         <translation>無法管理總帳系列</translation>
     </message>
     <message>
-        <source>&lt;p&gt;You must enter some Notes to describe this transaction.</source>
-        <translation>&lt;p&gt;必須為這次紀錄輸入依些描述.</translation>
-    </message>
-    <message>
         <source>&lt;p&gt;The G/L Series information is unbalanced and cannot be posted. Please correct this before continuing.</source>
         <translation>&lt;p&gt;系列紀錄不平衡, 請更正再繼續.</translation>
     </message>
@@ -43325,6 +43791,22 @@ You may not create duplicate Forms.</source>
     <message>
         <source>Error Removing G/L Series</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must enter a Distribution Date for this Series.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must enter some Notes to describe this transaction.</source>
+        <translation type="unfinished">必須為這次紀錄輸入依些描述.</translation>
+    </message>
+    <message>
+        <source>Notes</source>
+        <translation type="unfinished">註記</translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished">文件</translation>
     </message>
 </context>
 <context>
@@ -43387,10 +43869,6 @@ Do you wish to convert %1 %2 at the rate effective on %3?</source>
         <translation>借方:</translation>
     </message>
     <message>
-        <source>&lt;p&gt;You must enter an amount for this G/L Transaction before you may Post it.</source>
-        <translation>&lt;p&gt;必須為這次總帳記錄輸入金額.</translation>
-    </message>
-    <message>
         <source>Simple G/L Journal Entry</source>
         <translation>單純傳票輸入</translation>
     </message>
@@ -43413,20 +43891,12 @@ Do you wish to convert %1 %2 at the rate effective on %3?</source>
         <translation>文件編號:</translation>
     </message>
     <message>
-        <source>The Accounts must belong to the same Company to Post this transaciton.</source>
-        <translation>科目必須屬於同一公司的過帳交易。</translation>
-    </message>
-    <message>
         <source>Credit:</source>
         <translation>貸方:</translation>
     </message>
     <message>
         <source>Post</source>
         <translation>過帳</translation>
-    </message>
-    <message>
-        <source>Notes:</source>
-        <translation>註記:</translation>
     </message>
     <message>
         <source>G/L Transaction Not In Base Currency</source>
@@ -43437,24 +43907,40 @@ Do you wish to convert %1 %2 at the rate effective on %3?</source>
         <translation>無法過帳傳票</translation>
     </message>
     <message>
-        <source>&lt;p&gt;You must select a Debit Account for this G/L Transaction before you may Post it.</source>
-        <translation>&lt;p&gt;必須為這次總帳記錄輸入借方金額.</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You must select a Credit Account for this G/L Transaction before you may Post it.</source>
-        <translation>&lt;p&gt;必須為這次總帳記錄輸入貸方金額.</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You must enter some Notes to describe this transaction.</source>
-        <translation>&lt;p&gt;必須在註記欄位為這次紀錄輸入一些敘述.</translation>
-    </message>
-    <message>
         <source>Print on Post</source>
         <translation type="unfinished">過帳後列印</translation>
     </message>
     <message>
         <source>Error Posting G/L Transaction</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must enter an amount for this G/L Transaction before you may Post it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select a Debit Account for this G/L Transaction before you may Post it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select a Credit Account for this G/L Transaction before you may Post it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Accounts must belong to the same Company to Post this transaction.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must enter some Notes to describe this transaction.</source>
+        <translation type="unfinished">必須為這次紀錄輸入依些描述.</translation>
+    </message>
+    <message>
+        <source>Notes</source>
+        <translation type="unfinished">註記</translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished">文件</translation>
     </message>
 </context>
 <context>
@@ -43482,10 +43968,6 @@ Do you wish to convert %1 %2 at the rate effective on %3?</source>
     <message>
         <source>Yes</source>
         <translation>是</translation>
-    </message>
-    <message>
-        <source>Notes:</source>
-        <translation>註記:</translation>
     </message>
     <message>
         <source>Amount:</source>
@@ -43518,6 +44000,14 @@ Do you wish to convert %1 %2 at the rate effective on %3?</source>
     <message>
         <source>&amp;Close</source>
         <translation>關閉 &amp;C</translation>
+    </message>
+    <message>
+        <source>Notes</source>
+        <translation type="unfinished">註記</translation>
+    </message>
+    <message>
+        <source>Documents</source>
+        <translation type="unfinished">文件</translation>
     </message>
 </context>
 <context>
@@ -43718,6 +44208,10 @@ Do you wish to convert %1 %2 at the rate effective on %3?</source>
         <source>Show Accounting Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error deleting group</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>groups</name>
@@ -43770,25 +44264,6 @@ You must reassign these Users before you may delete the selected Group.</source>
     <message>
         <source>&amp;View</source>
         <translation>檢視 &amp;V</translation>
-    </message>
-</context>
-<context>
-    <name>helpView</name>
-    <message>
-        <source>xTuple Help Documentation</source>
-        <translation type="unfinished">xTuple 說明文件</translation>
-    </message>
-    <message>
-        <source>Back</source>
-        <translation>往後</translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation>首頁</translation>
-    </message>
-    <message>
-        <source>Forward</source>
-        <translation>向前</translation>
     </message>
 </context>
 <context>
@@ -44639,10 +45114,6 @@ Are you sure that you want to Implode the selected Work Order?</source>
         <translation>關聯</translation>
     </message>
     <message>
-        <source>Incomplete Information</source>
-        <translation>資料不完整</translation>
-    </message>
-    <message>
         <source>Type:</source>
         <translation>類型:</translation>
     </message>
@@ -44724,6 +45195,10 @@ Are you sure that you want to Implode the selected Work Order?</source>
     </message>
     <message>
         <source>Error Deleting To-Do Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot Save Incident</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -44838,6 +45313,21 @@ Are you sure that you want to Implode the selected Work Order?</source>
     </message>
     <message>
         <source>Error Retrieving Incident Category Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>incidentHistory</name>
+    <message>
+        <source>Incident History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">取消</translation>
+    </message>
+    <message>
+        <source>Error Retrieving Description</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -45381,16 +45871,8 @@ Are you sure that you want to Implode the selected Work Order?</source>
         <translation>輸入發票編號</translation>
     </message>
     <message>
-        <source>No Line Items</source>
-        <translation>沒有項目</translation>
-    </message>
-    <message>
         <source>Authorized CC Payments:</source>
         <translation>已授權信用卡付款:</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;The Total must be a positive value.</source>
-        <translation>&lt;p&gt;總計必須是正的數值.</translation>
     </message>
     <message>
         <source>Currency:</source>
@@ -45403,10 +45885,6 @@ Are you sure that you want to Implode the selected Work Order?</source>
     <message>
         <source>&amp;Edit</source>
         <translation>編輯 &amp;E</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You must enter a Customer for this Invoice before saving it.</source>
-        <translation>&lt;p&gt;你必須為這個發票輸入客人.</translation>
     </message>
     <message>
         <source>Subtotal:</source>
@@ -45443,10 +45921,6 @@ Are you sure that you want to Implode the selected Work Order?</source>
     <message>
         <source>Item</source>
         <translation>物品</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;There must be at least one line item for an invoice.</source>
-        <translation>&lt;p&gt;發票至少需要有一個項目.</translation>
     </message>
     <message>
         <source>Line Items</source>
@@ -45495,10 +45969,6 @@ Are you sure that you want to Implode the selected Work Order?</source>
     <message>
         <source>Advanced</source>
         <translation>進階</translation>
-    </message>
-    <message>
-        <source>Total Less than Zero</source>
-        <translation>總計小於0</translation>
     </message>
     <message>
         <source>tax</source>
@@ -45736,6 +46206,22 @@ Could not post Invoice #%1 due to a missing exchange rate.</source>
         <source>Error Posting Invoice Item Distribution</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>You must enter a Customer for this Invoice before saving it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Total must be a positive value.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There must be at least one line item for an invoice.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Co&amp;mments</source>
+        <translation type="unfinished">註釋 &amp;M</translation>
+    </message>
 </context>
 <context>
     <name>invoiceItem</name>
@@ -45946,6 +46432,30 @@ Could not post Invoice #%1 due to a missing exchange rate.</source>
     <message>
         <source>Error Calculating Line Item Tax</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Characteristics</source>
+        <translation type="unfinished">特性</translation>
+    </message>
+    <message>
+        <source>Item Characteristics:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invoice Item Characteristics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished">名稱</translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Co&amp;mments</source>
+        <translation type="unfinished">註釋 &amp;M</translation>
     </message>
 </context>
 <context>
@@ -46512,10 +47022,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error Issuing Material. %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>%1 Items succeeded.
 %2 Items failed.</source>
         <translation type="unfinished"></translation>
@@ -46598,10 +47104,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
     </message>
     <message>
         <source>Error Issuing Material To Work Order #: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Updating Work Order Material Information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -46894,10 +47396,6 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
     <message>
         <source>This Item is used in an active Item Site and must be marked as active. Deactivate the Item Sites to allow this Item to not be active.</source>
         <translation>此物品用於有效的物品控制台所以必須被標記為有效的. 設定該物品控制台為無效後就可以讓這物品標記為無效.</translation>
-    </message>
-    <message>
-        <source>Unit Price UOM:</source>
-        <translation>每單位價格:</translation>
     </message>
     <message>
         <source>Bar Code:</source>
@@ -47233,6 +47731,14 @@ sure there is sufficient Quantity on Hand before proceeding.</source>
     </message>
     <message>
         <source>Error Deleting Item Site</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selling UOM:</source>
+        <translation type="unfinished">銷售單位:</translation>
+    </message>
+    <message>
+        <source>Error Fetching BOM</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -49660,185 +50166,6 @@ already exists for this Item Source.</source>
     </message>
 </context>
 <context>
-    <name>itemSources</name>
-    <message>
-        <source>&lt;p&gt;This item source is used by existing purchase order records and may not be deleted. Would you like to deactivate it instead?</source>
-        <translation type="unfinished">此物品來源已被存有的採購訂單所使用所以不能被刪除. 你要改為將它標記為無效嗎?</translation>
-    </message>
-    <message>
-        <source>Show &amp;Inactive Item Sources</source>
-        <translation>顯示無效的物品來源 &amp;I</translation>
-    </message>
-    <message>
-        <source>&amp;New</source>
-        <translation>新增 &amp;N</translation>
-    </message>
-    <message>
-        <source>Vendor</source>
-        <translation>廠商</translation>
-    </message>
-    <message>
-        <source>Item Number</source>
-        <translation>物品編號</translation>
-    </message>
-    <message>
-        <source>&amp;Print</source>
-        <translation>列印 &amp;P</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;This item source is used by existing purchase order records and may not be deleted.</source>
-        <translation>此物品來源已被存有的採購訂單紀錄,不能被刪除.</translation>
-    </message>
-    <message>
-        <source>Delete Item Source</source>
-        <translation>刪除物品來源</translation>
-    </message>
-    <message>
-        <source>Description</source>
-        <translation>描述</translation>
-    </message>
-    <message>
-        <source>Show Expired</source>
-        <translation>顯示過期</translation>
-    </message>
-    <message>
-        <source>Show Future</source>
-        <translation>顯示未來</translation>
-    </message>
-    <message>
-        <source>Delete...</source>
-        <translation>刪除 ...</translation>
-    </message>
-    <message>
-        <source>UOM</source>
-        <translation>單位</translation>
-    </message>
-    <message>
-        <source>Item</source>
-        <translation>物品</translation>
-    </message>
-    <message>
-        <source>Expires</source>
-        <translation>到期日</translation>
-    </message>
-    <message>
-        <source>Item Sources</source>
-        <translation>物品來源</translation>
-    </message>
-    <message>
-        <source>Vendor UOM</source>
-        <translation>廠商單位</translation>
-    </message>
-    <message>
-        <source>Edit...</source>
-        <translation>編輯 ...</translation>
-    </message>
-    <message>
-        <source>Copy...</source>
-        <translation>複製...</translation>
-    </message>
-    <message>
-        <source>S&amp;earch for:</source>
-        <translation>尋找 &amp;S:</translation>
-    </message>
-    <message>
-        <source>Vendor Item Number</source>
-        <translation>廠商物品編號</translation>
-    </message>
-    <message>
-        <source>Show Inactive</source>
-        <translation>顯示無效的</translation>
-    </message>
-    <message>
-        <source>Always</source>
-        <translation>永遠</translation>
-    </message>
-    <message>
-        <source>View...</source>
-        <translation>檢視 ...</translation>
-    </message>
-    <message>
-        <source>UOM Ratio</source>
-        <translation>單位比例</translation>
-    </message>
-    <message>
-        <source>Are you sure that you want to delete the Item Source for %1?</source>
-        <translation>你確定要刪除%1的物品來源嗎?</translation>
-    </message>
-    <message>
-        <source>Effective</source>
-        <translation>有效日期</translation>
-    </message>
-    <message>
-        <source>Contract #</source>
-        <translation>合約 #</translation>
-    </message>
-    <message>
-        <source>Contract Number Pattern</source>
-        <translation>合約編號樣本</translation>
-    </message>
-    <message>
-        <source>Contract</source>
-        <translation>合約</translation>
-    </message>
-    <message>
-        <source>&amp;Delete</source>
-        <translation>刪除 &amp;D</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation>關閉 &amp;C</translation>
-    </message>
-    <message>
-        <source>Item Sources:</source>
-        <translation>物品來源:</translation>
-    </message>
-    <message>
-        <source>List Item Sources</source>
-        <translation>物品來源列表</translation>
-    </message>
-    <message>
-        <source>&amp;View</source>
-        <translation>檢視 &amp;V</translation>
-    </message>
-    <message>
-        <source>&amp;Edit</source>
-        <translation>編輯 &amp;E</translation>
-    </message>
-    <message>
-        <source>Never</source>
-        <translation>從不</translation>
-    </message>
-    <message>
-        <source>&amp;Copy</source>
-        <translation>複製 &amp;C</translation>
-    </message>
-    <message>
-        <source>Manufacturer</source>
-        <translation>製造商</translation>
-    </message>
-    <message>
-        <source>Manuf. Item#</source>
-        <translation>製造商物品編號</translation>
-    </message>
-    <message>
-        <source>Vendor #</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error Deleting Item Source Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Active</source>
-        <translation type="unfinished">有效</translation>
-    </message>
-    <message>
-        <source>Default</source>
-        <translation type="unfinished">預設</translation>
-    </message>
-</context>
-<context>
     <name>itemSubstitute</name>
     <message>
         <source>&amp;Close</source>
@@ -50399,6 +50726,10 @@ You may edit the existing Substitution but you may not create a duplicate.</sour
     </message>
     <message>
         <source>Error Retrieving Recurring Invoice Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Posted</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -51110,10 +51441,6 @@ You must reassign these Item Sites before you may delete the selected Planner Co
         <translation>科目</translation>
     </message>
     <message>
-        <source>&lt;p&gt;Please select at least one Period before generating the table.</source>
-        <translation>&lt;p&gt;請至少選擇一個期間才能產生表格.</translation>
-    </message>
-    <message>
         <source>Accounting Periods:</source>
         <translation>會計期間:</translation>
     </message>
@@ -51179,6 +51506,10 @@ You must reassign these Item Sites before you may delete the selected Planner Co
     </message>
     <message>
         <source>Error Saving Budget Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please select at least one Period before generating the table.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -53155,10 +53486,6 @@ You must reassign these Item Sites before you may delete the selected Planner Co
         <translation>合約 &amp;C</translation>
     </message>
     <message>
-        <source>&amp;Item Sources...</source>
-        <translation>物品來源 &amp;I...</translation>
-    </message>
-    <message>
         <source>&amp;Purchase Orders</source>
         <translation>採購訂單 &amp;P</translation>
     </message>
@@ -53261,6 +53588,10 @@ You must reassign these Item Sites before you may delete the selected Planner Co
     <message>
         <source>&amp;Lookup</source>
         <translation type="unfinished">查閱 &amp;L </translation>
+    </message>
+    <message>
+        <source>&amp;Item Source Prices...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -53883,6 +54214,10 @@ You must reassign these Item Sites before you may delete the selected Planner Co
         <source>&lt;p&gt;%1&lt;br/&gt;Version %2&lt;br/&gt;%3&lt;/p&gt;&lt;p&gt;Built with:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;OpenRPT %4 %5&lt;/li&gt;&lt;li&gt;Qt %6&lt;/li&gt;&lt;li&gt;hunspell %7 (modified by xTuple for compiler compatibility)&lt;/li&gt;&lt;/ul&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Process/Lock Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>menuWindow</name>
@@ -54029,14 +54364,6 @@ You must reassign these Item Sites before you may delete the selected Planner Co
         <translation>備註:</translation>
     </message>
     <message>
-        <source>Invalid Amount</source>
-        <translation>無效的金額</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You must enter an amount less than or equal to the  credit memo selected.</source>
-        <translation>&lt;p&gt;必須輸入金額小於或等於選取的貸項通知單的金額.</translation>
-    </message>
-    <message>
         <source>C&amp;reate</source>
         <translation>新增 &amp;R</translation>
     </message>
@@ -54085,26 +54412,6 @@ You must reassign these Item Sites before you may delete the selected Planner Co
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cannot Create Miscellaneous Payment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You must enter a date for this payment.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You must enter an amount for this payment.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You must select a Credit Memo for this expensed payment.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;You must select an Expense Category for this expensed payment.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Expense Category Tax:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -54138,6 +54445,30 @@ You must reassign these Item Sites before you may delete the selected Planner Co
     </message>
     <message>
         <source>Tax Calculation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must enter a date for this payment.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must enter an amount for this payment.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select a Credit Memo for this expensed payment.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must enter an amount less than or equal to the credit memo selected.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select an Expense Category for this expensed payment.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot Save Miscellaneous Payment</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -54363,28 +54694,9 @@ You must reassign these Item Sites before you may delete the selected Planner Co
         <source>Error Retrieving Misc Distributions</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>newForm</name>
     <message>
-        <source>Results:</source>
-        <translation type="unfinished">結果:</translation>
-    </message>
-    <message>
-        <source>New Form</source>
-        <translation>新建表單</translation>
-    </message>
-    <message>
-        <source>Search Criterion:</source>
-        <translation>搜索條件:</translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation>關閉 &amp;C</translation>
-    </message>
-    <message>
-        <source>Query</source>
-        <translation>查詢</translation>
+        <source>Co&amp;mments</source>
+        <translation type="unfinished">註釋 &amp;M</translation>
     </message>
 </context>
 <context>
@@ -55178,10 +55490,6 @@ You must reassign these Item Sites before you may delete the selected Planner Co
         <translation>你確定要刪除選取的報價嗎?</translation>
     </message>
     <message>
-        <source>Incomplete Information</source>
-        <translation>資料不完整</translation>
-    </message>
-    <message>
         <source>You must specify the Account that this opportunity is for.</source>
         <translation>必須為這機會指定所針對的帳戶.</translation>
     </message>
@@ -55251,6 +55559,10 @@ You must reassign these Item Sites before you may delete the selected Planner Co
     </message>
     <message>
         <source>Error Retrieving Sales Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cannot Save Incident</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -57880,6 +58192,22 @@ post Vouchers.</source>
         <source>Error Preparing Check Run for Printing</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Vouchers Excluded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The system detected voucher(s) dated after the payment date. These have been excluded from the payment run.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Payments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There are no selected payments to prepare.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>priceList</name>
@@ -58093,6 +58421,14 @@ post Vouchers.</source>
     </message>
     <message>
         <source>List Pricing Schedule Assignment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;You must enter a valid Ship To pattern.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;You must enter a valid Customer Type pattern.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -59549,10 +59885,6 @@ post Vouchers.</source>
 <context>
     <name>printStatementByCustomer</name>
     <message>
-        <source>&lt;p&gt;You must enter a valid Customer Number for this Statement.</source>
-        <translation type="unfinished">你為此對帳單輸入一個有效的客戶編號.</translation>
-    </message>
-    <message>
         <source>Enter a Valid Customer Number</source>
         <translation>輸入有效的客戶編號</translation>
     </message>
@@ -59594,6 +59926,10 @@ post Vouchers.</source>
     </message>
     <message>
         <source>Sales Credit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must enter a valid Customer Number for this Statement.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -59952,10 +60288,6 @@ You may not create a Product Category with this code.</source>
     <message>
         <source>Profit Center Number</source>
         <translation>利潤中心編號</translation>
-    </message>
-    <message>
-        <source>Duplicate Profit Center Number</source>
-        <translation>複製利潤中心編號</translation>
     </message>
     <message>
         <source>You must enter a valid Number.</source>
@@ -60766,36 +61098,12 @@ You may not create a Product Category with this code.</source>
         <translation>專案</translation>
     </message>
     <message>
-        <source>One or more Sales Orders refer to this project.</source>
-        <translation>一個或多個銷售訂單指到這個專案.</translation>
-    </message>
-    <message>
-        <source>One or more Work Orders refer to this project.</source>
-        <translation>一個或多個工作單指到這個專案.</translation>
-    </message>
-    <message>
-        <source>One or more Purchase order Items refer to this project.</source>
-        <translation>一個或多個採購單指到這個專案.</translation>
-    </message>
-    <message>
         <source>In-Process</source>
         <translation>進行中</translation>
     </message>
     <message>
-        <source>Error #%1 encountered while trying to delete project.</source>
-        <translation>刪除專案時遇到錯誤 ERROR#%1.</translation>
-    </message>
-    <message>
-        <source>One or more Invoices refer to this project.</source>
-        <translation>一個或多個發票指到這個專案.</translation>
-    </message>
-    <message>
         <source>Assigned</source>
         <translation>已分配</translation>
-    </message>
-    <message>
-        <source>Cannot Delete Project</source>
-        <translation>無法刪除專案</translation>
     </message>
     <message>
         <source>Budget Hrs.</source>
@@ -60820,11 +61128,6 @@ You may not create a Product Category with this code.</source>
     <message>
         <source>Due</source>
         <translation>到期日</translation>
-    </message>
-    <message>
-        <source>Could not delete the project for one or more reasons.
-</source>
-        <translation>無法刪除專案.</translation>
     </message>
     <message>
         <source>Balance Hrs.</source>
@@ -60895,16 +61198,8 @@ You may not create a Product Category with this code.</source>
         <translation>狀態</translation>
     </message>
     <message>
-        <source>One or more Purchase Requests refer to this project.</source>
-        <translation>一個或多個請購單指到這個專案.</translation>
-    </message>
-    <message>
         <source>Number</source>
         <translation>編號</translation>
-    </message>
-    <message>
-        <source>One or more Quote&apos;s refer to this project.</source>
-        <translation>一個或多個報價指到這個專案.</translation>
     </message>
     <message>
         <source>Show Orders:</source>
@@ -61067,106 +61362,6 @@ You may not create a Product Category with this code.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Edit Project...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>View Project...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Task...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>View Task...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Quote...</source>
-        <translation type="unfinished">編輯報價 ...</translation>
-    </message>
-    <message>
-        <source>View Quote...</source>
-        <translation type="unfinished">檢視報價 ...</translation>
-    </message>
-    <message>
-        <source>Edit Quote Item...</source>
-        <translation type="unfinished">編輯報價物品 ...</translation>
-    </message>
-    <message>
-        <source>View Quote Item...</source>
-        <translation type="unfinished">檢視報價物品 ...</translation>
-    </message>
-    <message>
-        <source>Edit Sales Order...</source>
-        <translation type="unfinished">編輯銷售訂單 ...</translation>
-    </message>
-    <message>
-        <source>View Sales Order...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Sales Order Item...</source>
-        <translation type="unfinished">編輯銷售訂單物品 ...</translation>
-    </message>
-    <message>
-        <source>View Sales Order Item...</source>
-        <translation type="unfinished">檢視銷售訂單項目 ...</translation>
-    </message>
-    <message>
-        <source>Edit Invoice...</source>
-        <translation type="unfinished">編輯發票 ...</translation>
-    </message>
-    <message>
-        <source>View Invoice...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Invoice Item...</source>
-        <translation type="unfinished">編輯發票物品 ...</translation>
-    </message>
-    <message>
-        <source>View Invoice Item...</source>
-        <translation type="unfinished">檢視發票物品 ...</translation>
-    </message>
-    <message>
-        <source>Edit Work Order...</source>
-        <translation type="unfinished">編輯工作單 ...</translation>
-    </message>
-    <message>
-        <source>View Work Order...</source>
-        <translation type="unfinished">檢視工作單 ...</translation>
-    </message>
-    <message>
-        <source>View Purchase Request...</source>
-        <translation type="unfinished">檢視採購請求 ...</translation>
-    </message>
-    <message>
-        <source>Edit Purchase Order...</source>
-        <translation type="unfinished">編輯訂購單 ...</translation>
-    </message>
-    <message>
-        <source>View Purchase Order...</source>
-        <translation type="unfinished">檢視採購訂單 ...</translation>
-    </message>
-    <message>
-        <source>Edit Purchase Order Item...</source>
-        <translation type="unfinished">編輯訂購單物品 ...</translation>
-    </message>
-    <message>
-        <source>View Purchase Order Item...</source>
-        <translation type="unfinished">檢視採購訂單項目 ...</translation>
-    </message>
-    <message>
-        <source>Edit Incident...</source>
-        <translation type="unfinished">編輯事件 ...</translation>
-    </message>
-    <message>
-        <source>View Incident...</source>
-        <translation type="unfinished">檢視事件 ...</translation>
-    </message>
-    <message>
         <source>Project Copy</source>
         <translation type="unfinished"></translation>
     </message>
@@ -61253,6 +61448,14 @@ You may not create a Product Category with this code.</source>
     <message>
         <source>Error Deleting Project</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">編輯</translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished">檢視</translation>
     </message>
 </context>
 <context>
@@ -61469,10 +61672,6 @@ You may not create a Product Category with this code.</source>
         <translation>國家</translation>
     </message>
     <message>
-        <source>&lt;p&gt;Are you sure you want to delete the selected Prospect?</source>
-        <translation>你確定想刪除已選擇的潛在客戶嗎?</translation>
-    </message>
-    <message>
         <source>Phone Pattern</source>
         <translation>電話樣本</translation>
     </message>
@@ -61503,6 +61702,10 @@ You may not create a Product Category with this code.</source>
     <message>
         <source>Postal Code Pattern</source>
         <translation>郵編樣本</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Are you sure you want to delete the selected Prospect(s)?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -62344,44 +62547,21 @@ Click Yes to use the existing Purchase Order otherwise a new one will be created
         <source>&lt;p&gt;Please save the Purchase Order Item before viewing the tax breakdown.</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>purchaseOrderList</name>
     <message>
-        <source>&amp;Select</source>
-        <translation type="unfinished">選擇 &amp;S</translation>
+        <source>Item Characteristics:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Number</source>
-        <translation>編號</translation>
+        <source>Purchase Item Characteristics</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Cancel</source>
-        <translation>取消 &amp;C</translation>
+        <source>No Supplying Site</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Vendor</source>
-        <translation>廠商</translation>
-    </message>
-    <message>
-        <source>Agent</source>
-        <translation>代理人</translation>
-    </message>
-    <message>
-        <source>First Item</source>
-        <translation>第一樣物品</translation>
-    </message>
-    <message>
-        <source>&amp;Purchase Orders:</source>
-        <translation>採購訂單 &amp;P :</translation>
-    </message>
-    <message>
-        <source>Purchase Orders</source>
-        <translation>採購訂單</translation>
-    </message>
-    <message>
-        <source>Order Date</source>
-        <translation>訂購日期</translation>
+        <source>No Supplying Sites exist for this item.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -63384,10 +63564,6 @@ You must purge these records before you may delete the selected Reason Code.</so
         <translation>結束日期不能早於開始日期。</translation>
     </message>
     <message>
-        <source>Invalid End Date</source>
-        <translation>無效的結束日期</translation>
-    </message>
-    <message>
         <source>Base Amount</source>
         <translation>基準金額</translation>
     </message>
@@ -63428,10 +63604,6 @@ You must purge these records before you may delete the selected Reason Code.</so
         <translation>金額</translation>
     </message>
     <message>
-        <source>Missing Opening Date</source>
-        <translation>缺少起始日期</translation>
-    </message>
-    <message>
         <source>Currency:</source>
         <translation>貨幣:</translation>
     </message>
@@ -63442,14 +63614,6 @@ You must purge these records before you may delete the selected Reason Code.</so
     <message>
         <source>Reconcile Bank Account</source>
         <translation>銀行帳戶調帳</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;There was an error trying to reconcile this account. Please contact your Systems Administrator.</source>
-        <translation>&lt;p&gt;嘗試調帳時發生錯誤. 請聯絡系統管理員.</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;No Opening Date was specified for this reconciliation. Please specify an Opening Date.</source>
-        <translation>&lt;p&gt;這次調帳沒有指定起始日期. 請指定起始日期.</translation>
     </message>
     <message>
         <source>&lt;p&gt;Are you sure you want to Cancel this Bank Reconciliation and delete all of the Cleared notations for this time period?</source>
@@ -63472,16 +63636,8 @@ You must purge these records before you may delete the selected Reason Code.</so
         <translation>是</translation>
     </message>
     <message>
-        <source>Missing Ending Date</source>
-        <translation>缺少結束日期</translation>
-    </message>
-    <message>
         <source>No</source>
         <translation>否</translation>
-    </message>
-    <message>
-        <source>&lt;p&gt;No Ending Date was specified for this reconciliation. Please specify an Ending Date.</source>
-        <translation>&lt;p&gt;這次調帳沒有指定結束日期. 請指定結束日期.</translation>
     </message>
     <message>
         <source>Start Date:</source>
@@ -63588,6 +63744,18 @@ Please correct this before continuing.</source>
     </message>
     <message>
         <source>Error Retrieving Bank Reconcilation Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>There was an error trying to reconcile this account. Please contact your Systems Administrator.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Opening Date was specified for this reconciliation. Please specify an Opening Date.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Ending Date was specified for this reconciliation. Please specify an Ending Date.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -65017,10 +65185,6 @@ You must Recall this Work Order before Rescheduling it.</source>
         <translation>檢示新訂單項目 ...</translation>
     </message>
     <message>
-        <source>Enter &amp;Receipt...</source>
-        <translation>輸入收據 &amp;R...</translation>
-    </message>
-    <message>
         <source>This Return Authorization has line items with a different Shipping Site. You may need to review the line items.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -65394,6 +65558,30 @@ You must Recall this Work Order before Rescheduling it.</source>
     </message>
     <message>
         <source>&lt;p&gt;You must enter a Credit/Ship Timing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enter &amp;Receipt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Characteristics</source>
+        <translation type="unfinished">特性</translation>
+    </message>
+    <message>
+        <source>Sites Do Not Match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Orig. Sales Order Site (%1) does not match the Receiving Site (%2) nor Shipping Site (%3). &lt;p&gt;Do you want to update both of them to match the Sales Order?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Original Sales Order Site (%1) does not match the Receiving Site (%2). &lt;p&gt;Do you want to update it to match the Sales Order?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Original Sales Order Site (%1) does not match the Shipping Site (%2). &lt;p&gt;Do you want to update it to match the Sales Order?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -66127,20 +66315,8 @@ You must instead return each Work Order Material item individually.
         <translation>取消 &amp;C</translation>
     </message>
     <message>
-        <source>You must select the Work Order from which you with to return Materal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Transaction &amp;Date:</source>
         <translation>紀錄日期 &amp;D:</translation>
-    </message>
-    <message>
-        <source>Select Work Order</source>
-        <translation>請選擇工作單</translation>
-    </message>
-    <message>
-        <source>Invalid date</source>
-        <translation>無效的日期</translation>
     </message>
     <message>
         <source>Material Return</source>
@@ -66192,6 +66368,14 @@ You must instead return each Work Order Material item individually.
     </message>
     <message>
         <source>Error Creating itemlocdist Records</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must select the Work Order from which you wish to return Material</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid Return</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -67525,10 +67709,6 @@ You must reassign these Invoice Lines before you may delete the selected Sales C
         <translation>否</translation>
     </message>
     <message>
-        <source>Qty UOM</source>
-        <translation>數量單位</translation>
-    </message>
-    <message>
         <source>Enter Quote #</source>
         <translation>輸入報價編號</translation>
     </message>
@@ -67575,10 +67755,6 @@ You must reassign these Invoice Lines before you may delete the selected Sales C
     <message>
         <source>At Shipping:</source>
         <translation>準備出貨:</translation>
-    </message>
-    <message>
-        <source>Price UOM</source>
-        <translation>價格單位</translation>
     </message>
     <message>
         <source>Delete Quote?</source>
@@ -68097,6 +68273,42 @@ Do you wish to continue saving the order?</source>
         <source>&lt;p&gt;The customer has exceeded their credit limit and you have insufficient privileges to issue stock for this order. You will need to edit the order to ensure it falls within the credit limit or obtain a payment first.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">取消 &amp;C</translation>
+    </message>
+    <message>
+        <source>Selling UOM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel Line...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Purchase Order Item?</source>
+        <translation type="unfinished">你確定要刪除這張採購訂單的項目嗎?</translation>
+    </message>
+    <message>
+        <source>Do you wish to delete the Purchase Order Item linked to this Sales Order Item? The associated Purchase Order will also be deleted if no other Purchase Order Item exists for that Purchase Order.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error closing P/O Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error deleting P/O Item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Getting Linked P/O</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Cancelling Item</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>salesOrderInformation</name>
@@ -68196,10 +68408,6 @@ Do you wish to continue saving the order?</source>
         <translation>所在地 &amp;I</translation>
     </message>
     <message>
-        <source>Purchase Order linked to this Sales Order Item will not be affected. The Purchase Order should be closed or deleted manually if necessary.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cannot Create P/O</source>
         <translation>無法建立採購單</translation>
     </message>
@@ -68258,10 +68466,6 @@ Do you wish to continue saving the order?</source>
     <message>
         <source>Override Price:</source>
         <translation>推翻銷售價格</translation>
-    </message>
-    <message>
-        <source>Qty.  &amp;UOM:</source>
-        <translation>數量單位 &amp;U:</translation>
     </message>
     <message>
         <source>Qty. Shipped:</source>
@@ -68458,10 +68662,6 @@ Do you wish to continue saving the order?</source>
     <message>
         <source>Delete Purchase Request</source>
         <translation>刪除請購單</translation>
-    </message>
-    <message>
-        <source>Can not delete PO</source>
-        <translation>無法刪除採購單</translation>
     </message>
     <message>
         <source>Line #:</source>
@@ -69289,6 +69489,34 @@ Are you sure you want to do this?</source>
     </message>
     <message>
         <source>&lt;p&gt;You have made some changes which have not yet been saved.&lt;br/&gt;Would you like to save them now?&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selling  &amp;UOM:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item Characteristics:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sales Item Characteristics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Purchase Order Item?</source>
+        <translation type="unfinished">你確定要刪除這張採購訂單的項目嗎?</translation>
+    </message>
+    <message>
+        <source>Do you wish to delete the Purchase Order Item linked to this Sales Order Item? The associated Purchase Order will also be deleted if no other Purchase Order Item exists for that Purchase Order.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error closing P/O Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error deleting P/O Item</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -72849,10 +73077,6 @@ You must reassign these Sites before deleting this Site Type.</source>
 <context>
     <name>standardJournalGroup</name>
     <message>
-        <source>The Name you have entered for this Standard Journal Group is already in use. Please enter in a different Name for this Standard Journal Group.</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Description</source>
         <translation>描述</translation>
     </message>
@@ -72936,6 +73160,10 @@ You must reassign these Sites before deleting this Site Type.</source>
         <source>&amp;Delete</source>
         <translation>刪除 &amp;D</translation>
     </message>
+    <message>
+        <source>The Name you have entered for this Standard Journal Group is already in use.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>standardJournalGroupItem</name>
@@ -72948,16 +73176,8 @@ You must reassign these Sites before deleting this Site Type.</source>
         <translation>有效日期</translation>
     </message>
     <message>
-        <source>Invalid Expiration Date</source>
-        <translation>無效的到期日</translation>
-    </message>
-    <message>
         <source>Never</source>
         <translation>從不</translation>
-    </message>
-    <message>
-        <source>Enter Expiration Date</source>
-        <translation>輸入過期日</translation>
     </message>
     <message>
         <source>Expires</source>
@@ -72966,10 +73186,6 @@ You must reassign these Sites before deleting this Site Type.</source>
     <message>
         <source>You must enter an effective date for this Standard Journal Group Item.</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enter Effective Date</source>
-        <translation>輸入有效日期</translation>
     </message>
     <message>
         <source>Always</source>
@@ -73010,6 +73226,10 @@ You must reassign these Sites before deleting this Site Type.</source>
     <message>
         <source>&amp;Save</source>
         <translation>儲存 &amp;S</translation>
+    </message>
+    <message>
+        <source>Cannot Save Journal Group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -75156,6 +75376,34 @@ You must first delete the Bill of Materials for the selected target item before 
         <source>Cannot Void Credit Memo as aropen not found.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>One or more Quote&apos;s refer to this project.</source>
+        <translation type="unfinished">一個或多個報價指到這個專案.</translation>
+    </message>
+    <message>
+        <source>One or more Sales Orders refer to this project.</source>
+        <translation type="unfinished">一個或多個銷售訂單指到這個專案.</translation>
+    </message>
+    <message>
+        <source>One or more Work Orders refer to this project.</source>
+        <translation type="unfinished">一個或多個工作單指到這個專案.</translation>
+    </message>
+    <message>
+        <source>One or more Purchase Requests refer to this project.</source>
+        <translation type="unfinished">一個或多個請購單指到這個專案.</translation>
+    </message>
+    <message>
+        <source>One or more Purchase order Items refer to this project.</source>
+        <translation type="unfinished">一個或多個採購單指到這個專案.</translation>
+    </message>
+    <message>
+        <source>One or more Invoices refer to this project.</source>
+        <translation type="unfinished">一個或多個發票指到這個專案.</translation>
+    </message>
+    <message>
+        <source>pItemlocdistId is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>subAccntType</name>
@@ -75168,22 +75416,12 @@ You must first delete the Bill of Materials for the selected target item before 
         <translation>描述:</translation>
     </message>
     <message>
-        <source>A Subaccount Type with the entered code already exists.You may not create a Subaccount Type with this code.</source>
-        <translation>輸入的子科目類型碼已經存在. 無法用這個編碼建立子科目類型.</translation>
-    </message>
-    <message>
         <source>Cannot Create Subaccount Type</source>
         <translation>無法建立子科目類型</translation>
     </message>
     <message>
         <source>&amp;Close</source>
         <translation>關閉 &amp;C</translation>
-    </message>
-    <message>
-        <source>A Subaccount Type with the entered code already exists.
-You may not create a Subaccount Type with this code.</source>
-        <translation>輸入的子科目類型碼已經存在. 
-無法用這個編碼建立子科目類型.</translation>
     </message>
     <message>
         <source>Subaccount Type</source>
@@ -75223,6 +75461,10 @@ You may not create a Subaccount Type with this code.</source>
     </message>
     <message>
         <source>Error Retrieving Sub Account Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A Subaccount Type with the entered code already exists. You may not create a Subaccount Type with this code.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -75343,10 +75585,6 @@ You must reassign these Ledger Accounts before you may delete the selected G/L S
     <message>
         <source>A Sub Account Number already exists for the one specified.</source>
         <translation>指定的子科目編號已經存在.</translation>
-    </message>
-    <message>
-        <source>Duplicate Sub Account Number</source>
-        <translation>重複子科目編號</translation>
     </message>
     <message>
         <source>Change All Accounts?</source>
@@ -76375,10 +76613,6 @@ Posting currency revaluation adjustments...</source>
 </context>
 <context>
     <name>taxAssignment</name>
-    <message>
-        <source>&lt;p&gt;Tax codes with the same group sequence as this one and which have subordinate taxes are already assigned to this Tax Zone / Tax Type pair.&lt;/p&gt;&lt;p&gt;You first need to Revoke those Tax Codes.&lt;/p&gt;</source>
-        <translation></translation>
-    </message>
     <message>
         <source>&lt;-Revoke</source>
         <translation type="unfinished">&lt;- 移除</translation>
@@ -77422,10 +77656,6 @@ You first need to Revoke those Tax Codes.</source>
         <translation>指定參數已經存在卞稅務登記。</translation>
     </message>
     <message>
-        <source>Duplicate Tax Registration</source>
-        <translation>重複稅務登記</translation>
-    </message>
-    <message>
         <source>Error Retrieving Tax Registration Information</source>
         <translation type="unfinished"></translation>
     </message>
@@ -77500,10 +77730,6 @@ You first need to Revoke those Tax Codes.</source>
         <translation type="unfinished">取消 &amp;C</translation>
     </message>
     <message>
-        <source>&lt;p&gt;You must name this Tax Type before saving it.</source>
-        <translation>&lt;p&gt;必須為這個稅務類型取名才能儲存.</translation>
-    </message>
-    <message>
         <source>Missing Name</source>
         <translation>缺少名稱</translation>
     </message>
@@ -77524,12 +77750,6 @@ You first need to Revoke those Tax Codes.</source>
         <translation>稅務類型</translation>
     </message>
     <message>
-        <source>A Tax Type with the entered name already exists.
-You may not create a Tax Type with this name.</source>
-        <translation>數入的稅務類型名稱已經存在. 
-你無法用這個名稱建立稅務類型.</translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
         <translation>關閉 &amp;C</translation>
     </message>
@@ -77543,6 +77763,10 @@ You may not create a Tax Type with this name.</source>
     </message>
     <message>
         <source>Error Retrieving Tax Type Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must name this Tax Type before saving it.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -77874,6 +78098,22 @@ You must first re-assign these items before deleting the selected Tax Type.</sou
         <source>Error Retrieving Vendor Information</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>&lt;p&gt;You may not delete the selected Terms Code as there are one or more A/P documents assigned to it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Retrieving A/P Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;You may not delete the selected Terms Code as there are one or more A/R documents assigned to it.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Deleting Terms</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>thawItemSitesByClassCode</name>
@@ -78020,10 +78260,6 @@ You must first re-assign these items before deleting the selected Tax Type.</sou
 <context>
     <name>todoList</name>
     <message>
-        <source>Edit Project</source>
-        <translation type="unfinished">編輯專案</translation>
-    </message>
-    <message>
         <source>Confirmed</source>
         <translation>已確認</translation>
     </message>
@@ -78140,14 +78376,6 @@ You must first re-assign these items before deleting the selected Tax Type.</sou
         <translation>檢視客戶</translation>
     </message>
     <message>
-        <source>Edit Opportunity</source>
-        <translation>編輯機會</translation>
-    </message>
-    <message>
-        <source>View Opportunity</source>
-        <translation>檢視機會</translation>
-    </message>
-    <message>
         <source>Restricted Access</source>
         <translation>限制存取</translation>
     </message>
@@ -78160,20 +78388,12 @@ You must first re-assign these items before deleting the selected Tax Type.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>View Task</source>
-        <translation>檢視工作</translation>
-    </message>
-    <message>
         <source>Start Date</source>
         <translation>開始日期</translation>
     </message>
     <message>
         <source>Opportunities</source>
         <translation>機會</translation>
-    </message>
-    <message>
-        <source>View To-Do...</source>
-        <translation>檢視未完成事項 ...</translation>
     </message>
     <message>
         <source>Priority</source>
@@ -78192,10 +78412,6 @@ You must first re-assign these items before deleting the selected Tax Type.</sou
         <translation>擁有者</translation>
     </message>
     <message>
-        <source>Delete To-Do</source>
-        <translation>刪除未完成事項</translation>
-    </message>
-    <message>
         <source>Completed</source>
         <translation>已完成</translation>
     </message>
@@ -78212,28 +78428,12 @@ You must first re-assign these items before deleting the selected Tax Type.</sou
         <translation>使用者</translation>
     </message>
     <message>
-        <source>Edit Task</source>
-        <translation>編輯工作</translation>
-    </message>
-    <message>
         <source>Name</source>
         <translation>名稱</translation>
     </message>
     <message>
-        <source>Edit Incident</source>
-        <translation>編輯事件</translation>
-    </message>
-    <message>
-        <source>View Incident</source>
-        <translation>檢視事件</translation>
-    </message>
-    <message>
         <source>Customer</source>
         <translation>客戶</translation>
-    </message>
-    <message>
-        <source>View Project</source>
-        <translation>檢視專案</translation>
     </message>
     <message>
         <source>&lt;p&gt;Are you sure that you want to completely delete the selected item?</source>
@@ -78260,10 +78460,6 @@ You must first re-assign these items before deleting the selected Tax Type.</sou
         <translation>未完成事項</translation>
     </message>
     <message>
-        <source>Edit To-Do...</source>
-        <translation>編輯未完成事項</translation>
-    </message>
-    <message>
         <source>Assigned To</source>
         <translation>已分配給</translation>
     </message>
@@ -78281,6 +78477,26 @@ You must first re-assign these items before deleting the selected Tax Type.</sou
     </message>
     <message>
         <source>Error Deleting Recurring To Do Item Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit</source>
+        <translation type="unfinished">編輯</translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished">檢視</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">刪除</translation>
+    </message>
+    <message>
+        <source>Edit Parent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View Parent</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -83590,6 +83806,10 @@ and Purchase Order amounts</source>
         <source>&lt;p&gt;The number % is already used by another vendor. Please use a different vendor number.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Tax Type:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>vendorAddress</name>
@@ -84638,6 +84858,10 @@ You must reassign these Vendors before you may delete the selected Vendor Type.<
         <source>Error Distributing Voucher Freight</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Co&amp;mments</source>
+        <translation type="unfinished">註釋 &amp;M</translation>
+    </message>
 </context>
 <context>
     <name>voucherItem</name>
@@ -84834,10 +85058,6 @@ You must reassign these Vendors before you may delete the selected Vendor Type.<
         <translation>無法儲存憑單項目</translation>
     </message>
     <message>
-        <source>You must enter a postive Quantity to Voucher before saving this Voucher Item</source>
-        <translation>憑單必須輸入正數的數量才能儲存</translation>
-    </message>
-    <message>
         <source>Split Receipt...</source>
         <translation>分割收貨單 ...</translation>
     </message>
@@ -84871,6 +85091,10 @@ You must reassign these Vendors before you may delete the selected Vendor Type.<
     </message>
     <message>
         <source>Tax Calculation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You must enter a postive Quantity to Voucher before saving this Voucher Item.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -85539,6 +85763,14 @@ Work Order/Item as the selected Item is Job Costed,
 and Work Order Component Items may not be Job Costed.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cannot add an Item as a Material to itself.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error Checking Parents</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>woSearch</name>
@@ -86124,10 +86356,6 @@ Please correct before creating this Work Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Work Order Item Characteristics:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Work Order must have status of Exploded or In-Process.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -86176,6 +86404,14 @@ Please correct before creating this Work Order</source>
     </message>
     <message>
         <source>Error checking for boohead</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Item Characteristics:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Work Order Characteristics</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

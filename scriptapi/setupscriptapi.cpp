@@ -10,6 +10,8 @@
 
 #include "setupscriptapi.h"
 
+#include "applock.h"
+#include "xtsettings.h"
 #include "char.h"
 #include "engineevaluate.h"
 #include "exporthelper.h"
@@ -30,6 +32,7 @@
 #include "qcoreapplicationproto.h"
 #include "qcryptographichashproto.h"
 #include "qdatawidgetmapperproto.h"
+#include "qdateproto.h"
 #include "qdialogbuttonboxproto.h"
 #include "qdialogsetup.h"
 #include "qdirproto.h"
@@ -79,6 +82,8 @@
 #include "qmenubarproto.h"
 #include "qmenuproto.h"
 #include "qmessageboxsetup.h"
+#include "qmimedatabaseproto.h"
+#include "qmimetypeproto.h"
 #include "qnetworkaccessmanagerproto.h"
 #include "qnetworkinterfaceproto.h"
 #include "qnetworkreplyproto.h"
@@ -153,6 +158,8 @@
 void setupScriptApi(QScriptEngine *engine)
 {
 
+  setupAppLockProto(engine);
+  setupXtSettings(engine);
   setupEngineEvaluate(engine);
   setupExportHelper(engine);
   setupInclude(engine);
@@ -171,6 +178,7 @@ void setupScriptApi(QScriptEngine *engine)
   setupQCoreApplicationProto(engine);
   setupQCryptographicHashProto(engine);
   setupQDataWidgetMapperProto(engine);
+  setupQDateProto(engine);
   setupQDialog(engine);
   setupQDialogButtonBoxProto(engine);
   setupQDirProto(engine);
@@ -220,6 +228,8 @@ void setupScriptApi(QScriptEngine *engine)
   setupQMenuBarProto(engine);
   setupQMenuProto(engine);
   setupQMessageBox(engine);
+  setupQMimeDatabaseProto(engine);
+  setupQMimeTypeProto(engine);
   setupQNetworkAccessManagerProto(engine);
   setupQNetworkInterfaceProto(engine);
   setupQNetworkReplyProto(engine);

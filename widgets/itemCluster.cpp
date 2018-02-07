@@ -8,16 +8,12 @@
  * to be bound by its terms.
  */
 
-#include <QApplication>
 #include <QCompleter>
 #include <QGridLayout>
 #include <QLabel>
 #include <QMenu>
-#include <QMessageBox>
 #include <QSqlRecord>
-#include <QStandardItemEditorCreator>
 #include <QTreeView>
-#include <QVBoxLayout>
 #include <QtScript>
 
 #include <xsqlquery.h>
@@ -38,19 +34,19 @@ QString buildItemLineEditQuery(const QString pPre, const QStringList pClauses, c
 {
   QStringList clauses = pClauses;
   QString sql;
-  if (unionAlias) 
+  if (unionAlias)
   {
     sql = pPre + " FROM ("
                  "   SELECT item_id, item_number, item_descrip1, item_descrip2, "
                  "      item_upccode, item_type, item_fractional, item_config, item_inv_uom_id, "
-                 "      item_sold, item_active "
+                 "      item_sold, item_active, NULL AS itemalias_crmacct_id "
                  "   FROM item "
                  "   UNION "
                  "   SELECT item_id, itemalias_number, "
                  "     CASE WHEN LENGTH(itemalias_descrip1) > 1 THEN itemalias_descrip1 ELSE item_descrip1 END, "
                  "     CASE WHEN LENGTH(itemalias_descrip2) > 1 THEN itemalias_descrip1 ELSE item_descrip2 END, "
                  "      item_upccode, item_type, item_fractional, item_config, item_inv_uom_id,"
-                 "      item_sold, item_active "
+                 "      item_sold, item_active, itemalias_crmacct_id "
                  "   FROM item "
                  "     JOIN itemalias ON item_id = itemalias_item_id "
                  ") AS item "
@@ -75,13 +71,13 @@ QString buildItemLineEditQuery(const QString pPre, const QStringList pClauses, c
     sql += ", bomitem";
     clauses << "(bomitem_parent_item_id=item_id)";
   }
-  
+
   if (pType & (ItemLineEdit::cUsedOnBom))
   {
     sql += ", bomitem";
     clauses << "(bomitem_item_id=item_id)";
   }
-  
+
   if (pType & ItemLineEdit::cAllItemTypes_Mask)
   {
     QStringList types;
@@ -272,7 +268,7 @@ ItemLineEdit::ItemLineEdit(QWidget* pParent, const char* pName) :
   setNewPriv("MaintainItemMasters");
 
   setAcceptDrops(true);
-  
+
   _type = cUndefined;
   _defaultType = cUndefined;
   _useQuery = false;
@@ -283,16 +279,13 @@ ItemLineEdit::ItemLineEdit(QWidget* pParent, const char* pName) :
   _id = -1;
   _configured = false;
   _fractional = false;
+  _crmacct = 0;
   _delegate = new ItemLineEditDelegate(this);
 
   connect(_aliasAct, SIGNAL(triggered()), this, SLOT(sAlias()));
 
-  // Add alias
-  if (_x_preferences)
-  {
-    if (!_x_preferences->boolean("ClusterButtons"))
-      menu()->insertAction(menu()->actions().at(2),_aliasAct);
-  }
+  if (_x_preferences && ! _x_preferences->boolean("ClusterButtons"))
+    menu()->insertAction(menu()->actions().at(2), _aliasAct);
 }
 
 void ItemLineEdit::setItemNumber(const QString& pNumber)
@@ -336,9 +329,9 @@ void ItemLineEdit::setItemNumber(const QString& pNumber)
       item.prepare(buildItemLineEditQuery(pre, clauses, QString::null, _type, false));
       item.bindValue(":item_number", pNumber);
       item.exec();
-      
+
       if (item.size() > 1)
-      { 
+      {
         ParameterList params;
         params.append("search", pNumber);
         params.append("searchNumber");
@@ -371,7 +364,7 @@ void ItemLineEdit::setItemNumber(const QString& pNumber)
     emit configured(item.value("item_config").toBool());
     emit fractional(item.value("item_fractional").toBool());
     emit upcChanged(item.value("item_upccode").toString());
-    
+
     emit valid(true);
   }
   else
@@ -465,7 +458,7 @@ void ItemLineEdit::silentSetId(const int pId)
     emit configured(item.value("item_config").toBool());
     emit fractional(item.value("item_fractional").toBool());
     emit upcChanged(item.value("item_upccode").toString());
-    
+
     emit valid(true);
 
     if (completer())
@@ -493,7 +486,7 @@ void ItemLineEdit::silentSetId(const int pId)
 
     emit valid(false);
   }
-} 
+}
 
 void ItemLineEdit::setId(int pId)
 {
@@ -530,6 +523,11 @@ void ItemLineEdit::setItemsiteid(int pItemsiteid)
   }
 }
 
+void ItemLineEdit::setCRMAcctId(unsigned int pAcct)
+{
+  _crmacct = pAcct;
+}
+
 void ItemLineEdit::sInfo()
 {
   ParameterList params;
@@ -542,12 +540,12 @@ void ItemLineEdit::sCopy()
 {
   ParameterList params;
   params.append("item_id", id());
-  
+
   QString uiName = "copyItem";
 
   QWidget* w = 0;
   w = _guiClientInterface->openWindow(uiName, params, parentWidget()->window() , Qt::WindowModal, Qt::Dialog);
-  
+
   QDialog* newdlg = qobject_cast<QDialog*>(w);
   int id = newdlg->exec();
   if (id != QDialog::Rejected)
@@ -556,7 +554,7 @@ void ItemLineEdit::sCopy()
     emit newId(_id);
     emit valid(_id != -1);
   }
-  
+
   return;
 }
 
@@ -581,7 +579,7 @@ void ItemLineEdit::sHandleCompleter()
     numQ.prepare(QString("SELECT *"
                          "  FROM (%1) data"
                          " WHERE (POSITION(:number IN item_number)=1)"
-                         " LIMIT 10")
+                         " ORDER BY item_number LIMIT 10")
                  .arg(QString(_sql)).remove(";"));
     numQ.bindValue(":number", stripped);
   }
@@ -595,6 +593,9 @@ void ItemLineEdit::sHandleCompleter()
     clauses = _extraClauses;
     clauses << "((POSITION(:searchString IN item_number) = 1)"
             " OR (POSITION(:searchString IN item_upccode) = 1))";
+    if (_crmacct > 0)
+      clauses << QString("(itemalias_crmacct_id IS NULL OR itemalias_crmacct_id = %1)")
+                    .arg(_crmacct);
     numQ.prepare(buildItemLineEditQuery(pre, clauses, QString::null, _type, true)
                               .replace(";"," ORDER BY item_number LIMIT 10;"));
     numQ.bindValue(":searchString", QString(text().trimmed().toUpper()));
@@ -729,6 +730,9 @@ void ItemLineEdit::sAlias()
   if (!_extraClauses.isEmpty())
     params.append("extraClauses", _extraClauses);
 
+  if (_crmacct > 0)
+    params.append("crmacct", _crmacct);
+
   itemAliasList newdlg(parentWidget(), "", true);
   newdlg.set(params);
 
@@ -793,11 +797,18 @@ void ItemLineEdit::sParse()
            "_useValidationQuery %d, _useQuery %d",
            qPrintable(objectName()), _parsed, qPrintable(text()),
            _useValidationQuery, _useQuery);
-  if (!_parsed)
+  if (_completerId)
   {
+    int id = _completerId;
+    _completerId = 0;
+    setId(id);
+  }
+  else if (!_parsed)
+  {
+    QString stripped = text().trimmed().toUpper();
     _parsed = true;
 
-    if (text().length() == 0)
+    if (stripped.isEmpty())
     {
       setId(-1);
       return;
@@ -816,7 +827,7 @@ void ItemLineEdit::sParse()
                      " WHERE (item_number = :searchString"
                      "     OR item_upccode = :searchString);");
 
-      item.bindValue(":searchString", text().trimmed().toUpper());
+      item.bindValue(":searchString", stripped);
       item.exec();
       while (item.next())
       {
@@ -828,7 +839,7 @@ void ItemLineEdit::sParse()
         if (oneq.size() > 1)
         {
           ParameterList params;
-          params.append("search", text().trimmed().toUpper());
+          params.append("search", stripped);
           params.append("searchNumber");
           params.append("searchUpc");
           sSearch(params);
@@ -843,21 +854,15 @@ void ItemLineEdit::sParse()
     }
     else if (_useQuery)
     {
-      XSqlQuery item;
-      item.prepare(_sql);
-      item.exec();
-      if (item.first())
+      XSqlQuery item(_sql);
+      while (item.next())
       {
-        do
+        if (item.value("item_number").toString().startsWith(stripped) ||
+            item.value("item_upccode").toString().startsWith(stripped))
         {
-          if (item.value("item_number").toString().startsWith(text().trimmed().toUpper()) ||
-              item.value("item_upccode").toString().startsWith(text().trimmed().toUpper()))
-          {
-            setId(item.value("item_id").toInt());
-            return;
-          }
+          setId(item.value("item_id").toInt());
+          return;
         }
-        while (item.next());
       }
     }
     else
@@ -872,9 +877,12 @@ void ItemLineEdit::sParse()
       // first check item number
       clauses = _extraClauses;
       clauses << "(POSITION(:searchString IN item_number) = 1)";
+      if (_crmacct > 0)
+        clauses << QString("(itemalias_crmacct_id IS NULL OR itemalias_crmacct_id = %1)")
+                      .arg(_crmacct);
       item.prepare(buildItemLineEditQuery(pre, clauses, QString::null, _type, true)
                                .replace(";"," ORDER BY item_number LIMIT 1;"));
-      item.bindValue(":searchString", QString(text().trimmed().toUpper()));
+      item.bindValue(":searchString", stripped);
       item.exec();
       if (item.first())
       {
@@ -888,18 +896,18 @@ void ItemLineEdit::sParse()
       clauses << "(POSITION(:searchString IN item_upccode) = 1)";
       item.prepare(buildItemLineEditQuery(pre, clauses, QString::null, _type, true)
                    .replace(";"," ORDER BY item_number LIMIT 1;"));
-      item.bindValue(":searchString", QString(text().trimmed().toUpper()));
+      item.bindValue(":searchString", stripped);
       item.exec();
       if (item.first())
       {
         setId(item.value("item_id").toInt());
         return;
       }
-      if (_x_metrics->boolean("AutoItemSearch"))
+      if (_x_metrics && _x_metrics->boolean("AutoItemSearch"))
       {
         // nothing found, start search
         ParameterList params;
-        params.append("search", text().trimmed().toUpper());
+        params.append("search", stripped);
         params.append("searchNumber");
         params.append("searchUpc");
         params.append("searchAlias");
@@ -1018,6 +1026,11 @@ void ItemCluster::setItemNumber(QString pNumber)
 void ItemCluster::setItemsiteid(int intPItemsiteid)
 {
   static_cast<ItemLineEdit* >(_number)->setItemsiteid(intPItemsiteid);
+}
+
+void ItemCluster::setCRMAcctId(unsigned int intPCRMAcctid)
+{
+  static_cast<ItemLineEdit* >(_number)->setCRMAcctId(intPCRMAcctid);
 }
 
 void ItemCluster::setOrientation(Qt::Orientation orientation)
@@ -1215,7 +1228,7 @@ itemSearch::itemSearch(QWidget* pParent, Qt::WindowFlags pFlags)
   _searchAlias->setChecked( true );
   _searchAlias->setObjectName("_searchAlias");
   selectorsLyt->addWidget(_searchAlias, 4, 0);
-  
+
   _showInactive = new XCheckBox(tr("Show &Inactive Items"), this);
   _showInactive->setObjectName("_showInactive");
   selectorsLyt->addWidget(_showInactive, 5, 0);
@@ -1290,7 +1303,7 @@ void itemSearch::set(const ParameterList &pParams)
   param = pParams.value("searchAlias", &valid);
   if (valid)
     _searchAlias->setChecked(true);
-  
+
   sFillList();
 }
 
@@ -1323,7 +1336,7 @@ void itemSearch::sFillList()
 
     if (_searchAlias->isChecked())
       subClauses << "(itemalias_number ~* :searchString)";
-    
+
     if(!subClauses.isEmpty())
       clauses << QString("( " + subClauses.join(" OR ") + " )");
 
@@ -1379,7 +1392,7 @@ void itemSearch::sFillList()
 
     if (_searchAlias->isChecked())
       subClauses << "(itemalias_number ~* :searchString)";
-    
+
     if(!subClauses.isEmpty())
       clauses << QString("( " + subClauses.join(" OR ") + " )");
 

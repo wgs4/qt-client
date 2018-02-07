@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2016 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -99,9 +99,9 @@ returnAuthorizationItem::returnAuthorizationItem(QWidget* parent, const char* na
   connect(this,                  SIGNAL(rejected()),                     this, SLOT(rejectEvent()));
   connect(_authLotSerial,        SIGNAL(toggled(bool)),                  _qtyUOM, SLOT(setDisabled(bool)));
 
-  connect(_new,                  SIGNAL(clicked()),	                     this, SLOT(sNew()));
-  connect(_edit,	               SIGNAL(clicked()),	                     this, SLOT(sEdit()));
-  connect(_delete,	             SIGNAL(clicked()),	                     this, SLOT(sDelete()));
+  connect(_new,                  SIGNAL(clicked()),	                 this, SLOT(sNew()));
+  connect(_edit,	         SIGNAL(clicked()),	                 this, SLOT(sEdit()));
+  connect(_delete,	         SIGNAL(clicked()),	                 this, SLOT(sDelete()));
 
   _raitemls->addColumn(tr("Lot/Serial"),  -1,           Qt::AlignLeft , true, "ls_number"  );
   _raitemls->addColumn(tr("Warranty"),	  _dateColumn,  Qt::AlignRight, true, "lsreg_expiredate"  );
@@ -145,6 +145,7 @@ returnAuthorizationItem::returnAuthorizationItem(QWidget* parent, const char* na
   adjustSize();
 
   _altcosAccntid->setType(GLCluster::cRevenue | GLCluster::cExpense);
+  _tab->setTabEnabled(_tab->indexOf(_lotserial), false);
 
   returnreturnAuthorizationItem.exec("BEGIN;"); //In case problems or we cancel out
 }
@@ -278,8 +279,6 @@ enum SetResponse returnAuthorizationItem::set(const ParameterList &pParams)
       _mode = cEdit;
 
       _item->setReadOnly(true);
-      _warehouse->setEnabled(false);
-      _shipWhs->setEnabled(false);
       _comments->setType(Comments::ReturnAuthItem);
       _comments->setReadOnly(false);
 
@@ -676,6 +675,9 @@ bool returnAuthorizationItem::sSave()
 
 void returnAuthorizationItem::sPopulateItemInfo()
 {
+  if (!_item->isValid())
+    _tab->setTabEnabled(_tab->indexOf(_lotserial), false);
+
   // Get list of active, valid Selling UOMs
   sPopulateUOM();
 
@@ -951,7 +953,11 @@ void returnAuthorizationItem::populate()
         raitem.value("qtyshipd").toDouble() > 0 ||
         raitem.value("qtytorcv").toDouble() > 0 ||
         _qtycredited > 0)
+    {
       _disposition->setEnabled(false);
+      _warehouse->setEnabled(false);
+      _shipWhs->setEnabled(false);
+    }
 
     if (_orderId != -1)
     {

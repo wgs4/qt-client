@@ -95,8 +95,8 @@ QMap<QString, struct CommentMap *> &Comments::commentMap() {
     addToMap(MaintOrder,        "FAMAINT", tr("Maintenance Order"),      "maintord_id",  "maintOrder"        );
     addToMap(ExchangeRate,      "FX",    tr("Exchange Rate")                                                 );
     addToMap(Incident,          "INCDT", tr("Incident"),                 "incdt_id",     "incident",     "MaintainPersonalIncidents MaintainAllIncidents");
-//  addToMap(Invoice,           "INV",   tr("Invoice"),                  "invchead_id",  "invoice"           );
-//  addToMap(InvoiceItem,       "INVI",  tr("Invoice Item")                                                  );
+    addToMap(Invoice,           "INV",   tr("Invoice"),                  "invchead_id",  "invoice"           );
+    addToMap(InvoiceItem,       "INVI",  tr("Invoice Item")                                                  );
     addToMap(Item,              "I",     tr("Item"),                     "item_id",      "item"              );
     addToMap(ItemSite,          "IS",    tr("Item Site")                                                     );
     addToMap(ItemSource,        "IR",    tr("Item Source"),              "itemsrc_id",   "itemSource"        );
@@ -120,7 +120,7 @@ QMap<QString, struct CommentMap *> &Comments::commentMap() {
     addToMap(TransferOrder,     "TO",    tr("Transfer Order"),           "tohead_id",   "transferOrder"      );
     addToMap(TransferOrderItem, "TI",    tr("Transfer Order Item")                                           );
     addToMap(Vendor,            "V",     tr("Vendor"),                   "vend_id",     "vendor"             );
-//  addToMap(Voucher,           "VCH",   tr("Voucher"),                  "vohead_id",   "voucher"            );
+    addToMap(Voucher,           "VCH",   tr("Voucher"),                  "vohead_id",   "voucher"            );
     addToMap(Warehouse,         "WH",    tr("Site")                                                          );
     addToMap(WorkOrder,         "W",     tr("Work Order"),               "wo_id",       "workOrder"          );
     addToMap(Task,              "TA",    tr("Project Task"),             "prjtask_id",  "projectTask"        );
@@ -203,7 +203,7 @@ Comments::Comments(QWidget *pParent, const char *name) :
   connect(_viewComment, SIGNAL(clicked()), this, SLOT( sView()));
   connect(_editComment, SIGNAL(clicked()), this, SLOT(sEdit()));
   connect(_comment, SIGNAL(valid(bool)), this, SLOT(sCheckButtonPriv(bool)));
-  connect(_comment, SIGNAL(itemSelected(int)), _viewComment, SLOT(animateClick()));
+  connect(_comment, SIGNAL(itemSelected(int)), this, SLOT(sOpen()));
   connect(_browser, SIGNAL(anchorClicked(QUrl)), this, SLOT(anchorClicked(QUrl)));
   connect(_verbose, SIGNAL(toggled(bool)), this, SLOT(setVerboseCommentList(bool)));
 
@@ -231,7 +231,7 @@ void Comments::setType(QString sourceType)
 void Comments::setId(int pSourceid)
 {
   _sourceid = pSourceid;
-  _newComment->setEnabled(true); 
+  _newComment->setEnabled(_editable);
   refresh();
 }
 
@@ -288,6 +288,14 @@ void Comments::sEdit()
   newdlg.set(params);
   newdlg.exec();
   refresh();
+}
+
+void Comments::sOpen()
+{
+  if (_editComment->isEnabled())
+    _editComment->animateClick();
+  else
+    _viewComment->animateClick();
 }
 
 void Comments::refresh()

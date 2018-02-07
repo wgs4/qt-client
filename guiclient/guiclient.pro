@@ -26,8 +26,6 @@ INCLUDEPATH += ../scriptapi \
 
 DEPENDPATH  += $${INCLUDEPATH}
 
-INSTALLS = certificates dictionaries translations
-
 win32-msvc* {
   PRE_TARGETDEPS += ../lib/xtuplecommon.$${XTLIBEXT}    \
                     ../lib/xtuplescriptapi.lib          \
@@ -243,6 +241,7 @@ FORMS =   absoluteCalendarItem.ui               \
           deletePlannedOrdersByPlannerCode.ui   \
           department.ui                         \
           departments.ui                        \
+          incidentHistory.ui                    \
           dictionaries.ui                       \
           display.ui                            \
           displayTimePhased.ui                  \
@@ -650,6 +649,7 @@ FORMS =   absoluteCalendarItem.ui               \
           workOrder.ui                          \
           workOrderMaterials.ui                 \
           xdateinputdialog.ui                   \
+          xdocumentwindow.ui                    \
           xsltMap.ui                            \
           zeroUncountedCountTagsByWarehouse.ui  \
           printStatementsByCustomerGroup.ui
@@ -814,6 +814,7 @@ HEADERS = ../common/format.h                    \
           deletePlannedOrdersByPlannerCode.h    \
           department.h                          \
           departments.h                         \
+          incidentHistory.h                     \
           dictionaries.h                        \
           display.h                             \
           displayprivate.h                      \
@@ -831,6 +832,7 @@ HEADERS = ../common/format.h                    \
           dspFinancialReport.h                  \
           dspInvoiceInformation.h               \
           dspMRPDetail.h                        \
+          dspProcesses.h                        \
           dspTax1099.h                          \
           dspTaxHistory.h                       \
           dspTaxReturn.h                        \
@@ -934,7 +936,6 @@ HEADERS = ../common/format.h                    \
           itemSourceList.h              \
           itemSourcePrice.h             \
           itemSourceSearch.h            \
-          itemSources.h                 \
           itemSubstitute.h              \
           itemUOM.h                     \
           items.h                       \
@@ -1266,6 +1267,7 @@ HEADERS = ../common/format.h                    \
           xabstractconfigure.h          \
           xdateinputdialog.h            \
           xdialog.h                     \
+          xdocumentwindow.h             \
           xerrormessage.h               \
           xmainwindow.h                 \
           xmessagebox.h                 \
@@ -1434,6 +1436,7 @@ SOURCES = absoluteCalendarItem.cpp              \
           deletePlannedOrdersByPlannerCode.cpp  \
           department.cpp                        \
           departments.cpp                       \
+          incidentHistory.cpp                   \
           dictionaries.cpp                      \
           display.cpp                           \
           displayTimePhased.cpp                 \
@@ -1450,6 +1453,7 @@ SOURCES = absoluteCalendarItem.cpp              \
           dspFinancialReport.cpp                \
           dspInvoiceInformation.cpp             \
           dspMRPDetail.cpp                      \
+          dspProcesses.cpp                      \
           dspTax1099.cpp                        \
           dspTaxHistory.cpp                     \
           dspTaxReturn.cpp                      \
@@ -1550,7 +1554,6 @@ SOURCES = absoluteCalendarItem.cpp              \
           itemSourceList.cpp            \
           itemSourcePrice.cpp           \
           itemSourceSearch.cpp          \
-          itemSources.cpp               \
           itemSubstitute.cpp            \
           itemUOM.cpp                   \
           items.cpp                     \
@@ -1883,6 +1886,7 @@ SOURCES = absoluteCalendarItem.cpp              \
           xabstractconfigure.cpp                \
           xdateinputdialog.cpp                  \
           xdialog.cpp                           \
+          xdocumentwindow.cpp                   \
           xerrormessage.cpp                     \
           xmainwindow.cpp                       \
           xmessagebox.cpp                       \
@@ -1898,19 +1902,3 @@ include( displays/displays.pri )
 include( hunspell.pri )
 
 RESOURCES += guiclient.qrc $${OPENRPT_IMAGE_DIR}/OpenRPTMetaSQL.qrc
-
-macx {
-  EXTRASDIR=$$absolute_path($${DESTDIR})/xtuple.app/Contents/Resources
-} else {
-  EXTRASDIR=$$absolute_path($${DESTDIR})
-}
-
-certificates.path = $$absolute_path($${EXTRASDIR})/certificates
-certificates.files = ../share/certificates/*
-dictionaries.path = $$absolute_path($${EXTRASDIR})/hunspell
-dictionaries.files = ../hunspell/*.aff ../hunspell/*.dic
-
-TRANSLATIONS = ../share/dict/*.ts
-translations.path = $$absolute_path($${EXTRASDIR})/dict
-translations.files = $$replace(TRANSLATIONS, ts, qm)
-translations.extra = cd ../share/dict && $$dirname(QMAKE_QMAKE)/lrelease xTuple*.ts
