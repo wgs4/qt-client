@@ -39,8 +39,6 @@ static struct {
   { QT_TRANSLATE_NOOP("CrmaccountMergePickDataPage", "Customer"),   _ynColumn, Qt::AlignCenter, "cust",           "crmacctsel_mrg_custinfo",               false },
   { QT_TRANSLATE_NOOP("CrmaccountMergePickDataPage", "Prospect"),   _ynColumn, Qt::AlignCenter, "prospect",       "crmacctsel_mrg_prospect",               false },
   { QT_TRANSLATE_NOOP("CrmaccountMergePickDataPage", "Vendor"),     _ynColumn, Qt::AlignCenter, "vend",           "crmacctsel_mrg_vendinfo",               false },
-  { QT_TRANSLATE_NOOP("CrmaccountMergePickDataPage", "Competitor"), _ynColumn, Qt::AlignCenter, "competitor",     "crmacctsel_mrg_crmacct_competitor_id",  false },
-  { QT_TRANSLATE_NOOP("CrmaccountMergePickDataPage", "Partner"),    _ynColumn, Qt::AlignCenter, "partner",        "crmacctsel_mrg_crmacct_partner_id",     false },
   { QT_TRANSLATE_NOOP("CrmaccountMergePickDataPage", "Tax Auth."),  _ynColumn, Qt::AlignCenter, "taxauth",        "crmacctsel_mrg_taxauth",                false },
   { QT_TRANSLATE_NOOP("CrmaccountMergePickDataPage", "User"),    _orderColumn, Qt::AlignCenter, "usr",            "crmacctsel_mrg_crmacct_usr_username",   false },
   { QT_TRANSLATE_NOOP("CrmaccountMergePickDataPage", "Employee"),   _ynColumn, Qt::AlignCenter, "emp",            "crmacctsel_mrg_emp",                    false },

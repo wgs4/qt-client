@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to y6ou under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -30,9 +30,9 @@ crmRoles::crmRoles(QWidget* parent, const char* name, Qt::WindowFlags fl)
   connect(_crmroles, SIGNAL(valid(bool)), _view, SLOT(setEnabled(bool)));
 
   _crmroles->addColumn(tr("Role"),        -1, Qt::AlignRight, true, "crmrole_name" );
+  _crmroles->addColumn(tr("Account"),     -1, Qt::AlignRight, true, "crmrole_crmacct" );
   _crmroles->addColumn(tr("Contact"),     -1, Qt::AlignRight, true, "crmrole_cntct" );
   _crmroles->addColumn(tr("Address"),     -1, Qt::AlignRight, true, "crmrole_addr" );
-  _crmroles->addColumn(tr("Email"),       -1, Qt::AlignRight, false, "crmrole_email" );
   _crmroles->addColumn(tr("Phone"),       -1, Qt::AlignRight, true, "crmrole_phone" );
   _crmroles->addColumn(tr("System Role"), -1, Qt::AlignRight, true, "crmrole_system" );
   

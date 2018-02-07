@@ -19,6 +19,7 @@
 #include "xwidget.h"
 
 #include <QSqlError>
+#include <QMap>
 #include "ui_crmaccount.h"
 
 class crmaccount : public XWidget, public Ui::crmaccount
@@ -46,13 +47,11 @@ protected slots:
     virtual void sAddAddress();
     virtual void sAddContact();
     virtual void sClose();
-    virtual void sCompetitor();
     virtual void sCustomer();
     virtual void sDeleteReg();
     virtual void sEditReg();
     virtual void sEmployee();
     virtual void sNewReg();
-    virtual void sPartner();
     virtual void sProspect();
     virtual void sSave();
     virtual void sSalesRep();
@@ -68,6 +67,7 @@ protected slots:
     virtual void sHandleButtons();
     virtual void sHandleChildButtons();
     virtual void setVisible(bool);
+    virtual void setupAdditionalRoles();
 
 protected:
     virtual void closeEvent(QCloseEvent*);
@@ -83,10 +83,8 @@ private:
     bool        _modal;
     int         _mode;
     int         _crmacctId;
-    int         _competitorId;
     int         _custId;
     int         _empId;
-    int         _partnerId;
     int         _prospectId;
     int         _salesrepId;
     int         _taxauthId;
@@ -100,6 +98,7 @@ private:
     bool        _closed;
 
     QSqlError   saveNoErrorCheck(bool pInTxn = false);
+    QMap<QString, int> _roles;
 
 };
 
