@@ -114,8 +114,7 @@ void crmGroups::sDelete()
 
   if (QMessageBox::question(this, tr("Delete?"),
                             tr("Are you sure you want to delete this %1 Group?").arg(_elem->title),
-                            QMessageBox::Yes,
-                            QMessageBox::No | QMessageBox::Default) == QMessageBox::No)
+                            QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No)
     return;
 
   QString sql = "DELETE FROM <? literal('groupsitem') ?> "

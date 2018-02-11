@@ -307,7 +307,7 @@ void menuCRM::sContactMerge()
 
 void menuCRM::sCrmaccountMerge()
 {
-  omfgThis->handleNewWindow(new crmaccountMerge(omfgThis, "crmaccountMerge"), Qt::WindowModal);
+  omfgThis->handleNewWindow(new crmaccountMerge());
 }
 
 void menuCRM::sAddressMerge()

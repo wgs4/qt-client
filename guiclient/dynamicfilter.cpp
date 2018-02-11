@@ -38,6 +38,8 @@ dynamicfilter::dynamicfilter(QWidget* parent, const char* name, bool modal, Qt::
     _crmGroup->append(_elem->groupId, _elem->title, _elem->title);
   }
 
+  rx.setPattern("\\b(ALTER|CREATE|TRUNCATE|DO|INSERT|UPDATE|DELETE|BEGIN|COMMIT|ROLLBACK)\\b");
+  rx.setPatternOptions(QRegularExpression::CaseInsensitiveOption);
   _isValid = false;
   _buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
 
@@ -116,8 +118,7 @@ void dynamicfilter::sCheckFilterValidity()
   }
 
   // Test the query for errors together with some SQL injection prevention
-  QRegExp rx("(INSERT|UPDATE|DELETE)");
-  rx.setCaseSensitivity(Qt::CaseInsensitive);
+  
   QString cleanFilter =  _filter->toPlainText().trimmed();
   cleanFilter = cleanFilter.replace(rx, "");
   params.append("filter", cleanFilter);
@@ -126,11 +127,12 @@ void dynamicfilter::sCheckFilterValidity()
         "IN (<? literal('filter') ?>);";
   MetaSQLQuery chkq(sql);
   query = chkq.toQuery(params);
+  _isValid = true;
 
-  ErrorReporter::error(QtCriticalMsg, this, tr("Invalid Filter SQL"),
-                                  query, __FILE__, __LINE__);
+  if (ErrorReporter::error(QtCriticalMsg, this, tr("Invalid Filter SQL"),
+                                  query, __FILE__, __LINE__))
+    _isValid = false;
 
-  _isValid = query.lastError().type() == QSqlError::NoError ? true : false;
   _validCheck->setChecked(_isValid);
   _buttonBox->button(QDialogButtonBox::Save)->setEnabled(_isValid);
 
@@ -184,8 +186,6 @@ void dynamicfilter::sSave()
   dynamicfilterSave.bindValue(":dynamicfilter_object", _crmGroup->code());
 
   // SQL injection prevention
-  QRegExp rx("(INSERT|UPDATE|DELETE)");
-  rx.setCaseSensitivity(Qt::CaseInsensitive);
   QString cleanFilter =  _filter->toPlainText().trimmed();
   cleanFilter = cleanFilter.replace(rx, "");
   dynamicfilterSave.bindValue(":dynamicfilter_filter", cleanFilter);
@@ -195,7 +195,7 @@ void dynamicfilter::sSave()
                                 dynamicfilterSave, __FILE__, __LINE__))
     return;
 
-  done(1);
+  accept();
 }
 
 void dynamicfilter::populate()

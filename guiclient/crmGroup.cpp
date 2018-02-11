@@ -39,6 +39,8 @@ crmGroup::crmGroup(QWidget* parent, const char* name, bool modal, Qt::WindowFlag
 
   _grpitem->addColumn(tr("Number"), _itemColumn, Qt::AlignLeft, true, "grp_number");
   _grpitem->addColumn(tr("Name"),   -1,          Qt::AlignLeft, true, "grp_name");
+
+  _grpid = -1;
 }
 
 crmGroup::~crmGroup()
@@ -53,7 +55,6 @@ void crmGroup::languageChange()
 
 enum SetResponse crmGroup::set(const ParameterList &pParams)
 {
-  XSqlQuery crmet;
   XDialog::set(pParams);
   QVariant param;
   bool     valid;
@@ -80,15 +81,6 @@ enum SetResponse crmGroup::set(const ParameterList &pParams)
     {
       _mode = cNew;
       _saved = false;
-
-      crmet.exec("SELECT NEXTVAL('groups_groups_id_seq') AS groups_id;");
-      if (crmet.first())
-        _grpid = crmet.value("groups_id").toInt();
-      else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Retrieving Group Information"),
-                                    crmet, __FILE__, __LINE__))
-      {
-        return UndefinedError;
-      }
 
       connect(_grpitem, SIGNAL(valid(bool)), _delete, SLOT(setEnabled(bool)));
     }
@@ -156,12 +148,9 @@ void crmGroup::sClose()
 
   if (_mode == cNew)
   {
-    QString sql = "DELETE FROM <? literal('groupsitem') ?> "
-                  "WHERE (groupsitem_groups_id=<? value('groups_id') ?>); "
-                  "DELETE FROM <? literal('groups') ?> "
+    QString sql = "DELETE FROM <? literal('groups') ?> "
                   "WHERE (groups_id=<? value('groups_id') ?>);";
     params.append("groups",     _elem->table);
-    params.append("groupsitem", _elem->itemTable);
     params.append("groups_id",  _grpid);
     MetaSQLQuery delq(sql);
     crmClose = delq.toQuery(params);
@@ -180,6 +169,7 @@ void crmGroup::sSaveClicked()
 
 void crmGroup::sSave(bool pPartial)
 {
+  XSqlQuery crmet;
   XSqlQuery crmSave;
   ParameterList params;
   QString sql;
@@ -190,6 +180,16 @@ void crmGroup::sSave(bool pPartial)
 
   if(GuiErrorCheck::reportErrors(this,tr("Cannot Save %1 Group").arg(_elem->title),errors))
       return;
+
+  if (_grpid < 1)
+  {
+    crmet.exec("SELECT NEXTVAL('groups_groups_id_seq') AS groups_id;");
+    if (crmet.first())
+      _grpid = crmet.value("groups_id").toInt();
+    else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Retrieving Group Information"),
+                                  crmet, __FILE__, __LINE__))
+      return;
+  }
 
   sql = "SELECT groups_id "
         "FROM <? literal('groups') ?> "
@@ -265,20 +265,23 @@ void crmGroup::sNew()
   if (!_saved)
     sSave(true);
 
-  CRMAcctSearch *newdlg  = new CRMAcctSearch(this);
-  ContactSearch *newdlg2 = new ContactSearch(this);
-  AddressSearch *newdlg3 = new AddressSearch(this);
-
   QString uiName = _elem->search;
   if (uiName == "CRMAcctSearch")
   {
-      newdlg->setSubtype(_elem->subtype);
-      refid = newdlg->exec();
+    CRMAcctSearch *newdlg  = new CRMAcctSearch(this);
+    newdlg->setSubtype(_elem->subtype);
+    refid = newdlg->exec();
   }
   else if  (uiName == "ContactSearch")
-     refid = newdlg2->exec();
+  {
+    ContactSearch *newdlg2 = new ContactSearch(this);
+    refid = newdlg2->exec();
+  }
   else if  (uiName == "AddressSearch")
-     refid = newdlg3->exec();
+  {
+    AddressSearch *newdlg3 = new AddressSearch(this);
+    refid = newdlg3->exec();
+  }
 
   if (refid < 1)
     return;

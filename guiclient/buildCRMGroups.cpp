@@ -218,10 +218,7 @@ void buildCRMGroups::addDynamicFilters()
 
 void buildCRMGroups::sHandleButton()
 {
-  bool chk;
-  chk =  (_targetGrp->isValid() && _params->parameters().length() > 0);
-
-  _generate->setEnabled(chk);
+  _generate->setEnabled(_targetGrp->isValid() && _params->parameters().length() > 0);
 }
 
 void buildCRMGroups::sGenerateGroupRecords()

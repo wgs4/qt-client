@@ -38,6 +38,7 @@ private:
     int _mode;
     int _dynamicfilterid;
     bool _isValid;
+    QRegularExpression rx;
 };
 
 #endif // DYNAMICFILTER_H
