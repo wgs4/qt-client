@@ -155,14 +155,10 @@ void displayPrivate::sSavedFilterApplied(int pFilter, QString pColumns)
     _list->sToggleForgetfulness();
 
   savedString = pColumns != "" ? pColumns : _x_preferences->value(_list->_settingsName + "/columnsShown");
-
-  savedParts = savedString.split("|", QString::SkipEmptyParts);
-  for (int i = 0; i < savedParts.size(); i++)
+  foreach(QString part, savedString.split("|", QString::SkipEmptyParts))
   {
-    part = savedParts.at(i);
-    key  = part.left(part.indexOf(","));
-    val  = part.right(part.length() - part.indexOf(",") - 1);
-    _list->setColumnVisible(_list->column(key), (val == "on" ? true : false));
+    QStringList elem(part.split(","));
+    _list->setColumnVisible(_list->column(elem.at(0)), elem.at(1) == "on");
   }
 
   if (_forgetfulCache != _list->_forgetful)
