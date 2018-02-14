@@ -114,6 +114,7 @@ void AddressCluster::init()
   _latitude->setVisible(false);
   _accuracy->setVisible(false);
   _mktg->setVisible(false);
+  _mktg->setChecked(_x_metrics->boolean("DefaultAddressOptIn"));
 
   _longitude->setValidator(new QDoubleValidator(-180.0, 180.0, 7, this));
   _latitude->setValidator(new QDoubleValidator(-90.0, 90.0, 7, this));
