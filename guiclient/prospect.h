@@ -39,7 +39,7 @@ public slots:
     virtual void sNewQuote();
     virtual void sPrintQuote();
     virtual void sSaveClicked();
-    virtual void sSave(bool pPartial);
+    virtual bool sSave(bool pPartial);
     virtual void sViewQuote();
     virtual void sFillQuotesList();
     virtual void sPopulateQuotesMenu(QMenu * menuThis);
@@ -50,6 +50,8 @@ public slots:
     virtual void setVisible(bool);
 
 signals:
+    virtual void saveBeforeBegin();
+    virtual void saveAfterCommit();
             void newId(int);
             void populated();
             void saved(int);

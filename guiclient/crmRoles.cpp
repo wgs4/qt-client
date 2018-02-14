@@ -123,7 +123,7 @@ void crmRoles::sView()
 
 void crmRoles::sFillList()
 {
-  _crmroles->populate( "SELECT * "
+  _crmroles->populate( "SELECT crmrole_id, * "
                       "FROM crmrole "
                       "ORDER BY crmrole_name;" );
 }

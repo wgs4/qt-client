@@ -77,24 +77,6 @@ CrmaccountMergeResultPage::~CrmaccountMergeResultPage()
 
 void CrmaccountMergeResultPage::initializePage()
 {
-  XSqlQuery idq;
-  idq.prepare("SELECT crmacct_id"
-              "  FROM crmacct"
-              " WHERE (crmacct_id=:id);");
-  idq.bindValue(":id", field("_completedMerge"));
-  idq.exec();
-  if (idq.first())
-    _data->_crmaccount->setId(idq.value("crmacct_id").toInt());
-  else if (ErrorReporter::error(QtCriticalMsg, this,
-                                tr("Error Getting Account"),
-                                idq, __FILE__, __LINE__))
-    return;
-  else
-  {
-    QMessageBox::warning(this, tr("Could Not Find Account"),
-                         tr("Could not find the merged Account (%1).")
-                         .arg(field("_completedMerge").toString()));
-    _data->_crmaccount->setId(-1);
-  }
+  _data->_crmaccount->setId(field("_completedMerge").toInt());
 }
 

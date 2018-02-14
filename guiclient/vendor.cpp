@@ -543,7 +543,8 @@ bool vendor::sSave()
           "       vend_expcat_id = <? value('vend_expcat_id') ?>,"
           "       vend_tax_id = <? value('vend_tax_id') ?>, "
           "       vend_taxtype_id = <? value('vend_taxtype_id') ?> "
-          " WHERE vend_id = <? value('vend_id') ?>;" ;
+          " WHERE vend_id = <? value('vend_id') ?> "
+          " RETURNING vend_crmacct_id;" ;
   }
   else if (_mode == cNew)
     sql = "INSERT INTO vendinfo "
@@ -603,7 +604,8 @@ bool vendor::sSave()
           "  <? value('vend_expcat_id') ?>,"
           "  <? value('vend_tax_id') ?>, "
           "  <? value('vend_taxtype_id') ?> "
-          "   );"  ;
+          "   ) "
+          " RETURNING vend_crmacct_id;" ;
 
   ParameterList params;
   params.append("vend_id", _vendid);
@@ -692,9 +694,7 @@ bool vendor::sSave()
   if (_mode == cNew)
   {
     if (upsq.first())
-    {
-      _crmacctid = upsq.value("crmacct_id").toInt();
-    }
+      _crmacctid = upsq.value("vend_crmacct_id").toInt();
   }
   _tempMode = cEdit;
 

@@ -37,7 +37,7 @@ prospect::prospect(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _contacts->setCloseVisible(false);
   _contacts->list()->hideColumn("crmacct_number");
   _contacts->list()->hideColumn("crmacct_name");
-  _contacts->parameterWidget()->append("", "hasContext", ParameterWidget::Exists, true);
+  _contacts->parameterWidget()->append("hasContext", "hasContext", ParameterWidget::Exists, true);
   _contacts->setParameterWidgetVisible(false);
   _contacts->setQueryOnStartEnabled(false);
   ParameterList params;
@@ -221,10 +221,11 @@ void prospect::sSetCrmAccountId()
 void prospect::sSaveClicked()
 {
   _isSaved = true;
-  sSave(false);
+  if (!sSave(false))
+    _isSaved = false;
 }
 
-void prospect::sSave(bool pPartial)
+bool prospect::sSave(bool pPartial)
 {
   QList<GuiErrorCheck> errors;
   errors << GuiErrorCheck(_number->text().trimmed().isEmpty(), _number,
@@ -256,7 +257,9 @@ void prospect::sSave(bool pPartial)
   }
 
   if (GuiErrorCheck::reportErrors(this, tr("Cannot Save Prospect"), errors))
-    return;
+    return false;
+
+  emit saveBeforeBegin();
 
   XSqlQuery upsq;
   if (_mode == cEdit)
@@ -328,7 +331,7 @@ void prospect::sSave(bool pPartial)
   }
   else if (ErrorReporter::error(QtCriticalMsg, this, tr("Saving Prospect"),
                                 upsq, __FILE__, __LINE__))
-    return;
+    return false;
 
   _NumberGen = -1;
   omfgThis->sProspectsUpdated();
@@ -340,8 +343,12 @@ void prospect::sSave(bool pPartial)
   }
   _saved = true;
 
+  emit saveAfterCommit();
+
   if (!pPartial)
     close();
+
+  return true;
 }
 
 void prospect::sCheckNumber()

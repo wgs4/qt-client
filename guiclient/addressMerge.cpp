@@ -111,8 +111,7 @@ void addressMerge::sAddrDelete()
   QString question = tr("The delete action cannot be undone. "
                         "Are you sure you want to proceed?");
   if (QMessageBox::question(this, tr("Delete Address?"), question,
-                QMessageBox::Yes,
-                QMessageBox::No | QMessageBox::Default) == QMessageBox::No)
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::No)
     return;
 
   addressDelete.prepare("DELETE FROM addr WHERE addr_id=:addr_id");
@@ -237,8 +236,8 @@ void addressMerge::sPopulateSrcMenu(QMenu *pMenu, QTreeWidgetItem *pItem, int pC
   if (pCol > 1)
     col = header->text(pCol); 
 
-  menuStr = tr("Merge ") + col + tr(" to target");
-  _selectCol = pCol > 18 ? 18 : pCol;
+  menuStr = tr("Merge %1 to target").arg(col);
+  _selectCol = pCol;
 
   menuItem = pMenu->addAction(tr("Deselect"), this, SLOT(sDeselectSource()));
 
@@ -273,7 +272,6 @@ void addressMerge::sPopulateSources()
 void addressMerge::sPopulateTarget()
 {
   XSqlQuery addrPopulateTarget;
-  QString grpTitle = tr("Target Address");
   ParameterList params;
   params.append("target", QVariant(true));
 
@@ -288,12 +286,12 @@ void addressMerge::sPopulateTarget()
   if (addrPopulateTarget.first())
   {
     _target->setId(addrPopulateTarget.value("addr_id").toInt());
-    _targetGroup->setTitle(grpTitle + " (#" + addrPopulateTarget.value("addr_number").toString() + ")");
+    _targetGroup->setTitle(tr("Target Address (#%1)").arg(addrPopulateTarget.value("addr_number").toString()));
   }
   else
   {
     _target->setId(-1);
-    _targetGroup->setTitle(grpTitle);
+    _targetGroup->setTitle(tr("Target Address"));
   }
 
   sHandleProcess();
@@ -301,18 +299,15 @@ void addressMerge::sPopulateTarget()
 
 void addressMerge::sProcess()
 {
-  XSqlQuery addrProcess;
-  addrProcess.prepare("SELECT addrmerge(src.addrsel_addr_id, trgt.addrsel_addr_id  ) AS result "
+  XSqlQuery addrProcess("SELECT addrmerge(src.addrsel_addr_id, trgt.addrsel_addr_id  ) AS result "
                       " FROM addrsel src, addrsel trgt "
-                      " WHERE ((trgt.addrsel_target) "
-                      " AND (NOT src.addrsel_target));");
-  addrProcess.exec();
+                      " WHERE trgt.addrsel_target "
+                      " AND NOT src.addrsel_target;");
 
   if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Merging Addresses"),
                                 addrProcess, __FILE__, __LINE__))
-  {
     return;
-  }
+
   sFillList();
 }
 
@@ -373,7 +368,6 @@ void addressMerge::sSrcAddrView()
   address newdlg(this, "", true);
   newdlg.set(params);
   newdlg.exec();
-  sFillList();
 }
 
 void addressMerge::closeEvent(QCloseEvent *pEvent)

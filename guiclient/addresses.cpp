@@ -210,7 +210,7 @@ void addresses::sDetach()
   int answer = QMessageBox::question(this, tr("Detach Address?"),
 			tr("<p>Are you sure you want to detach this Address "
 			   "from this Account?"),
-			QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+			QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
   if (answer == QMessageBox::Yes)
   {
     int cntctId = list()->id();
