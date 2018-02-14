@@ -139,7 +139,7 @@ void ContactWidget::init()
 
     _emailBox->addWidget(_email, 2);
     _emailBox->addWidget(_emailopt, 0);
-
+  
     _webaddrLit		= new QLabel(tr("Web:"), this);
     _webaddrLit->setObjectName("_webaddrLit");
     _webaddr		= new XLineEdit(this, "_webaddr");
