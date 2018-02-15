@@ -276,9 +276,7 @@ bool prospect::sSave(bool pPartial)
                "       prospect_assigned_username=:prospect_assigned_username, "
                "       prospect_assigned=:prospect_assigned, "
                "       prospect_lasttouch=:prospect_lasttouch, "
-               "       prospect_source_id=:prospect_source_id, "
-               "       prospect_priority_id=:prospect_priority_id, "
-               "       prospect_opstage_id=:prospect_stage "
+               "       prospect_source_id=:prospect_source_id "
                " WHERE (prospect_id=:prospect_id)"
                " RETURNING prospect_id, prospect_crmacct_id;" );
     upsq.bindValue(":prospect_id",	_prospectid);
@@ -289,15 +287,13 @@ bool prospect::sSave(bool pPartial)
                "  prospect_taxzone_id,  prospect_comments,"
                "  prospect_salesrep_id, prospect_warehous_id, prospect_active, "
                "  prospect_owner_username, prospect_assigned_username, prospect_assigned, "
-               "  prospect_lasttouch, prospect_source_id, prospect_priority_id, "
-               "  prospect_opstage_id )"
+               "  prospect_lasttouch, prospect_source_id )"
                " VALUES "
                "( :prospect_id, :prospect_number, :prospect_name,"
                "  :prospect_taxzone_id, :prospect_comments,"
                "  :prospect_salesrep_id, :prospect_warehous_id, :prospect_active, "
                "  :prospect_owner_username, :prospect_assigned_username, :prospect_assigned, "
-               "  :prospect_lasttouch, :prospect_source_id, :prospect_priority_id, "
-               "  :prospect_stage )"
+               "  :prospect_lasttouch, :prospect_source_id )"
                " RETURNING prospect_id, prospect_crmacct_id;");
 
   upsq.bindValue(":prospect_id",	_prospectid);  
@@ -317,10 +313,6 @@ bool prospect::sSave(bool pPartial)
   upsq.bindValue(":prospect_lasttouch", _lastTouch->date());
   if (_source->isValid())
     upsq.bindValue(":prospect_source_id", _source->id());
-  if (_priority->isValid())
-    upsq.bindValue(":prospect_priority_id", _priority->id());
-  if (_stage->isValid())
-    upsq.bindValue(":prospect_stage", _stage->id());
 
   upsq.exec();
   if (upsq.first())
@@ -559,8 +551,6 @@ bool prospect::sPopulate()
     _assigned->setDate(getq.value("prospect_assigned").toDate());
     _lastTouch->setDate(getq.value("prospect_lasttouch").toDate());
     _source->setId(getq.value("prospect_source_id").toInt());
-    _priority->setId(getq.value("prospect_priority_id").toInt());
-    _stage->setId(getq.value("prospect_opstage_id").toInt());
     _created->setDate(getq.value("created").toString().length() > 0 ? getq.value("created").toDate() 
                                                                      : QDate::currentDate());
     _updated->setDate(getq.value("updated").toDate());
