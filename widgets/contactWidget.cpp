@@ -135,7 +135,8 @@ void ContactWidget::init()
                          "MaintainPersonalContacts MaintainAllContacts");
     _emailopt           = new QCheckBox(tr("Opt In"), this);
     _emailopt->setObjectName("_emailopt");
-    _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
+    if (_x_metrics)
+      _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
 
     _emailBox->addWidget(_email, 2);
     _emailBox->addWidget(_emailopt, 0);
@@ -397,7 +398,7 @@ void ContactWidget::silentSetId(const int pId)
 
           if (_mapper->model())
           {
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_number)),       _number->text()); 	               _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_number)),       _number->text());
+            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_number)),       _number->text()); 	               
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_honorific)),    _honorific->currentText());
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_first)),        _first->text());
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_last)),         _last->text());
@@ -482,7 +483,8 @@ void ContactWidget::clear()
   _initials->clear();
   _title->clear();
   _email->clear();
-  _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
+  if (_x_metrics)
+    _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
   _webaddr->clear();
   _address->clear();
   _active->setChecked(true);
