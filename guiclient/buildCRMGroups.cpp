@@ -81,8 +81,8 @@ void buildCRMGroups::buildParameters()
   _params->clearFilters();
 
   // Remove extra parameters first (if they exist) then add back if the type applies
-  extras << tr("Sales Rep") << tr("Sales Greater Than") << tr("Sales Less Than") << tr("Item Group")
-         << tr("Item") << tr("Open Quotes") << tr("Customer Types");
+  extras << tr("Sales Rep") << tr("Customer Types") << tr("Item Group")
+         << tr("Item") << tr("Open Quotes") ;
 
   extras << _charList << _filterList;
 
@@ -97,28 +97,24 @@ void buildCRMGroups::buildParameters()
   {
   case crmGroups::Customer:
     {
-      _params->appendComboBox(extras.at(6), "custtype_id", XComboBox::CustomerTypes);
       _params->appendComboBox(extras.at(0), "salesrep_id", XComboBox::SalesReps);
-      _params->append(extras.at(1), "sales_greater", ParameterWidget::Numeric);
-      _params->append(extras.at(2), "sales_less", ParameterWidget::Numeric);
-      _params->appendComboBox(extras.at(3), "itemGroup", XComboBox::ItemGroups);
-      _params->append(extras.at(4), "item_id", ParameterWidget::Item);
+      _params->appendComboBox(extras.at(1), "custtype_id", XComboBox::CustomerTypes);
+      _params->appendComboBox(extras.at(2), "itemGroup", XComboBox::ItemGroups);
+      _params->append(extras.at(3), "item_id", ParameterWidget::Item);
     }
     break;
   case crmGroups::Prospect:
     {
       _params->appendComboBox(extras.at(0), "salesrep_id", XComboBox::SalesReps);
-      _params->appendComboBox(extras.at(3), "itemGroup", XComboBox::ItemGroups);
-      _params->append(extras.at(4), "item_id", ParameterWidget::Item);
-      _params->appendComboBox(extras.at(5), "hasQuotes", ParameterWidget::Exists);
+      _params->appendComboBox(extras.at(2), "itemGroup", XComboBox::ItemGroups);
+      _params->append(extras.at(3), "item_id", ParameterWidget::Item);
+      _params->appendComboBox(extras.at(4), "hasQuotes", ParameterWidget::Exists);
     }
     break;
   case crmGroups::Contact:
     {
-      _params->append(extras.at(1), "sales_greater", ParameterWidget::Numeric);
-      _params->append(extras.at(2), "sales_less", ParameterWidget::Numeric);
-      _params->appendComboBox(extras.at(3), "itemGroup", XComboBox::ItemGroups);
-      _params->append(extras.at(4), "item_id", ParameterWidget::Item);
+      _params->appendComboBox(extras.at(2), "itemGroup", XComboBox::ItemGroups);
+      _params->append(extras.at(3), "item_id", ParameterWidget::Item);
     }
     break;
   default:
