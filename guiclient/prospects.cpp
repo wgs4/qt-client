@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -37,8 +37,6 @@ prospects::prospects(QWidget* parent, const char*, Qt::WindowFlags fl)
   parameterWidget()->append(tr("Owner"), "owner", ParameterWidget::User);
   parameterWidget()->append(tr("Assigned"), "assigned", ParameterWidget::User);
   parameterWidget()->appendComboBox(tr("Source"), "source", XComboBox::OpportunitySources);
-  parameterWidget()->appendComboBox(tr("Stage"), "stage", XComboBox::OpportunityStages);
-  parameterWidget()->appendComboBox(tr("Priority"), "priority", XComboBox::IncidentPriority);
   parameterWidget()->append(tr("Contact Name Pattern"), "cntct_name_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Phone Pattern"), "cntct_phone_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Email Pattern"), "cntct_email_pattern", ParameterWidget::Text);
@@ -62,8 +60,6 @@ prospects::prospects(QWidget* parent, const char*, Qt::WindowFlags fl)
   list()->addColumn(tr("Owner"),   _userColumn,  Qt::AlignLeft,   true, "prospect_owner_username" );
   list()->addColumn(tr("Assigned"),_userColumn,  Qt::AlignLeft,   true, "prospect_assigned_username" );
   list()->addColumn(tr("Source"),  100,          Qt::AlignLeft,   true, "prospect_source" );
-  list()->addColumn(tr("Stage"),   100,          Qt::AlignLeft,   true, "prospect_stage" );
-  list()->addColumn(tr("Priority"),100,          Qt::AlignLeft,   true, "prospect_priority" );
   list()->addColumn(tr("First"),   50,           Qt::AlignLeft,   true, "cntct_first_name" );
   list()->addColumn(tr("Last"),    -1,           Qt::AlignLeft,   true, "cntct_last_name" );
   list()->addColumn(tr("Phone"),   100,          Qt::AlignLeft,   true, "contact_phone" );
