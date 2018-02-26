@@ -125,9 +125,10 @@ vendor::vendor(QWidget* parent, const char* name, Qt::WindowFlags fl)
     _history->findChild<QWidget*>("_vend")->hide();
     _history->findChild<DateCluster*>("_dates")->setStartNull(tr("Earliest"), omfgThis->startOfTime(), true);
     _history->findChild<DateCluster*>("_dates")->setEndNull(tr("Latest"),	  omfgThis->endOfTime(),   true);
-    VendorCluster *histvend = _history->findChild<VendorCluster*>("_vend");
-    connect(histvend, SIGNAL(newId(int)), _history,      SLOT(sFillList()));
-    connect(_number,  SIGNAL(newId(int)), histvend,      SLOT(setId(int)));
+    VendorGroup *histvend = _history->findChild<VendorGroup*>("_vend");
+    histvend->setState(VendorGroup::Selected);
+    connect(histvend, SIGNAL(newVendId(int)), _history,  SLOT(sFillList()));
+    connect(_number,  SIGNAL(newId(int)),     histvend,  SLOT(setVendId(int)));
   }
   else
     _apHistoryButton->setEnabled(false);
@@ -543,7 +544,8 @@ bool vendor::sSave()
           "       vend_expcat_id = <? value('vend_expcat_id') ?>,"
           "       vend_tax_id = <? value('vend_tax_id') ?>, "
           "       vend_taxtype_id = <? value('vend_taxtype_id') ?> "
-          " WHERE vend_id = <? value('vend_id') ?>;" ;
+          " WHERE vend_id = <? value('vend_id') ?> "
+          " RETURNING vend_crmacct_id;" ;
   }
   else if (_mode == cNew)
     sql = "INSERT INTO vendinfo "
@@ -603,7 +605,8 @@ bool vendor::sSave()
           "  <? value('vend_expcat_id') ?>,"
           "  <? value('vend_tax_id') ?>, "
           "  <? value('vend_taxtype_id') ?> "
-          "   );"  ;
+          "   ) "
+          " RETURNING vend_crmacct_id;" ;
 
   ParameterList params;
   params.append("vend_id", _vendid);
@@ -692,9 +695,7 @@ bool vendor::sSave()
   if (_mode == cNew)
   {
     if (upsq.first())
-    {
-      _crmacctid = upsq.value("crmacct_id").toInt();
-    }
+      _crmacctid = upsq.value("vend_crmacct_id").toInt();
   }
   _tempMode = cEdit;
 

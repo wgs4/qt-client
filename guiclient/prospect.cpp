@@ -37,7 +37,7 @@ prospect::prospect(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _contacts->setCloseVisible(false);
   _contacts->list()->hideColumn("crmacct_number");
   _contacts->list()->hideColumn("crmacct_name");
-  _contacts->parameterWidget()->append("", "hasContext", ParameterWidget::Exists, true);
+  _contacts->parameterWidget()->append("hasContext", "hasContext", ParameterWidget::Exists, true);
   _contacts->setParameterWidgetVisible(false);
   _contacts->setQueryOnStartEnabled(false);
   ParameterList params;
@@ -221,10 +221,11 @@ void prospect::sSetCrmAccountId()
 void prospect::sSaveClicked()
 {
   _isSaved = true;
-  sSave(false);
+  if (!sSave(false))
+    _isSaved = false;
 }
 
-void prospect::sSave(bool pPartial)
+bool prospect::sSave(bool pPartial)
 {
   QList<GuiErrorCheck> errors;
   errors << GuiErrorCheck(_number->text().trimmed().isEmpty(), _number,
@@ -256,7 +257,9 @@ void prospect::sSave(bool pPartial)
   }
 
   if (GuiErrorCheck::reportErrors(this, tr("Cannot Save Prospect"), errors))
-    return;
+    return false;
+
+  emit saveBeforeBegin();
 
   XSqlQuery upsq;
   if (_mode == cEdit)
@@ -273,9 +276,7 @@ void prospect::sSave(bool pPartial)
                "       prospect_assigned_username=:prospect_assigned_username, "
                "       prospect_assigned=:prospect_assigned, "
                "       prospect_lasttouch=:prospect_lasttouch, "
-               "       prospect_source_id=:prospect_source_id, "
-               "       prospect_priority_id=:prospect_priority_id, "
-               "       prospect_opstage_id=:prospect_stage "
+               "       prospect_source_id=:prospect_source_id "
                " WHERE (prospect_id=:prospect_id)"
                " RETURNING prospect_id, prospect_crmacct_id;" );
     upsq.bindValue(":prospect_id",	_prospectid);
@@ -286,15 +287,13 @@ void prospect::sSave(bool pPartial)
                "  prospect_taxzone_id,  prospect_comments,"
                "  prospect_salesrep_id, prospect_warehous_id, prospect_active, "
                "  prospect_owner_username, prospect_assigned_username, prospect_assigned, "
-               "  prospect_lasttouch, prospect_source_id, prospect_priority_id, "
-               "  prospect_opstage_id )"
+               "  prospect_lasttouch, prospect_source_id )"
                " VALUES "
                "( :prospect_id, :prospect_number, :prospect_name,"
                "  :prospect_taxzone_id, :prospect_comments,"
                "  :prospect_salesrep_id, :prospect_warehous_id, :prospect_active, "
                "  :prospect_owner_username, :prospect_assigned_username, :prospect_assigned, "
-               "  :prospect_lasttouch, :prospect_source_id, :prospect_priority_id, "
-               "  :prospect_stage )"
+               "  :prospect_lasttouch, :prospect_source_id )"
                " RETURNING prospect_id, prospect_crmacct_id;");
 
   upsq.bindValue(":prospect_id",	_prospectid);  
@@ -314,10 +313,6 @@ void prospect::sSave(bool pPartial)
   upsq.bindValue(":prospect_lasttouch", _lastTouch->date());
   if (_source->isValid())
     upsq.bindValue(":prospect_source_id", _source->id());
-  if (_priority->isValid())
-    upsq.bindValue(":prospect_priority_id", _priority->id());
-  if (_stage->isValid())
-    upsq.bindValue(":prospect_stage", _stage->id());
 
   upsq.exec();
   if (upsq.first())
@@ -328,7 +323,7 @@ void prospect::sSave(bool pPartial)
   }
   else if (ErrorReporter::error(QtCriticalMsg, this, tr("Saving Prospect"),
                                 upsq, __FILE__, __LINE__))
-    return;
+    return false;
 
   _NumberGen = -1;
   omfgThis->sProspectsUpdated();
@@ -340,8 +335,12 @@ void prospect::sSave(bool pPartial)
   }
   _saved = true;
 
+  emit saveAfterCommit();
+
   if (!pPartial)
     close();
+
+  return true;
 }
 
 void prospect::sCheckNumber()
@@ -552,8 +551,6 @@ bool prospect::sPopulate()
     _assigned->setDate(getq.value("prospect_assigned").toDate());
     _lastTouch->setDate(getq.value("prospect_lasttouch").toDate());
     _source->setId(getq.value("prospect_source_id").toInt());
-    _priority->setId(getq.value("prospect_priority_id").toInt());
-    _stage->setId(getq.value("prospect_opstage_id").toInt());
     _created->setDate(getq.value("created").toString().length() > 0 ? getq.value("created").toDate() 
                                                                      : QDate::currentDate());
     _updated->setDate(getq.value("updated").toDate());

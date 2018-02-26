@@ -30,17 +30,6 @@ ContactClusterLineEdit::ContactClusterLineEdit(QWidget* pParent, const char* pNa
   setEditOwnPriv("MaintainPersonalContacts");
   setViewOwnPriv("ViewPersonalContacts");
 
-/*  _query = "SELECT cntct_id AS id, cntct_name AS number, cntct_title AS description, "
-           " cntct_active AS active, "
-           " cntct_first_name, cntct_last_name, crmacct_name, cntct_title, "
-           " getcontactphone(cntct_id, 'Office') AS contact_phone, "
-           " getcontactphone(cntct_id, 'Mobile') AS contact_phone2, "
-           " getcontactphone(cntct_id, 'Fax') AS contact_fax, cntct_email, cntct_webaddr "
-           "FROM cntct "
-           " LEFT OUTER JOIN crmacctcntctass ON (crmacctcntctass_cntct_id=cntct_id "
-           "                                 AND crmacctcntctass_crmrole_id=getcrmroleid('Primary')) "
-           " LEFT OUTER JOIN crmacct ON (crmacctcntctass_crmacct_id = crmacct_id) "
-           "WHERE (true) "; */
 }
 
 void ContactClusterLineEdit::setNewAddr(QString line1, QString line2, QString line3,

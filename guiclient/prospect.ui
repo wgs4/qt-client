@@ -99,7 +99,7 @@ to be bound by its terms.</comment>
         </property>
        </widget>
       </item>
-      <item row="2" column="5">
+      <item row="5" column="0">
        <widget class="XLabel" name="_sourceLit">
         <property name="text">
          <string>Source:</string>
@@ -122,29 +122,6 @@ to be bound by its terms.</comment>
       <item row="4" column="4">
        <widget class="DLineEdit" name="_assigned"/>
       </item>
-      <item row="3" column="6">
-       <widget class="XComboBox" name="_stage">
-        <property name="allowNull">
-         <bool>true</bool>
-        </property>
-        <property name="type">
-         <enum>XComboBox::OpportunityStages</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="XLabel" name="xlabel_3"/>
-      </item>
-      <item row="3" column="5">
-       <widget class="XLabel" name="_stageLit">
-        <property name="text">
-         <string>Stage:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
       <item row="4" column="2">
        <widget class="XLabel" name="_assignedLit">
         <property name="text">
@@ -158,33 +135,13 @@ to be bound by its terms.</comment>
       <item row="2" column="4">
        <widget class="UsernameLineEdit" name="_owner"/>
       </item>
-      <item row="4" column="5">
-       <widget class="XLabel" name="_priorityLit">
-        <property name="text">
-         <string>Priority:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="6">
+      <item row="5" column="1">
        <widget class="XComboBox" name="_source">
         <property name="allowNull">
          <bool>true</bool>
         </property>
         <property name="type">
          <enum>XComboBox::OpportunitySources</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="6">
-       <widget class="XComboBox" name="_priority">
-        <property name="allowNull">
-         <bool>true</bool>
-        </property>
-        <property name="type">
-         <enum>XComboBox::IncidentPriority</enum>
         </property>
        </widget>
       </item>
@@ -698,7 +655,6 @@ to be bound by its terms.</comment>
   <tabstop>_lastTouch</tabstop>
   <tabstop>_source</tabstop>
   <tabstop>_status</tabstop>
-  <tabstop>_priority</tabstop>
   <tabstop>_tabs</tabstop>
   <tabstop>_notes</tabstop>
   <tabstop>_quotes</tabstop>

@@ -222,7 +222,17 @@ to be bound by its terms.</comment>
               <string>When adding email addresses default the Opt In/Opt out setting for that email (check yes to opt in).</string>
              </property>
              <property name="text">
-              <string>Email Addresses Default Opt In / Opt Out</string>
+              <string>Email Addresses Default Marketing Opt In / Opt Out</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="_defaultAddropt">
+             <property name="toolTip">
+              <string>When adding postal addresses default the Opt In/Opt out setting for that address (check yes to opt in).</string>
+             </property>
+             <property name="text">
+              <string>Address Default Marketing Opt In / Opt Out</string>
              </property>
             </widget>
            </item>
