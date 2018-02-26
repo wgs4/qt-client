@@ -55,9 +55,15 @@ configureCRM::configureCRM(QWidget* parent, const char* name, bool /*modal*/, Qt
     
   _useProjects->setChecked(_metrics->boolean("UseProjects"));
   _autoCreate->setChecked(_metrics->boolean("AutoCreateProjectsForOrders"));
+  _accountChangeLog->setChecked(_metrics->boolean("AccountChangeLog"));
+  _addressChangeLog->setChecked(_metrics->boolean("AddressChangeLog"));
+  _contactChangeLog->setChecked(_metrics->boolean("ContactChangeLog"));
   _opportunityChangeLog->setChecked(_metrics->boolean("OpportunityChangeLog"));
   _requireProjectAssignment->setChecked(_metrics->boolean("RequireProjectAssignment"));
   _projectWarningDays->setValue(_metrics->value("ProjectDueDateWarning").toInt());
+  _requireUniqueEmails->setChecked(_metrics->boolean("EnforceUniqueContactEmails"));
+  _defaultEmailopt->setChecked(_metrics->boolean("DefaultEmailOptIn"));
+  _defaultAddropt->setChecked(_metrics->boolean("DefaultAddressOptIn"));
 
   if (! _metrics->value("DefaultAddressCountry").isEmpty())
     _country->setText(_metrics->value("DefaultAddressCountry"));
@@ -140,6 +146,9 @@ bool configureCRM::sSave()
   
   _metrics->set("UseProjects", _useProjects->isChecked());
   _metrics->set("AutoCreateProjectsForOrders", (_autoCreate->isChecked() && _useProjects->isChecked()));
+  _metrics->set("AccountChangeLog", _accountChangeLog->isChecked());
+  _metrics->set("AddressChangeLog", _addressChangeLog->isChecked());
+  _metrics->set("ContactChangeLog", _contactChangeLog->isChecked());
   _metrics->set("OpportunityChangeLog", _opportunityChangeLog->isChecked());
   _metrics->set("RequireProjectAssignment", _requireProjectAssignment->isChecked());
   _metrics->set("ProjectDueDateWarning", _projectWarningDays->value());
@@ -153,6 +162,27 @@ bool configureCRM::sSave()
   
   _metrics->set("IncidentsPublicPrivate", _incidentsPublicShow->isChecked());
   _metrics->set("IncidentPublicDefault", _incidentsPublicDefault->isChecked());
+
+  if (!_metrics->boolean("EnforceUniqueContactEmails") && (_requireUniqueEmails->isChecked()))
+  {
+    // Check for existing duplicated Contact email addresses if switching on
+    QString usql = "SELECT EXISTS(SELECT 1 FROM cntcteml "
+                   "GROUP BY cntcteml_email "
+                   "HAVING count(*) > 1) AS result;";
+    configq.exec(usql);
+    if (configq.first() && (configq.value("result").toBool()))
+    {
+      QMessageBox::warning(this, tr("Unique Emails"),
+      tr("You cannot enable unique email addresses on contacts "
+         "when duplicates exist.  Please first remove all "
+         "duplicate email addresses on contacts, then enable this setting."));
+      _requireUniqueEmails->setChecked(false);
+      return false;
+    }
+  }
+  _metrics->set("EnforceUniqueContactEmails", _requireUniqueEmails->isChecked());
+  _metrics->set("DefaultEmailOptIn", _defaultEmailopt->isChecked());
+  _metrics->set("DefaultAddressOptIn", _defaultAddropt->isChecked());
 
   if (_metrics->boolean("EnableBatchManager"))
   {

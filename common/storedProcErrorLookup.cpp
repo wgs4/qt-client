@@ -138,7 +138,8 @@ const struct {
                                     "because there are prior years that are still open."), 0, "" },
   { "closeToItem",	 -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "The item cannot be Closed at this time "
 				"as there is inventory at shipping."),	0, "" },
-
+  { "cntctEmailUnique", -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Emails are required to be unique. "
+                                                                   "You cannot use this email more than once."),	0, "" },
   { "convertCustomerToProspect",	-1, "", -1, "deleteCustomer" },
   { "convertCustomerToProspect",	-2, "", -2, "deleteCustomer" },
   { "convertCustomerToProspect",	-3, "", -3, "deleteCustomer" },
@@ -336,7 +337,6 @@ const struct {
   { "CRMAccount",	-2, QT_TRANSLATE_NOOP("storedProcErrorLookup", "User does not exist so this CRM Account Number is invalid."
                                                                   ),		 0, "" },
   { "CRMAccount",	-3, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot change the Username"), 0, "" },
-
   { "deleteAccount",  -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "The selected Ledger Account cannot be deleted as it "
                              "is currently used in one or more Cost Categories."
                              "  You must reassign these Cost Category "
@@ -1029,7 +1029,8 @@ const struct {
   { "massReplaceBomitem",  -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot make this BOM Item replacement "
 				  "because it would create a recursive BOM."),
 									0, "" },
-
+  { "mergeAccounts", -6, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot merge two CRM Accounts that both refer to the same entity."),
+                                                         		0, "" },
   { "openAccountingPeriod", -1, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot open this Accounting Period because "
 				   "it is already open."),		0, "" },
   { "openAccountingPeriod", -2, QT_TRANSLATE_NOOP("storedProcErrorLookup", "Cannot open this Accounting Period because "

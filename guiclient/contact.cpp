@@ -215,27 +215,29 @@ contact::contact(QWidget* parent, const char* name, bool modal, Qt::WindowFlags 
   //_save = _buttonBox->button(QDialogButtonBox::Save);
   //_save->setObjectName("_save");
 
-  connect(_buttonBox,            SIGNAL(accepted()), this, SLOT(sSave()));
-  connect(_buttonBox,            SIGNAL(rejected()), this, SLOT(sClose()));
-  connect(_crmAccount,           SIGNAL(newId(int)), _contact, SLOT(setSearchAcct(int)));
-  connect(_detachUse,            SIGNAL(clicked()), this, SLOT(sDetachUse()));
-  connect(_editUse,              SIGNAL(clicked()), this, SLOT(sEditUse()));
-  connect(_showOrders,       SIGNAL(toggled(bool)), this, SLOT(sFillList()));
-  connect(_uses,               SIGNAL(valid(bool)), this, SLOT(sHandleValidUse(bool)));
-  connect(_uses, SIGNAL(populateMenu(QMenu*, XTreeWidgetItem*)), this, SLOT(sPopulateUsesMenu(QMenu*)));
-  connect(_viewUse,                       SIGNAL(clicked()), this, SLOT(sViewUse()));
-  connect(omfgThis,         SIGNAL(crmAccountsUpdated(int)), this, SLOT(sFillList()));
-  connect(omfgThis,      SIGNAL(customersUpdated(int,bool)), this, SLOT(sFillList()));
-  connect(omfgThis,            SIGNAL(employeeUpdated(int)), this, SLOT(sFillList()));
-  connect(omfgThis,              SIGNAL(prospectsUpdated()), this, SLOT(sFillList()));
-  connect(omfgThis, SIGNAL(purchaseOrdersUpdated(int,bool)), this, SLOT(sFillList()));
-  connect(omfgThis,         SIGNAL(quotesUpdated(int,bool)), this, SLOT(sFillList()));
-  connect(omfgThis,    SIGNAL(salesOrdersUpdated(int,bool)), this, SLOT(sFillList()));
-  connect(omfgThis,      SIGNAL(transferOrdersUpdated(int)), this, SLOT(sFillList()));
-  connect(omfgThis,                SIGNAL(vendorsUpdated()), this, SLOT(sFillList()));
-  connect(omfgThis,             SIGNAL(warehousesUpdated()), this, SLOT(sFillList()));
+  connect(_buttonBox,      SIGNAL(accepted()), this, SLOT(sSave()));
+  connect(_buttonBox,      SIGNAL(rejected()), this, SLOT(sClose()));
+  connect(_detachUse,      SIGNAL(clicked()), this, SLOT(sDetachUse()));
+  connect(_editUse,        SIGNAL(clicked()), this, SLOT(sEditUse()));
+  connect(_showOrders,     SIGNAL(toggled(bool)), this, SLOT(sFillList()));
+  connect(_uses,           SIGNAL(valid(bool)), this, SLOT(sHandleValidUse(bool)));
+  connect(_uses,           SIGNAL(populateMenu(QMenu*, XTreeWidgetItem*)), this, SLOT(sPopulateUsesMenu(QMenu*)));
+  connect(_viewUse,        SIGNAL(clicked()), this, SLOT(sViewUse()));
+  connect(omfgThis,        SIGNAL(crmAccountsUpdated(int)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(customersUpdated(int,bool)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(employeeUpdated(int)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(prospectsUpdated()), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(purchaseOrdersUpdated(int,bool)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(quotesUpdated(int,bool)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(salesOrdersUpdated(int,bool)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(transferOrdersUpdated(int)), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(vendorsUpdated()), this, SLOT(sFillList()));
+  connect(omfgThis,        SIGNAL(warehousesUpdated()), this, SLOT(sFillList()));
+  connect(_notesButton,    SIGNAL(clicked()), this, SLOT(sHandleButtons()));
+  connect(_commentsButton, SIGNAL(clicked()), this, SLOT(sHandleButtons()));
 
   _charass->setType("CNTCT");
+  _comments->setType("T");
 
   _uses->addColumn(tr("Used by"),         100, Qt::AlignLeft, true, "type");
   _uses->addColumn(tr("Number"), _orderColumn, Qt::AlignLeft, true, "number");
@@ -245,7 +247,6 @@ contact::contact(QWidget* parent, const char* name, bool modal, Qt::WindowFlags 
   _uses->addColumn(tr("Owner"),   _userColumn, Qt::AlignLeft,  false,"owner");
 
   _contact->setMinimalLayout(false);
-  _contact->setAccountVisible(false);
   _contact->setInitialsVisible(false);
   _contact->setActiveVisible(false);
   _contact->setOwnerVisible(false);
@@ -287,7 +288,7 @@ enum SetResponse contact::set(const ParameterList &pParams)
 
   param = pParams.value("crmacct_id", &valid);
   if (valid)
-    _crmAccount->setId(param.toInt());
+    _crmAccount = param.toInt();
 
   param = pParams.value("addr_line1", &valid);
   if (valid)
@@ -579,17 +580,22 @@ void contact::sSave()
   _contact->setAddress(saveResult);
   _contact->setNotes(_notes->toPlainText());
   _contact->setOwnerUsername(_owner->username());
-  _contact->setCrmAcctId(_crmAccount->id());
+  _contact->setCrmAcctId(_crmAccount);
   _contact->setActive(_active->isChecked());
 
   saveResult = _contact->save(AddressCluster::CHANGEALL);
   if (saveResult < 0)
   {
-    ErrorReporter::error(QtCriticalMsg, this, tr("Saving Contact"),
-                         tr("<p>There was an error saving this Contact (%1). "
-                            "Check the database server log for errors.")
-                         .arg(saveResult), __FILE__, __LINE__);
-    return;
+    if (saveResult == -99) // Error already reported to user
+      return;
+    else
+    {
+      ErrorReporter::error(QtCriticalMsg, this, tr("Saving Contact"),
+                           tr("<p>There was an error saving this Contact (%1). "
+                              "Check the database server log for errors.")
+                           .arg(saveResult), __FILE__, __LINE__);
+      return;
+    }
   }
   _cntctid = _contact->id();
   done(_contact->id());
@@ -626,7 +632,7 @@ void contact::sPopulate()
 
   _number->setText(_contact->number());
   _active->setChecked(_contact->active());
-  _crmAccount->setId(_contact->crmAcctId());
+//  _crmAccount = _contact->crmAcctId();
   _owner->setUsername(_contact->owner());
   _notes->setText(_contact->notes());
   _data->_activeCache = _contact->active();
@@ -697,14 +703,16 @@ void contact::sDetachUse()
     case 1:
       question = tr("Are you sure that you want to remove this Contact as "
                     "the Primary Contact for this Account?");
-      detachq.prepare("UPDATE crmacct SET crmacct_cntct_id_1 = NULL "
-                      "WHERE (crmacct_id=:id);");
+      detachq.prepare("DELETE FROM crmacctcntctass "
+                      "WHERE crmacctcntctass_crmacct_id=:id"
+                      " AND crmacctcntctass_crmrole_id=getcrmroleid('Primary');");
       break;
     case 2:
       question = tr("Are you sure that you want to remove this Contact as "
                     "the Secondary Contact for this Account?");
-      detachq.prepare("UPDATE crmacct SET crmacct_cntct_id_2 = NULL "
-                      "WHERE (crmacct_id=:id);");
+      detachq.prepare("DELETE FROM crmacctcntctass "
+                      "WHERE crmacctcntctass_crmacct_id=:id"
+                      " AND crmacctcntctass_crmrole_id=getcrmroleid('Secondary');");
       break;
 
     case 3:
@@ -732,13 +740,6 @@ void contact::sDetachUse()
                     "the Secondary Contact for this Vendor?");
       detachq.prepare("UPDATE vendinfo SET vend_cntct2_id = NULL "
                       "WHERE (vend_id=:id);");
-      break;
-
-    case 7:
-      question = tr("Are you sure that you want to remove this Contact as "
-                    "the Contact for this Prospect?");
-      detachq.prepare("UPDATE prospect SET prospect_cntct_id = NULL "
-                      "WHERE (prospect_id=:id);");
       break;
 
     case 8:
@@ -940,6 +941,14 @@ void contact::sViewUse()
     case 23: sViewTransferOrder();	break;
     default: break;
   }
+}
+
+void contact::sHandleButtons()
+{
+  if (_commentsButton->isChecked())
+    _remarksStack->setCurrentIndex(0);
+  else
+    _remarksStack->setCurrentIndex(1);
 }
 
 void contact::sHandleValidUse(bool valid)

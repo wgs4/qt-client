@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -1188,8 +1188,8 @@ void opportunity::sHandleSalesPrivs()
 void opportunity::sHandleCrmacct(int pCrmacctid)
 {
   XSqlQuery crmacct;
-  crmacct.prepare( "SELECT COALESCE(crmacct_cust_id, -1) AS cust_id, "
-                   "       COALESCE(crmacct_prospect_id, -1) AS prospect_id "
+  crmacct.prepare( "SELECT COALESCE((crmacctTypes(crmacct_id)#>>'{customer}')::INT, -1) AS cust_id, "
+                   "       COALESCE((crmacctTypes(crmacct_id)#>>'{prospect}')::INT, -1) AS prospect_id "
                    "FROM crmacct "
                    "WHERE (crmacct_id=:crmacct_id);" );
   crmacct.bindValue(":crmacct_id", pCrmacctid);

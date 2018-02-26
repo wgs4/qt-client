@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -34,6 +34,9 @@ prospects::prospects(QWidget* parent, const char*, Qt::WindowFlags fl)
   parameterWidget()->append(tr("Show Inactive"), "showInactive", ParameterWidget::Exists);
   parameterWidget()->append(tr("Prospect Number Pattern"), "prospect_number_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Prospect Name Pattern"), "prospect_name_pattern", ParameterWidget::Text);
+  parameterWidget()->append(tr("Owner"), "owner", ParameterWidget::User);
+  parameterWidget()->append(tr("Assigned"), "assigned", ParameterWidget::User);
+  parameterWidget()->appendComboBox(tr("Source"), "source", XComboBox::OpportunitySources);
   parameterWidget()->append(tr("Contact Name Pattern"), "cntct_name_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Phone Pattern"), "cntct_phone_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Email Pattern"), "cntct_email_pattern", ParameterWidget::Text);
@@ -53,15 +56,21 @@ prospects::prospects(QWidget* parent, const char*, Qt::WindowFlags fl)
 
   list()->addColumn(tr("Number"),  _orderColumn, Qt::AlignCenter, true, "prospect_number" );
   list()->addColumn(tr("Name"),    -1,           Qt::AlignLeft,   true, "prospect_name"   );
-  list()->addColumn(tr("First"),   50, Qt::AlignLeft  , true, "cntct_first_name" );
-  list()->addColumn(tr("Last"),    -1, Qt::AlignLeft  , true, "cntct_last_name" );
-  list()->addColumn(tr("Phone"),   100, Qt::AlignLeft  , true, "cntct_phone" );
-  list()->addColumn(tr("Email"),   100, Qt::AlignLeft  , true, "cntct_email" );
-  list()->addColumn(tr("Address"), -1, Qt::AlignLeft  , false, "addr_line1" );
-  list()->addColumn(tr("City"),    75, Qt::AlignLeft  , false, "addr_city" );
-  list()->addColumn(tr("State"),   50, Qt::AlignLeft  , false, "addr_state" );
-  list()->addColumn(tr("Country"), 100, Qt::AlignLeft  , false, "addr_country" );
-  list()->addColumn(tr("Postal Code"), 75, Qt::AlignLeft  , false, "addr_postalcode" );
+  list()->addColumn(tr("Created"), _dateColumn,  Qt::AlignLeft,   true, "created" );
+  list()->addColumn(tr("Owner"),   _userColumn,  Qt::AlignLeft,   true, "prospect_owner_username" );
+  list()->addColumn(tr("Assigned"),_userColumn,  Qt::AlignLeft,   true, "prospect_assigned_username" );
+  list()->addColumn(tr("Source"),  100,          Qt::AlignLeft,   true, "prospect_source" );
+  list()->addColumn(tr("First"),   50,           Qt::AlignLeft,   true, "cntct_first_name" );
+  list()->addColumn(tr("Last"),    -1,           Qt::AlignLeft,   true, "cntct_last_name" );
+  list()->addColumn(tr("Phone"),   100,          Qt::AlignLeft,   true, "contact_phone" );
+  list()->addColumn(tr("Email"),   100,          Qt::AlignLeft,   true, "cntct_email" );
+  list()->addColumn(tr("Address"), -1,           Qt::AlignLeft,   false, "addr_line1" );
+  list()->addColumn(tr("City"),    75,           Qt::AlignLeft,   false, "addr_city" );
+  list()->addColumn(tr("State"),   50,           Qt::AlignLeft,   false, "addr_state" );
+  list()->addColumn(tr("Country"), 100,          Qt::AlignLeft,   false, "addr_country" );
+  list()->addColumn(tr("Postal Code"), 75,       Qt::AlignLeft,   false, "addr_postalcode" );
+
+  setupCharacteristics("PSPCT");
 
   list()->setSelectionMode(QAbstractItemView::ExtendedSelection);
 

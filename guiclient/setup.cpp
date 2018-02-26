@@ -152,11 +152,14 @@ setup::setup(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)
   modeVal = mode("MaintainImages");
   insert(tr("Images"), "images", MasterInformation, Xt::SystemModule, modeVal, modeVal);
 
+  modeVal = mode("MaintainCRMRoles ViewCRMRoles");
+  insert(tr("CRM Roles"), "crmRoles", MasterInformation, Xt::CRMModule, modeVal, modeVal);
+
   modeVal = mode("MaintainIncidentCategories");
   insert(tr("Incident Categories"), "incidentCategories", MasterInformation, Xt::CRMModule, modeVal, modeVal);
 
   modeVal = mode("MaintainIncidentPriorities");
-  insert(tr("Incident Priorities"), "incidentPriorities", MasterInformation, Xt::CRMModule, modeVal, modeVal);
+  insert(tr("Priorities"), "incidentPriorities", MasterInformation, Xt::CRMModule, modeVal, modeVal);
 
   modeVal = mode("MaintainIncidentResolutions");
   insert(tr("Incident Resolutions"), "incidentResolutions", MasterInformation, Xt::CRMModule, modeVal, modeVal);
@@ -177,7 +180,7 @@ setup::setup(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)
   }
 
   modeVal = mode("MaintainOpportunitySources");
-  insert( tr("Opportunity Sources"), "opportunitySources", MasterInformation, Xt::CRMModule, modeVal, modeVal);
+  insert( tr("Sources"), "opportunitySources", MasterInformation, Xt::CRMModule, modeVal, modeVal);
 
   modeVal = mode("MaintainOpportunityStages");
   insert(tr("Opportunity Stages"), "opportunityStages", MasterInformation, Xt::CRMModule, modeVal, modeVal);

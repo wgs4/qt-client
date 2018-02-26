@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -182,6 +182,7 @@ enum SetResponse employee::set(const ParameterList &pParams)
           _NumberGen = numq.value("number").toInt();
         }
       }
+      _contact->sBuildPhones();  // Initialise phone list
     }
     else if (param.toString() == "edit")
     {
@@ -208,7 +209,8 @@ enum SetResponse employee::set(const ParameterList &pParams)
   if (empGroup::userHasPriv(cView))
     connect(_groups, SIGNAL(valid(bool)), _viewGroup,   SLOT(setEnabled(bool)));
 
-  _code->setEnabled(editing);
+  if (!_code->text().length())
+    _code->setEnabled(editing);
   _number->setEnabled(editing);
   _name->setEnabled(editing);
   _startDate->setEnabled(editing);
@@ -283,8 +285,6 @@ bool employee::sSave(const bool pClose)
     ;
   if (GuiErrorCheck::reportErrors(this, tr("Cannot Save Employee"), errors))
     return false;
-
-//  _contact->check();
 
   XSqlQuery rollback;
   rollback.prepare("ROLLBACK;");
@@ -433,9 +433,8 @@ bool employee::sPopulate()
   XSqlQuery getq;
   if (_empid > 0)
   {
-    getq.prepare("SELECT emp.*, crmacct_id, crmacct_owner_username,"
-                 "       crmacct_salesrep_id, crmacct_usr_username, crmacct_vend_id"
-                 "  FROM emp JOIN crmacct ON (emp_id=crmacct_emp_id)"
+    getq.prepare("SELECT emp.*, crmacct_id, crmacct_owner_username"
+                 "  FROM emp JOIN crmacct ON (emp_crmacct_id=crmacct_id)"
                  " WHERE (emp_id=:id);");
     getq.bindValue(":id", _empid);
   }
@@ -444,7 +443,7 @@ bool employee::sPopulate()
     getq.prepare("SELECT crmacct_number     AS emp_code, NULL AS emp_number,"
                  "       crmacct_name       AS emp_name,"
                  "       crmacct_active     AS emp_active,"
-                 "       crmacct_cntct_id_1 AS emp_cntct_id,"
+                 "       crmacctcntctass_cntct_id AS emp_cntct_id,"
                  "       NULL AS emp_startdate,      NULL AS emp_mgr_emp_id,"
                  "       NULL AS emp_warehous_id,    NULL AS emp_wage_type,"
                  "       NULL AS emp_wage,           NULL AS emp_wage_curr_id,"
@@ -454,6 +453,8 @@ bool employee::sPopulate()
                  "       NULL AS emp_image_id,"
                  "crmacct_id, crmacct_owner_username"
                  "  FROM crmacct"
+                 "  LEFT OUTER JOIN crmacctcntctass ON (crmacct_id=crmacctcntctass_crmacct_id "
+                 "                      AND crmacctcntctass_crmrole_id=getcrmroleid('Primary'))"
                  " WHERE (crmacct_id=:id);");
     getq.bindValue(":id", _crmacctid);
   }
@@ -462,6 +463,8 @@ bool employee::sPopulate()
   if (getq.first())
   {
     _code->setText(getq.value("emp_code").toString());
+    if(_crmacctid > 0)
+      _code->setEnabled(false);
     _name->setText(getq.value("emp_name").toString());
     _number->setText(getq.value("emp_number").toString());
     _active->setChecked(getq.value("emp_active").toBool());

@@ -62,6 +62,7 @@ protected slots:
     virtual void sEditVendorAddress();
     virtual void sEditWarehouse();
     virtual void sFillList();
+    virtual void sHandleButtons();
     virtual void sHandleValidUse(bool);
     virtual void sPopulate();
     virtual void sPopulateUsesMenu(QMenu*);
@@ -92,6 +93,7 @@ protected:
 
 private:
     int _cntctid;
+    int _crmAccount;
 
 };
 

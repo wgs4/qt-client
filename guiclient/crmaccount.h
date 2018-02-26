@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -12,6 +12,7 @@
 #define CRMACCOUNT_H
 
 #include "applock.h"
+#include "addresses.h"
 #include "contacts.h"
 #include "guiclient.h"
 #include "todoList.h"
@@ -42,6 +43,8 @@ signals:
 protected slots:
     virtual void languageChange();
 
+    virtual void sAddAddress();
+    virtual void sAddContact();
     virtual void sClose();
     virtual void sCompetitor();
     virtual void sCustomer();
@@ -64,7 +67,6 @@ protected slots:
     virtual void sCheckNumber();
     virtual void sHandleButtons();
     virtual void sHandleChildButtons();
-    virtual void sHandleCntctDetach(int cntctId);
     virtual void setVisible(bool);
 
 protected:
@@ -72,6 +74,7 @@ protected:
     
     todoList *_todoList;
     contacts *_contacts;
+    addresses *_addresses;
 
 signals:
     void saved(int);

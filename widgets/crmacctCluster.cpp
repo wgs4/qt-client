@@ -30,14 +30,16 @@
      CRMAcctSearch can control lots of OR'ed search criteria + activeOnly
  */
 static QString _listAndSearchQueryString(
-      "SELECT *, formataddr(addr.addr_id) AS street"
+      "SELECT *, getcontactphone(cntct.cntct_id, 'Office') AS contact_phone, formataddr(addr.addr_id) AS street"
       "  FROM ("
       "<? if exists('crmaccount') ?>"
       "    SELECT crmacct_id AS id,         crmacct_number AS number,"
-      "           crmacct_name AS name,     crmacct_cntct_id_1 AS cntct_id,"
+      "           crmacct_name AS name,     cntct_id,"
       "           crmacct_active AS active, cntct_addr_id AS addr_id"
       "      FROM crmacct()"
-      "      LEFT OUTER JOIN cntct ON (crmacct_cntct_id_1=cntct_id)"
+      "      LEFT OUTER JOIN crmacctcntctass ON (crmacct_id=crmacctcntctass_crmacct_id "
+      "                                          AND crmacctcntctass_crmrole_id=getcrmroleid('Primary')) "
+      "      LEFT OUTER JOIN cntct ON (crmacctcntctass_cntct_id=cntct_id)"
       "<? elseif exists('customer') ?>"
       "    SELECT cust_id AS id,         cust_number AS number,"
       "           cust_name AS name,     cust_cntct_id AS cntct_id,"
@@ -102,8 +104,7 @@ static QString _listAndSearchQueryString(
       "                 ~ <? value('searchString') ?>)"
       "    <? endif ?>"
       "    <? if exists('searchPhone') ?>"
-      "       OR (UPPER(cntct_phone || ' ' || cntct_phone2 || ' ' || "
-      "                 cntct_fax) ~ <? value('searchString') ?>)"
+      "       OR (phonejson(cntct_id) ~ <? value('searchString') ?>)"
       "    <? endif ?>"
       "    <? if exists('searchEmail') ?>"
       "       OR (cntct_email ~* <? value('searchString') ?>)"
@@ -217,7 +218,7 @@ CRMAcctList::CRMAcctList(QWidget* pParent, const char* pName, bool, Qt::WindowFl
   _listTab->addColumn(tr("Name"),        75, Qt::AlignLeft,  true, "name"  );
   _listTab->addColumn(tr("First"),      100, Qt::AlignLeft,  true, "cntct_first_name");
   _listTab->addColumn(tr("Last"),       100, Qt::AlignLeft,  true, "cntct_last_name");
-  _listTab->addColumn(tr("Phone"),      100, Qt::AlignLeft,  true, "cntct_phone");
+  _listTab->addColumn(tr("Phone"),      100, Qt::AlignLeft,  true, "contact_phone");
   _listTab->addColumn(tr("Email"),      100, Qt::AlignLeft,  true, "cntct_email");
   _listTab->addColumn(tr("Address"),    100, Qt::AlignLeft|Qt::AlignTop,true,"street");
   _listTab->addColumn(tr("City"),        75, Qt::AlignLeft,  true, "addr_city");
@@ -376,7 +377,7 @@ void CRMAcctList::setSubtype(const CRMAcctLineEdit::CRMAcctSubtype subtype)
 
   _listTab->setColumnHidden(_listTab->column("cntct_first_name"), ! hasContact);
   _listTab->setColumnHidden(_listTab->column("cntct_last_name"),  ! hasContact);
-  _listTab->setColumnHidden(_listTab->column("cntct_phone"),      ! hasContact);
+  _listTab->setColumnHidden(_listTab->column("contact_phone"),      ! hasContact);
   _listTab->setColumnHidden(_listTab->column("street"),           ! hasAddress);
   _listTab->setColumnHidden(_listTab->column("addr_city"),        ! hasAddress);
   _listTab->setColumnHidden(_listTab->column("addr_state"),       ! hasAddress);
@@ -471,7 +472,7 @@ CRMAcctSearch::CRMAcctSearch(QWidget* pParent, Qt::WindowFlags pFlags) :
   _listTab->addColumn(tr("Name"),        75, Qt::AlignLeft,  true, "name"  );
   _listTab->addColumn(tr("First"),      100, Qt::AlignLeft,  true, "cntct_first_name");
   _listTab->addColumn(tr("Last"),       100, Qt::AlignLeft,  true, "cntct_last_name");
-  _listTab->addColumn(tr("Phone"),      100, Qt::AlignLeft,  true, "cntct_phone");
+  _listTab->addColumn(tr("Phone"),      100, Qt::AlignLeft,  true, "contact_phone");
   _listTab->addColumn(tr("Email"),      100, Qt::AlignLeft,  true, "cntct_email");
   _listTab->addColumn(tr("Address"),    100, Qt::AlignLeft|Qt::AlignTop,true,"street");
   _listTab->addColumn(tr("City"),        75, Qt::AlignLeft,  true, "addr_city");
@@ -713,7 +714,7 @@ void CRMAcctSearch::setSubtype(const CRMAcctLineEdit::CRMAcctSubtype subtype)
 
   _listTab->setColumnHidden(_listTab->column("cntct_first_name"), ! hasContact);
   _listTab->setColumnHidden(_listTab->column("cntct_last_name"),  ! hasContact);
-  _listTab->setColumnHidden(_listTab->column("cntct_phone"),      ! hasContact);
+  _listTab->setColumnHidden(_listTab->column("contact_phone"),      ! hasContact);
   _listTab->setColumnHidden(_listTab->column("street"),           ! hasAddress);
   _listTab->setColumnHidden(_listTab->column("addr_city"),        ! hasAddress);
   _listTab->setColumnHidden(_listTab->column("addr_state"),       ! hasAddress);

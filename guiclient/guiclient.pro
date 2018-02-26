@@ -104,6 +104,7 @@ FORMS =   absoluteCalendarItem.ui               \
           addPoComment.ui                       \
           address.ui                            \
           addresses.ui                          \
+          addressMerge.ui                       \
           adjustmentTrans.ui                    \
           adjustInvValue.ui                     \
           allocateARCreditMemo.ui               \
@@ -218,8 +219,9 @@ FORMS =   absoluteCalendarItem.ui               \
           crmaccountMergePickAccountsPage.ui    \
           crmaccountMergePickDataPage.ui        \
           crmaccountMergePickTaskPage.ui        \
-          crmaccountMergePurgePage.ui           \
           crmaccountMergeResultPage.ui          \
+          crmRole.ui                            \
+          crmRoles.ui                           \
           currencies.ui                         \
           currency.ui                           \
           currencyConversion.ui                 \
@@ -668,6 +670,7 @@ HEADERS = ../common/format.h                    \
           addPoComment.h                        \
           address.h                             \
           addresses.h                           \
+          addressMerge.h                        \
           adjustmentTrans.h                     \
           adjustInvValue.h                      \
           allocateARCreditMemo.h                \
@@ -786,9 +789,10 @@ HEADERS = ../common/format.h                    \
           crmaccountMergePickAccountsPage.h     \
           crmaccountMergePickDataPage.h         \
           crmaccountMergePickTaskPage.h         \
-          crmaccountMergePurgePage.h            \
           crmaccountMergeResultPage.h           \
           crmaccounts.h                         \
+          crmRole.h                             \
+          crmRoles.h                            \
           currencies.h                          \
           currenciesDialog.h                    \
           currency.h                            \
@@ -1290,6 +1294,7 @@ SOURCES = absoluteCalendarItem.cpp              \
           addPoComment.cpp                      \
           address.cpp                           \
           addresses.cpp                         \
+          addressMerge.cpp                      \
           adjustmentTrans.cpp                   \
           adjustInvValue.cpp                    \
           allocateARCreditMemo.cpp              \
@@ -1408,9 +1413,10 @@ SOURCES = absoluteCalendarItem.cpp              \
           crmaccountMergePickAccountsPage.cpp   \
           crmaccountMergePickDataPage.cpp       \
           crmaccountMergePickTaskPage.cpp       \
-          crmaccountMergePurgePage.cpp          \
           crmaccountMergeResultPage.cpp         \
           crmaccounts.cpp                       \
+          crmRole.cpp                           \
+          crmRoles.cpp                          \
           currencies.cpp                        \
           currenciesDialog.cpp                  \
           currency.cpp                          \

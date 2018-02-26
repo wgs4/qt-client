@@ -183,9 +183,12 @@ to be bound by its terms.</comment>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="_opportunityChangeLog">
+            <widget class="QCheckBox" name="_requireProjectAssignment">
+             <property name="toolTip">
+              <string>Require assignment of a Project # to Sales Order/Purchase Order/Work Order</string>
+             </property>
              <property name="text">
-              <string>Post Opportunity Changes to the Change Log</string>
+              <string>Require SO/PO/WO assignment to Project</string>
              </property>
             </widget>
            </item>
@@ -204,12 +207,32 @@ to be bound by its terms.</comment>
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="_requireProjectAssignment">
+            <widget class="QCheckBox" name="_requireUniqueEmails">
              <property name="toolTip">
-              <string>Require assignment of a Project # to Sales Order/Purchase Order/Work Order</string>
+              <string>Require unique email addresses across Contacts.  System checks uniqueness when activating this setting.</string>
              </property>
              <property name="text">
-              <string>Require SO/PO/WO assignment to Project</string>
+              <string>Require Unique Contact Email Addresses</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="_defaultEmailopt">
+             <property name="toolTip">
+              <string>When adding email addresses default the Opt In/Opt out setting for that email (check yes to opt in).</string>
+             </property>
+             <property name="text">
+              <string>Email Addresses Default Marketing Opt In / Opt Out</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="_defaultAddropt">
+             <property name="toolTip">
+              <string>When adding postal addresses default the Opt In/Opt out setting for that address (check yes to opt in).</string>
+             </property>
+             <property name="text">
+              <string>Address Default Marketing Opt In / Opt Out</string>
              </property>
             </widget>
            </item>
@@ -289,6 +312,43 @@ to be bound by its terms.</comment>
             </layout>
            </item>
           </layout>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="_changeLog">
+           <property name="title">
+            <string>Change Log</string>
+           </property>
+           <layout class="QVBoxLayout" name="vboxLayout_9">
+            <item>
+             <widget class="QCheckBox" name="_accountChangeLog">
+              <property name="text">
+               <string>Post Account Changes</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="_addressChangeLog">
+              <property name="text">
+               <string>Post Address Changes</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="_contactChangeLog">
+              <property name="text">
+               <string>Post Contact Changes</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="_opportunityChangeLog">
+              <property name="text">
+               <string>Post Opportunity Changes</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout">

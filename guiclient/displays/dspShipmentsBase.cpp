@@ -131,7 +131,7 @@ void dspShipmentsBase::sPopulateSalesOrder(int pSoheadid)
     coq.prepare( "SELECT cohead_number,"
                  "       cohead_orderdate,"
                  "       cohead_custponumber,"
-                 "       cust_name, cntct_phone "
+                 "       cust_name, getcontactphone(cntct_id, 'Office') AS contact_phone "
                  "  FROM cohead"
                  "  JOIN custinfo ON (cohead_cust_id=cust_id)"
                  "  LEFT OUTER JOIN cntct ON (cust_cntct_id=cntct_id)"
@@ -143,7 +143,7 @@ void dspShipmentsBase::sPopulateSalesOrder(int pSoheadid)
       _orderDate->setDate(coq.value("cohead_orderdate").toDate());
       _poNumber->setText(coq.value("cohead_custponumber").toString());
       _custName->setText(coq.value("cust_name").toString());
-      _custPhone->setText(coq.value("cntct_phone").toString());
+      _custPhone->setText(coq.value("contact_phone").toString());
     }
     else if (ErrorReporter::error(QtCriticalMsg, this, tr("Getting Sales Order"),
                                   coq, __FILE__, __LINE__))
@@ -163,7 +163,7 @@ void dspShipmentsBase::sPopulateShipment(int pShipheadid)
   if (pShipheadid != -1)
   {
     XSqlQuery shq;
-    shq.prepare("SELECT cust_name, cntct_phone,"
+    shq.prepare("SELECT cust_name, getcontactphone(cntct_id, 'Office') AS contact_phone,"
                 "       cohead_orderdate AS orderdate,"
                 "       cohead_custponumber AS custponumber"
                 "  FROM shiphead"
@@ -172,7 +172,7 @@ void dspShipmentsBase::sPopulateShipment(int pShipheadid)
                 "  JOIN cntct ON (cust_cntct_id=cntct_id)"
                 " WHERE (shiphead_id=:shiphead_id) AND (shiphead_order_type='SO')"
                 " UNION "
-                "SELECT warehous_code, cntct_phone,"
+                "SELECT warehous_code, getcontactphone(cntct_id, 'Office') AS contact_phone,"
                 "       tohead_orderdate AS orderdate,"
                 "       NULL AS custponumber"
                 "  FROM shiphead"
@@ -187,7 +187,7 @@ void dspShipmentsBase::sPopulateShipment(int pShipheadid)
       _orderDate->setDate(shq.value("orderdate").toDate());
       _poNumber->setText(shq.value("custponumber").toString());
       _custName->setText(shq.value("cust_name").toString());
-      _custPhone->setText(shq.value("cntct_phone").toString());
+      _custPhone->setText(shq.value("contact_phone").toString());
     }
     else if (ErrorReporter::error(QtCriticalMsg, this, tr("Getting Shipment"),
                                   shq, __FILE__, __LINE__))

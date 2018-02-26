@@ -8,44 +8,39 @@
  * to be bound by its terms.
  */
 
-#ifndef CONTACTMERGE_H
-#define CONTACTMERGE_H
+#ifndef ADDRESSMERGE_H
+#define ADDRESSMERGE_H
 
 #include "guiclient.h"
 #include "xwidget.h"
 #include <parameter.h>
 
-#include "ui_contactMerge.h"
+#include "ui_addressMerge.h"
 
-class contactMerge : public XWidget, public Ui::contactMerge
+class addressMerge : public XWidget, public Ui::addressMerge
 {
     Q_OBJECT
 
 public:
-    contactMerge(QWidget* parent = 0, const char* name = 0, Qt::WindowFlags fl = Qt::Window);
-    ~contactMerge();
+    addressMerge(QWidget* parent = 0, const char* name = 0, Qt::WindowFlags fl = Qt::Window);
+    ~addressMerge();
 
 protected slots:
     virtual void languageChange();
 
     virtual void sAdd();
-    virtual void sCntctDelete();
-    virtual void sCntctDoubleClicked();
-    virtual void sCntctEdit();
-    virtual void sCntctView();
-    virtual void sSrcCntctEdit();
-    virtual void sSrcCntctView();
+    virtual void sAddrDelete();
+    virtual void sAddrEdit();
+    virtual void sAddrView();
+    virtual void sSrcAddrEdit();
+    virtual void sSrcAddrView();
     virtual void sFillList();
-    virtual void sHandleMode();
     virtual void sHandleProcess();
-    virtual void sPopulateCntctMenu(QMenu *);
+    virtual void sPopulateAddrMenu(QMenu *);
     virtual void sPopulateSrcMenu(QMenu *, QTreeWidgetItem *, int);
     virtual void sPopulateSources();
     virtual void sPopulateTarget();
     virtual void sProcess();
-    virtual void sPurge();
-    virtual bool purgeConfirm();
-    virtual void sRestore();
     virtual void sSelect(bool);
     virtual void sSelectCol();
     virtual void sSetTarget();
@@ -60,4 +55,4 @@ private:
 
 };
 
-#endif // CONTACTMERGE_H
+#endif // ADDRESSMERGE_H
