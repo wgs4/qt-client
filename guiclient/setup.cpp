@@ -146,6 +146,9 @@ setup::setup(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)
   modeVal = mode("MaintainForms");
   insert( tr("Forms"),  "forms", MasterInformation, Xt::SystemModule, modeVal, modeVal);
 
+  modeVal = mode("MaintainDynamicFilters");
+  insert( tr("Dynamic Filters"),  "dynamicfilters", MasterInformation, Xt::SystemModule, modeVal, modeVal);
+
   modeVal = mode("MaintainFreightClasses", "ViewFreightClasses");
   insert(tr("Freight Classes"), "freightClasses", MasterInformation, Xt::ProductsModule, modeVal, modeVal);
 

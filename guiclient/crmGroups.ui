@@ -2,13 +2,13 @@
 <ui version="4.0">
  <comment>This file is part of the xTuple ERP: PostBooks Edition, a free and
 open source Enterprise Resource Planning software suite,
-Copyright (c) 1999-2014 by OpenMFG LLC, d/b/a xTuple.
+Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
 It is licensed to you under the Common Public Attribution License
 version 1.0, the full text of which (including xTuple-specific Exhibits)
 is available at www.xtuple.com/CPAL.  By using this software, you agree
 to be bound by its terms.</comment>
- <class>customerGroups</class>
- <widget class="QWidget" name="customerGroups">
+ <class>crmGroups</class>
+ <widget class="QWidget" name="crmGroups">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -18,7 +18,7 @@ to be bound by its terms.</comment>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>List Customer Groups</string>
+   <string>List Groups</string>
   </property>
   <layout class="QHBoxLayout">
    <item>
@@ -30,14 +30,14 @@ to be bound by its terms.</comment>
       <number>0</number>
      </property>
      <item>
-      <widget class="QLabel" name="_customerGroupsLit">
+      <widget class="QLabel" name="_crmGroupsLit">
        <property name="text">
-        <string>Customer Groups:</string>
+        <string>Groups:</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="XTreeWidget" name="_custgrp"/>
+      <widget class="XTreeWidget" name="_grp"/>
      </item>
     </layout>
    </item>
@@ -145,7 +145,7 @@ to be bound by its terms.</comment>
   <connection>
    <sender>_close</sender>
    <signal>clicked()</signal>
-   <receiver>customerGroups</receiver>
+   <receiver>crmGroups</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">

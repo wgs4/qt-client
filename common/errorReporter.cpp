@@ -373,7 +373,7 @@ const struct {
 //{ "cust_to_curr_symbol",                      Delete,  0, QT_TRANSLATE_NOOP("errorReporter", "") },
 //{ "cust_to_curr_symbol",                      Upsert,  0, QT_TRANSLATE_NOOP("errorReporter", "") },
   { "custgrp_custgrp_name_check",               Upsert,  0, QT_TRANSLATE_NOOP("errorReporter", "The Customer Group name is required.") },
-  { "custgrp_custgrp_name_key",                 Upsert,  0, QT_TRANSLATE_NOOP("errorReporter", "A Customer Gropu already exists with this name.") },
+  { "custgrp_custgrp_name_key",                 Upsert,  0, QT_TRANSLATE_NOOP("errorReporter", "A Customer Group already exists with this name.") },
 //{ "custinfo_balmethod_check",                 Upsert,  0, QT_TRANSLATE_NOOP("errorReporter", "") },
 //{ "custinfo_creditstatus_check",              Upsert,  0, QT_TRANSLATE_NOOP("errorReporter", "") },
   { "custinfo_crmacct_id_fkey",                 Delete,  0,  QT_TRANSLATE_NOOP("errorReporter", "Cannot delete CRM Account because it is a Customer.") },

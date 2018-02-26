@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -24,10 +24,12 @@
 #include "contactMerge.h"
 #include "crmaccountMerge.h"
 #include "addressMerge.h"
+#include "buildCRMGroups.h"
 #include "address.h"
 #include "addresses.h"
 #include "crmaccount.h"
 #include "crmaccounts.h"
+#include "crmGroups.h"
 #include "prospect.h"
 #include "prospects.h"
 #include "incidentWorkbench.h"
@@ -116,21 +118,29 @@ menuCRM::menuCRM(GUIClient *Pparent) :
     { "menu",		tr("&Account"),		(char*)accountsMenu,	crmMenu,		"true", NULL, NULL, true	, NULL },
     { "crm.crmaccount",		tr("&New..."),	SLOT(sCRMAccount()),	accountsMenu,	"MaintainPersonalCRMAccounts MaintainAllCRMAccounts", NULL, NULL, true , NULL },
     { "crm.crmaccounts",	tr("&List..."),	SLOT(sCRMAccounts()),	accountsMenu,	"MaintainPersonalCRMAccounts ViewPersonalCRMAccounts MaintainAllCRMAccounts ViewAllCRMAccounts", new QPixmap(":/images/accounts.png"), toolBar, true , tr("List Accounts") },
+    { "separator",		NULL,				NULL,	accountsMenu,	"true", NULL, NULL, true	, NULL },
+    { "crm.crmaccountGroups",   tr("&Groups..."),  SLOT(sCRMAccountGroups()),   accountsMenu,   "MaintainAccountGroups ViewAccountGroups",	NULL, NULL, true, NULL },
       
     // CRM | Contact
     { "menu",		tr("&Contact"),		(char*)contactsMenu,	crmMenu,		"true", NULL, NULL, true	, NULL },
     { "crm.contact",	tr("&New..."),		SLOT(sContact()),	contactsMenu,	"MaintainPersonalContacts MaintainAllContacts", NULL, NULL, true	, NULL },
     { "crm.contacts",	tr("&List..."),		SLOT(sContacts()),	contactsMenu,	"MaintainPersonalContacts ViewPersonalContacts MaintainAllContacts ViewAllContacts", new QPixmap(":/images/contacts.png"), toolBar, true , tr("List Contacts") },
+    { "separator",		NULL,				NULL,	contactsMenu,	"true", NULL, NULL, true	, NULL },
+    { "crm.contactGroups", tr("&Groups..."),  SLOT(sContactGroups()),   contactsMenu,   "MaintainContactGroups ViewContactGroups",	NULL, NULL, true, NULL },
     
     // CRM | Address
     { "menu",		tr("A&ddress"),		(char*)addressMenu,	crmMenu,		"true", NULL, NULL, true	, NULL },
     { "crm.address",	tr("&New..."),		SLOT(sAddress()),	addressMenu,	"MaintainAddresses", NULL, NULL, true	, NULL },
-    { "crm.addresses",	tr("&List..."),	SLOT(sAddresses()),	addressMenu,	"MaintainAddresses ViewAddresses", NULL, NULL, true , NULL },
+    { "crm.addresses",	tr("&List..."),	        SLOT(sAddresses()),	addressMenu,	"MaintainAddresses ViewAddresses", NULL, NULL, true , NULL },
+    { "separator",		NULL,				NULL,	addressMenu,	"true", NULL, NULL, true	, NULL },
+    { "crm.addressGroups", tr("&Groups..."),  SLOT(sAddressGroups()),   addressMenu,   "MaintainAddressGroups ViewAddressGroups",	NULL, NULL, true, NULL },
 
     // CRM | Prospect
-    { "menu",	tr("&Prospect"),       (char*)prospectCRMMenu,	crmMenu,	"true",	NULL, NULL, true, NULL },
-    { "so.enterNewProspect", tr("&New..."),	SLOT(sNewProspect()), prospectCRMMenu, "MaintainProspectMasters",	NULL, NULL, true, NULL },
-    { "so.prospects", tr("&List..."),	SLOT(sProspects()), prospectCRMMenu, "MaintainProspectMasters ViewProspectMasters",	NULL, NULL, true, NULL },
+    { "menu",	tr("&Prospect"),              (char*)prospectCRMMenu,	crmMenu,	"true",	NULL, NULL, true, NULL },
+    { "so.enterNewProspect", tr("&New..."),   SLOT(sNewProspect()), prospectCRMMenu, "MaintainProspectMasters",	NULL, NULL, true, NULL },
+    { "so.prospects", tr("&List..."),	      SLOT(sProspects()), prospectCRMMenu, "MaintainProspectMasters ViewProspectMasters",	NULL, NULL, true, NULL },
+    { "separator",		NULL,				NULL,  prospectCRMMenu,	"true", NULL, NULL, true	, NULL },
+    { "so.prospectGroups", tr("&Groups..."),  SLOT(sProspectGroups()), prospectCRMMenu, "MaintainProspectGroups ViewProspectGroups",	NULL, NULL, true, NULL },
 
     { "separator",		NULL,				NULL,			crmMenu,	"true", NULL, NULL, true	, NULL },
 
@@ -138,9 +148,12 @@ menuCRM::menuCRM(GUIClient *Pparent) :
     { "menu",			tr("&Utilities"),		(char*)utilitiesMenu,		crmMenu,	"true", NULL, NULL, true	, NULL },
     { "crm.replaceOwner",	tr("Edit O&wners"),		SLOT(sEditOwners()),	utilitiesMenu,	"EditOwner", NULL, NULL, true, NULL },
     { "crm.createRecurringItems",tr("Create &Recurring Items..."), SLOT(sCreateRecurringItems()),utilitiesMenu, "MaintainPersonalIncidents MaintainPersonalIncidents MaintainAllIncidents MaintainAllProjects MaintainPersonalToDoItems MaintainAllToDoItems", NULL, NULL, true, NULL },
-    { "crm.crmaccountMerge",     tr("Merge &Accounts..."), SLOT(sCrmaccountMerge()),     utilitiesMenu, "MaintainAllCRMAccounts", NULL, NULL, true, NULL },
-    { "crm.addressMerge",        tr("Merge Addresses..."), SLOT(sAddressMerge()),        utilitiesMenu, "MaintainAddresses",      NULL, NULL, true, NULL },
-    { "crm.contactMerge",        tr("&Merge Contacts..."), SLOT(sContactMerge()),        utilitiesMenu, "MergeContacts",          NULL, NULL, true, NULL },
+    { "separator",		NULL,				NULL,			utilitiesMenu,	"true", NULL, NULL, true	, NULL },
+    { "crm.crmaccountMerge",     tr("Merge &Accounts"), SLOT(sCrmaccountMerge()),    utilitiesMenu, "MaintainAllCRMAccounts", NULL, NULL, true, NULL },
+    { "crm.addressMerge",        tr("Merge Addresses"), SLOT(sAddressMerge()),       utilitiesMenu, "MaintainAddresses",      NULL, NULL, true, NULL },
+    { "crm.contactMerge",        tr("&Merge Contacts"), SLOT(sContactMerge()),       utilitiesMenu, "MergeContacts",          NULL, NULL, true, NULL },
+    { "separator",		NULL,				NULL,		     utilitiesMenu,	"true", NULL, NULL, true	, NULL },
+    { "crm.buildCRMGroups",      tr("&Build CRM Groups"), SLOT(sBuildCRMGroups()),   utilitiesMenu, "MaintainCustomerGroups MaintainEmployeeGroups MaintainProspectGroups MaintainContactGroups", NULL, NULL, true, NULL },
 
     { "crm.setup",	tr("&Setup..."),	SLOT(sSetup()),	crmMenu,	NULL,	NULL,	NULL,	true, NULL}
 
@@ -243,6 +256,16 @@ void menuCRM::sCRMAccounts()
   omfgThis->handleNewWindow(new crmaccounts());
 }
 
+void menuCRM::sCRMAccountGroups()
+{
+  ParameterList params;
+  params.append("groupType", crmGroups::Account);
+
+  crmGroups *newdlg = new crmGroups();
+  newdlg->set(params);
+  omfgThis->handleNewWindow(newdlg);
+}
+
 void menuCRM::sEditOwners()
 {
   omfgThis->handleNewWindow(new editOwners());
@@ -267,6 +290,16 @@ void menuCRM::sContacts()
   omfgThis->handleNewWindow(new contacts());
 }
 
+void menuCRM::sContactGroups()
+{
+  ParameterList params;
+  params.append("groupType", crmGroups::Contact);
+
+  crmGroups *newdlg = new crmGroups();
+  newdlg->set(params);
+  omfgThis->handleNewWindow(newdlg);
+}
+
 void menuCRM::sContactMerge()
 {
   omfgThis->handleNewWindow(new contactMerge());
@@ -274,12 +307,17 @@ void menuCRM::sContactMerge()
 
 void menuCRM::sCrmaccountMerge()
 {
-	omfgThis->handleNewWindow(new crmaccountMerge(omfgThis, "crmaccountMerge"), Qt::WindowModal);
+  omfgThis->handleNewWindow(new crmaccountMerge());
 }
 
 void menuCRM::sAddressMerge()
 {
   omfgThis->handleNewWindow(new addressMerge());
+}
+
+void menuCRM::sBuildCRMGroups()
+{
+  omfgThis->handleNewWindow(new buildCRMGroups());
 }
 
 void menuCRM::sAddress()
@@ -294,6 +332,16 @@ void menuCRM::sAddress()
 void menuCRM::sAddresses()
 {
   omfgThis->handleNewWindow(new addresses());
+}
+
+void menuCRM::sAddressGroups()
+{
+  ParameterList params;
+  params.append("groupType", crmGroups::Address);
+
+  crmGroups *newdlg = new crmGroups();
+  newdlg->set(params);
+  omfgThis->handleNewWindow(newdlg);
 }
 
 void menuCRM::sIncidentWorkbench()
@@ -365,6 +413,16 @@ void menuCRM::sNewProspect()
 void menuCRM::sProspects()
 {
   omfgThis->handleNewWindow(new prospects());
+}
+
+void menuCRM::sProspectGroups()
+{
+  ParameterList params;
+  params.append("groupType", crmGroups::Prospect);
+
+  crmGroups *newdlg = new crmGroups();
+  newdlg->set(params);
+  omfgThis->handleNewWindow(newdlg);
 }
 
 void menuCRM::sSetup()
