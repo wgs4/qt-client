@@ -1,23 +1,19 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2016 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
  * to be bound by its terms.
  */
 
+#include "scriptapi_internal.h"
 #include "qwebelementcollectionproto.h"
 
-#if QT_VERSION < 0x050000
 void setupQWebElementCollectionProto(QScriptEngine *engine)
 {
-  Q_UNUSED(engine);
-}
-#else
-void setupQWebElementCollectionProto(QScriptEngine *engine)
-{
+  scriptDeprecated("QWebElementCollection will not be available in Qt 5.9");
   QScriptValue proto = engine->newQObject(new QWebElementCollectionProto(engine));
   engine->setDefaultPrototype(qMetaTypeId<QWebElementCollection*>(), proto);
   engine->setDefaultPrototype(qMetaTypeId<QWebElementCollection>(),  proto);
@@ -147,5 +143,3 @@ QList<QWebElement> QWebElementCollectionProto::toList() const
     return item->toList();
   return QList<QWebElement>();
 }
-
-#endif
