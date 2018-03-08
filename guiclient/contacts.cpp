@@ -45,6 +45,7 @@ contacts::contacts(QWidget* parent, const char*, Qt::WindowFlags fl)
     parameterWidget()->append(tr("Owner"), "owner_username", ParameterWidget::User);
     parameterWidget()->append(tr("Owner Pattern"), "owner_usr_pattern", ParameterWidget::Text);
   }
+  parameterWidget()->appendComboBox(tr("Contact Group"), "cntctgrp", XComboBox::ContactGroups);
   parameterWidget()->append(tr("Account"), "crmacct_id", ParameterWidget::Crmacct);
   parameterWidget()->append(tr("Name Pattern"), "cntct_name_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Phone Pattern"), "cntct_phone_pattern", ParameterWidget::Text);
@@ -435,22 +436,28 @@ void contacts::sOpen()
 
 void contacts::sNewProspect()
 {
+  XSqlQuery sql;
+  XSqlQuery crmsql;
+  ParameterList params;
+
+  sql.prepare("SELECT DISTINCT crmacct_number"
+              "  FROM cntct"
+              "  JOIN crmacctcntctass ON cntct_id=crmacctcntctass_cntct_id"
+              "  JOIN crmacct ON crmacct_id=crmacctcntctass_crmacct_id"
+              " WHERE cntct_id=:cntct_id"
+              "   AND crmaccttypes(crmacctcntctass_crmacct_id)#>>'{customer}' IS NULL"
+              "   AND crmaccttypes(crmacctcntctass_crmacct_id)#>>'{prospect}' IS NULL"
+              " ORDER BY crmacct_number;");
+  crmsql.prepare("SELECT crmacct_id"
+              "  FROM crmacct"
+                " WHERE crmacct_number=:crmacct_number;");
+
+  params.append("mode", "new");
+
   foreach (XTreeWidgetItem *item, list()->selectedItems())
   {
-    ParameterList params;
-    params.append("mode", "new");
-
     QStringList crmaccts;
 
-    XSqlQuery sql;
-    sql.prepare("SELECT DISTINCT crmacct_number"
-                "  FROM cntct"
-                "  JOIN crmacctcntctass ON cntct_id=crmacctcntctass_cntct_id"
-                "  JOIN crmacct ON crmacct_id=crmacctcntctass_crmacct_id"
-                " WHERE cntct_id=:cntct_id"
-                "   AND crmaccttypes(crmacctcntctass_crmacct_id)#>>'{customer}' IS NULL"
-                "   AND crmaccttypes(crmacctcntctass_crmacct_id)#>>'{prospect}' IS NULL"
-                " ORDER BY crmacct_number;");
     sql.bindValue(":cntct_id", item->id());
     sql.exec();
     while (sql.next())
@@ -477,15 +484,13 @@ void contacts::sNewProspect()
         continue;
     }
 
-    sql.prepare("SELECT crmacct_id"
-                "  FROM crmacct"
-                " WHERE crmacct_number=:crmacct_number;");
-    sql.bindValue(":crmacct_number", crmacctsel);
-    sql.exec();
-    if (sql.first())
-      params.append("crmacct_id", sql.value("crmacct_id").toInt());
+
+    crmsql.bindValue(":crmacct_number", crmacctsel);
+    crmsql.exec();
+    if (crmsql.first())
+      params.append("crmacct_id", crmsql.value("crmacct_id").toInt());
     else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Fetching CRM Accounts"),
-                                  sql, __FILE__, __LINE__))
+                                  crmsql, __FILE__, __LINE__))
       return;
 
     prospect *newdlg = new prospect();

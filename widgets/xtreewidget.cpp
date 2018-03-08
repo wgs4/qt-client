@@ -869,9 +869,13 @@ void XTreeWidget::addColumn(const QString &pString, int pWidth, int pAlignment, 
         part = savedParts.at(i);
         key  = part.left(part.indexOf(","));
         val  = part.right(part.length() - part.indexOf(",") - 1);
-        int c = key.toInt(&b1);
+
+        // Check preferences for column id or name
+        int c = key.toInt(&b1) ? key.toInt(&b1) : i;
+        if (c == i) { b1 = true; } 
         if (b1 && (val == "on" || val == "off"))
-          _savedVisibleColumns.insert(c, (val == "on" ? true : false));
+          _preferenceColumns[key] = (val == "on" ? true : false);
+
       }
     }
   }
@@ -909,7 +913,7 @@ void XTreeWidget::addColumn(const QString &pString, int pWidth, int pAlignment, 
   }
   bool forgetCache = _forgetful;
   _forgetful = true;
-  setColumnVisible(column, _savedVisibleColumns.value(column, pVisible));
+  setColumnVisible(column, _preferenceColumns.value(pEditColumn, pVisible));
   _forgetful = forgetCache;
   if (_sort.contains(qMakePair(column, Qt::AscendingOrder)) ||
       _sort.contains(qMakePair(column, Qt::DescendingOrder)))
@@ -1787,9 +1791,8 @@ void XTreeWidget::setColumnVisible(int pColumn, bool pVisible)
   {
     QString savedString = "";
     for (int i = 0; i < header()->count(); i++)
-    {
-      savedString.append(QString::number(i) + "," + (header()->isSectionHidden(i) ? "off" : "on") + "|");
-    }
+        savedString.append(column(i) + "," + (header()->isSectionHidden(i) ? "off" : "on") + "|");
+
     if (!savedString.isEmpty())
       _x_preferences->set(_settingsName + "/columnsShown", savedString);
     else

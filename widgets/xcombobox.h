@@ -51,10 +51,10 @@ class XTUPLEWIDGETS_EXPORT XComboBox : public QComboBox
     Q_ENUM(Defaults)
     enum XComboBoxTypes
       {
-      AddressCommentTypes, Adhoc,
+      AddressCommentTypes, AddressGroups, Adhoc,
       APBankAccounts,	APTerms, ARBankAccounts,
       ARCMReasonCodes, ARDMReasonCodes,
-      ARTerms, AccountingPeriods, Agent,
+      ARTerms, AccountGroups, AccountingPeriods, Agent,
       AllCommentTypes, AllProjects,
       BBOMHeadCommentTypes, BBOMItemCommentTypes,
       BOMHeadCommentTypes, BOMItemCommentTypes,
@@ -62,9 +62,9 @@ class XTUPLEWIDGETS_EXPORT XComboBox : public QComboBox
       CRMAccounts, CRMAccountCommentTypes,
       CRMRoleAddress, CRMRoleContact, CRMRolePhone, CRMRoleEmail,
       ClassCodes,	Companies, ContactCommentTypes,
-      Contracts, CostCategories, Countries,
+      ContactGroups, Contracts, CostCategories, Countries,
       Currencies,	CurrenciesNotBase, CustomerCommentTypes,
-      CustomerGroups,	CustomerTypes,
+      CustomerGroups,	CustomerTypes, EmployeeGroups,
       EmployeeCommentTypes, ExchangeRateCommentTypes, ExpenseCategories,
       FinancialLayouts,	FiscalYears, FreightClasses, Honorifics,
       IncidentCategory, IncidentCommentTypes,
@@ -74,7 +74,7 @@ class XTUPLEWIDGETS_EXPORT XComboBox : public QComboBox
       LocaleCountries,  LocaleLanguages,
       LocationCommentTypes, LotSerialCommentTypes, OpportunityCommentTypes,
       OpportunityStages, OpportunitySources, OpportunityTypes,
-      PlannerCodes,	PoProjects, ProductCategories,
+      PlannerCodes,	PoProjects, ProductCategories, ProspectGroups,
       ProfitCenters,	ProjectCommentTypes, ProspectCommentTypes,
       PurchaseOrderCommentTypes, PurchaseOrderItemCommentTypes,
       ReasonCodes, RegistrationTypes, Reports, ReturnReasonCodes,

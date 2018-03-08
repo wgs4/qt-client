@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2015 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -27,12 +27,12 @@ printStatementsByCustomerGroup::printStatementsByCustomerGroup(QWidget* parent, 
   setDoctype("AR");
   setReportKey("custgrp_id");
 
-  _docinfoQueryString = "SELECT custgrp_id       AS docid, custgrp_id,"
-                        "       custgrp_name     AS docnumber,"
+  _docinfoQueryString = "SELECT groups_id       AS docid, groups_id,"
+                        "       groups_name     AS docnumber,"
                         "       false            AS printed,"
                         "       'StatementbyCustomerGroup' AS reportname"
                         "  FROM custgrp"
-                        " WHERE (custgrp_id=<? value('docid') ?>);";
+                        " WHERE (groups_id=<? value('docid') ?>);";
 
   connect(_custgrp,        SIGNAL(newID(int)), this, SLOT(setId(int)));
   connect(this, SIGNAL(populated(XSqlQuery*)), this, SLOT(sPopulate(XSqlQuery*)));

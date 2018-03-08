@@ -24,7 +24,7 @@ crmRole::crmRole(QWidget* parent, const char* name, bool modal, Qt::WindowFlags 
   setupUi(this);
 
   connect(_save, SIGNAL(clicked()), this, SLOT(sSave()));
-  connect(_close, SIGNAL(clicked()), this, SLOT(sClose()));
+  connect(_close, SIGNAL(clicked()), this, SLOT(close()));
 
 }
 
@@ -40,9 +40,12 @@ void crmRole::languageChange()
 
 enum SetResponse crmRole::set(const ParameterList &pParams)
 {
+  XDialog::set(pParams);
   XSqlQuery role;
   QVariant param;
   bool     valid;
+
+  emit saveBeforeBegin();
 
   param = pParams.value("crmrole_id", &valid);
   if (valid)
@@ -55,18 +58,9 @@ enum SetResponse crmRole::set(const ParameterList &pParams)
   if (valid)
   {
     if (param.toString() == "new")
-    {
       _mode = cNew;
-
-      role.exec("SELECT NEXTVAL('crmrole_crmrole_id_seq') AS crmrole_id;");
-      if (role.first())
-        _crmroleid = role.value("crmrole_id").toInt();
-    }
     else if (param.toString() == "edit")
-    {
       _mode = cEdit;
-
-    }
     else if (param.toString() == "view")
     {
       _mode = cView;
@@ -78,24 +72,9 @@ enum SetResponse crmRole::set(const ParameterList &pParams)
     }
   }
 
+  emit saveAfterCommit();
+
   return NoError;
-}
-
-void crmRole::sClose()
-{
-  XSqlQuery typeClose;
-  if (_mode == cNew)
-  {
-    typeClose.prepare( "DELETE FROM crmrole "
-                "WHERE (crmrole_id=:crmrole_id);" );
-    typeClose.bindValue(":crmrole_id", _crmroleid);
-    typeClose.exec();
-
-    ErrorReporter::error(QtCriticalMsg, this, tr("Error Deleting CRM Role"),
-                              typeClose, __FILE__, __LINE__);
-  }
-
-  close();
 }
 
 void crmRole::sSave()

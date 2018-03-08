@@ -1865,7 +1865,7 @@ void purchaseOrder::sHandleShipTo()
     _shiptoCntct->setFax(purchaseHandleShipTo.value("contact_fax").toString());
     _shiptoCntct->setEmailAddress(purchaseHandleShipTo.value("cntct_email").toString());
 
-        _shiptoAddr->setId(purchaseHandleShipTo.value("addr_id").toInt());
+    _shiptoAddr->setId(purchaseHandleShipTo.value("addr_id").toInt());
     _shiptoAddr->setLine1(purchaseHandleShipTo.value("addr_line1").toString());
     _shiptoAddr->setLine2(purchaseHandleShipTo.value("addr_line2").toString());
     _shiptoAddr->setLine3(purchaseHandleShipTo.value("addr_line3").toString());
@@ -1884,9 +1884,11 @@ void purchaseOrder::sHandleShipToName()
   if (!_dropShip->isChecked())
   {
     XSqlQuery purchaseHandleShipTo;
-    purchaseHandleShipTo.prepare("SELECT * "
-                                 "FROM address "
-                                 "WHERE (addr_id=:addr_id);" );
+    purchaseHandleShipTo.prepare("SELECT crmacct_name "
+                                 "FROM shiptoinfo "
+                                 "JOIN custinfo ON shipto_cust_id = cust_id "
+                                 "JOIN crmacct ON cust_crmacct_id = crmacct_id "
+                                 "WHERE shipto_addr_id=:addr_id;" );
     purchaseHandleShipTo.bindValue(":addr_id", _shiptoAddr->id());
     purchaseHandleShipTo.exec();
     if (purchaseHandleShipTo.first())

@@ -1302,9 +1302,9 @@ void crmaccount::sAddAddress()
   if ( !_address->isValid())
     _address->save(AddressCluster::CHECK);
 
-  errors<< GuiErrorCheck(!_addrRole->isValid(), _cntctRole,
+  errors<< GuiErrorCheck(!_addrRole->isValid(), _addrRole,
                          tr("Please first select a Role."))
-        <<  GuiErrorCheck(!_address->isValid(), _contact,
+        <<  GuiErrorCheck(!_address->isValid(), _address,
                          tr("Please first select an Address."))
   ;
   if (GuiErrorCheck::reportErrors(this, tr("Cannot Add Address"), errors))
@@ -1313,10 +1313,7 @@ void crmaccount::sAddAddress()
   adda.prepare("INSERT INTO crmacctaddrass (crmacctaddrass_crmacct_id, crmacctaddrass_addr_id, "
                "                             crmacctaddrass_crmrole_id, crmacctaddrass_default)  "
                " SELECT :crmacct_id, :addr_id, :crmrole_id, :default "
-               " WHERE NOT EXISTS (SELECT 1 FROM crmacctaddrass "
-               "                    WHERE crmacctaddrass_crmacct_id=:crmacct_id   "
-               "                    AND  crmacctaddrass_addr_id=:addr_id   "
-               "                    AND  crmacctaddrass_crmrole_id=:crmrole_id); ");
+               " ON CONFLICT DO NOTHING; ");
   adda.bindValue(":crmacct_id", _crmacctId);
   adda.bindValue(":addr_id",   _address->id());
   adda.bindValue(":crmrole_id", _addrRole->id());
@@ -1344,10 +1341,7 @@ void crmaccount::sAddContact()
   addc.prepare("INSERT INTO crmacctcntctass (crmacctcntctass_crmacct_id, crmacctcntctass_cntct_id, "
                "                             crmacctcntctass_crmrole_id, crmacctcntctass_default)  "
                " SELECT :crmacct_id, :cntct_id, :crmrole_id, :default "
-               " WHERE NOT EXISTS (SELECT 1 FROM crmacctcntctass "
-               "                    WHERE crmacctcntctass_crmacct_id=:crmacct_id   "
-               "                    AND  crmacctcntctass_cntct_id=:cntct_id   "
-               "                    AND  crmacctcntctass_crmrole_id=:crmrole_id); ");
+               " ON CONFLICT DO NOTHING; ");
   addc.bindValue(":crmacct_id", _crmacctId);
   addc.bindValue(":cntct_id",   _contact->id());
   addc.bindValue(":crmrole_id", _cntctRole->id());

@@ -55,6 +55,7 @@ crmaccounts::crmaccounts(QWidget* parent, const char*, Qt::WindowFlags fl)
     parameterWidget()->append(tr("Owner"), "owner_username", ParameterWidget::User);
     parameterWidget()->append(tr("Owner Pattern"), "owner_usr_pattern", ParameterWidget::Text);
   }
+  parameterWidget()->appendComboBox(tr("Account Groups"), "crmacctgrp", XComboBox::AccountGroups);
   parameterWidget()->append(tr("Show Inactive"), "showInactive", ParameterWidget::Exists);
   parameterWidget()->append(tr("Account Number Pattern"), "crmacct_number_pattern", ParameterWidget::Text);
   parameterWidget()->append(tr("Account Name Pattern"), "crmacct_name_pattern", ParameterWidget::Text);

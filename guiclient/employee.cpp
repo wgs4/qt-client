@@ -17,7 +17,7 @@
 #include <parameter.h>
 
 #include "crmaccount.h"
-#include "empGroup.h"
+#include "crmGroups.h"
 #include "empgroupcluster.h"
 #include "errorReporter.h"
 #include "guiErrorCheck.h"
@@ -99,8 +99,8 @@ employee::employee(QWidget* parent, const char * name, Qt::WindowFlags fl)
 
   _charass->setType("EMP");
 
-  _groups->addColumn(tr("Name"), _itemColumn, Qt::AlignLeft, true, "empgrp_name");
-  _groups->addColumn(tr("Description"),   -1, Qt::AlignLeft, true, "empgrp_descrip");
+  _groups->addColumn(tr("Name"), _itemColumn, Qt::AlignLeft, true, "groups_name");
+  _groups->addColumn(tr("Description"),   -1, Qt::AlignLeft, true, "groups_descrip");
 
   _wagetype->setAllowNull(false);
   _wagetype->append(0, tr("Hourly"),      "H");
@@ -201,12 +201,12 @@ enum SetResponse employee::set(const ParameterList &pParams)
   {
     connect(_groups, SIGNAL(valid(bool)), _detachGroup, SLOT(setEnabled(bool)));
     _attachGroup->setEnabled(true);
-    if (empGroup::userHasPriv(cEdit))
+    if (_privileges->check("MaintainEmployeeGroups"))
     {
       connect(_groups, SIGNAL(valid(bool)), _editGroup,   SLOT(setEnabled(bool)));
     }
   }
-  if (empGroup::userHasPriv(cView))
+  if (_privileges->check("ViewEmployeeGroups MaintainEmployeeGroups"))
     connect(_groups, SIGNAL(valid(bool)), _viewGroup,   SLOT(setEnabled(bool)));
 
   if (!_code->text().length())
@@ -515,9 +515,9 @@ void employee::sFillGroupsList()
   XSqlQuery getq;
   getq.prepare( "SELECT empgrp.* "
              "FROM empgrp, empgrpitem "
-             "WHERE ((empgrp_id=empgrpitem_empgrp_id)"
-             "  AND  (empgrpitem_emp_id=:emp_id) ) "
-             "ORDER BY empgrp_name;" );
+             "WHERE ((groups_id=groupsitem_groups_id)"
+             "  AND  (groupsitem_reference_id=:emp_id) ) "
+             "ORDER BY groups_name;" );
   getq.bindValue(":emp_id", _empid);
   getq.exec();
   _groups->populate(getq);
@@ -537,8 +537,8 @@ void employee::sAttachGroup()
   {
     XSqlQuery grpq;
     grpq.prepare("SELECT * FROM empgrpitem"
-              " WHERE((empgrpitem_empgrp_id=:empgrpid)"
-              "   AND (empgrpitem_emp_id=:empid));");
+              " WHERE((groupsitem_groups_id=:empgrpid)"
+              "   AND (groupsitem_reference_id=:empid));");
     grpq.bindValue(":empgrpid", empgrpid);
     grpq.bindValue(":empid",    _empid);
     grpq.exec();
@@ -548,9 +548,8 @@ void employee::sAttachGroup()
         tr("The employee is already in the selected group.") );
       return;
     }
-    grpq.prepare("INSERT INTO empgrpitem (empgrpitem_empgrp_id, empgrpitem_emp_id)"
-              " VALUES "
-              "(:empgrpid, :empid);");
+    grpq.prepare("INSERT INTO empgrpitem (groupsitem_groups_id, groupsitem_reference_id)"
+              " VALUES (:empgrpid, :empid);");
     grpq.bindValue(":empgrpid", empgrpid);
     grpq.bindValue(":empid",    _empid);
     grpq.exec();
@@ -598,8 +597,8 @@ void employee::sDetachGroup()
 {
   XSqlQuery detq;
   detq.prepare("DELETE FROM empgrpitem "
-            "WHERE ((empgrpitem_empgrp_id=:grpid)"
-            "  AND  (empgrpitem_emp_id=:empid));");
+            "WHERE ((groupsitem_groups_id=:grpid)"
+            "  AND  (groupsitem_reference_id=:empid));");
   detq.bindValue(":grpid", _groups->id());
   detq.bindValue(":empid", _empid);
   detq.exec();
@@ -614,11 +613,12 @@ void employee::sEditGroup()
 {
   ParameterList params;
   params.append("mode", "edit");
-  params.append("empgrp_id", _groups->id());
+  params.append("groups_id", _groups->id());
+  params.append("groupType", crmGroups::Employee);
 
-  empGroup newdlg(this, "", true);
-  newdlg.set(params);
-  newdlg.exec();
+  crmGroups *newdlg = new crmGroups();
+  newdlg->set(params);
+  omfgThis->handleNewWindow(newdlg);
   sFillGroupsList();
 }
 
@@ -626,11 +626,12 @@ void employee::sViewGroup()
 {
   ParameterList params;
   params.append("mode", "view");
-  params.append("empgrp_id", _groups->id());
+  params.append("groups_id", _groups->id());
+  params.append("groupType", crmGroups::Employee);
 
-  empGroup newdlg(this, "", true);
-  newdlg.set(params);
-  newdlg.exec();
+  crmGroups *newdlg = new crmGroups();
+  newdlg->set(params);
+  omfgThis->handleNewWindow(newdlg);
 }
 
 void employee::sHandleButtons()

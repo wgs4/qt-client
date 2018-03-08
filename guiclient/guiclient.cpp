@@ -2279,10 +2279,6 @@ void GUIClient::loadScriptGlobals(QScriptEngine * engine)
   if(!engine)
     return;
 
-#if QT_VERSION >= 0x040500
-  engine->installTranslatorFunctions();
-#endif
-
   QScriptValue::PropertyFlags ro = QScriptValue::ReadOnly | QScriptValue::Undeletable;
 
   qScriptRegisterMetaType(engine, SetResponsetoScriptValue, SetResponsefromScriptValue);
@@ -2353,9 +2349,7 @@ void GUIClient::loadScriptGlobals(QScriptEngine * engine)
   mainwindowval.setProperty("cTransScraps", QScriptValue(engine, cTransScraps), ro);
   mainwindowval.setProperty("cNoReportDefinition", QScriptValue(engine, cNoReportDefinition), ro);
 
-  setupScriptApi(engine);
   setupWidgetsScriptApi(engine, ScriptableWidget::_guiClientInterface); // what's a better way?
-  setupSetupApi(engine);
   setupGuiErrorCheck(engine);
 
   // TODO: Make all classes work this way instead of setup* as above?

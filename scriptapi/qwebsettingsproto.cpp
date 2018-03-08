@@ -1,21 +1,16 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2016 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
  * to be bound by its terms.
  */
 
+#include "scriptapi_internal.h"
 #include "qwebsettingsproto.h"
 
-#if QT_VERSION < 0x050000
-void setupQWebSettingsProto(QScriptEngine *engine)
-{
-  Q_UNUSED(engine);
-}
-#else
 QScriptValue FontFamilyToScriptValue(QScriptEngine *engine, const QWebSettings::FontFamily &item)
 {
   return engine->newVariant(item);
@@ -230,12 +225,11 @@ QScriptValue webGraphicForJS(QScriptContext* context, QScriptEngine* engine)
 
 void setupQWebSettingsProto(QScriptEngine *engine)
 {
+  scriptDeprecated("QWebSettings will not be available in Qt 5.9");
   QScriptValue::PropertyFlags permanent = QScriptValue::ReadOnly | QScriptValue::Undeletable;
 
   QScriptValue proto = engine->newQObject(new QWebSettingsProto(engine));
   engine->setDefaultPrototype(qMetaTypeId<QWebSettings*>(), proto);
-  // TODO: QWebSettings is private.
-  //engine->setDefaultPrototype(qMetaTypeId<QWebSettings>(),  proto);
 
   QScriptValue constructor = engine->newFunction(constructQWebSettings, proto);
   engine->globalObject().setProperty("QWebSettings", constructor);
@@ -528,4 +522,3 @@ QUrl QWebSettingsProto::userStyleSheetUrl() const
 }
 */
 
-#endif

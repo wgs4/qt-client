@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -43,6 +43,7 @@ addresses::addresses(QWidget* parent, const char*, Qt::WindowFlags fl)
   _detachAct = 0;
 
   parameterWidget()->append(tr("Account"), "crmacct_id", ParameterWidget::Crmacct);
+  parameterWidget()->appendComboBox(tr("Address Group"), "addrgrp", XComboBox::AddressGroups);
   parameterWidget()->append(tr("Address"), "address", ParameterWidget::Text);
   parameterWidget()->append(tr("City"), "city", ParameterWidget::Text);
   parameterWidget()->append(tr("State"), "state", ParameterWidget::Text);
@@ -210,7 +211,7 @@ void addresses::sDetach()
   int answer = QMessageBox::question(this, tr("Detach Address?"),
 			tr("<p>Are you sure you want to detach this Address "
 			   "from this Account?"),
-			QMessageBox::Yes, QMessageBox::No | QMessageBox::Default);
+			QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
   if (answer == QMessageBox::Yes)
   {
     int cntctId = list()->id();

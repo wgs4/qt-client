@@ -4,12 +4,13 @@ TARGET   = xtuple
 CONFIG   += qt warn_on
 
 QT += xml sql script scripttools network
-QT += webkit xmlpatterns printsupport webkitwidgets
+QT += designer uitools quick websockets webchannel serialport
+QT += xmlpatterns printsupport
 
-isEqual(QT_MAJOR_VERSION, 5) {
-  QT     += designer uitools quick websockets webchannel serialport
-} else {
-  CONFIG += designer uitools
+equals(QT_MAJOR_VERSION, 5) {
+  lessThan (QT_MINOR_VERSION, 9) {
+    QT += webkit webkitwidgets
+  }
 }
 
 TEMPLATE = app
@@ -135,6 +136,7 @@ FORMS =   absoluteCalendarItem.ui               \
           bankAdjustmentEditList.ui             \
           bankAdjustmentType.ui                 \
           bankAdjustmentTypes.ui                \
+          buildCRMGroups.ui                     \
           bom.ui                                \
           bomItem.ui                            \
           bomList.ui                            \
@@ -220,6 +222,8 @@ FORMS =   absoluteCalendarItem.ui               \
           crmaccountMergePickDataPage.ui        \
           crmaccountMergePickTaskPage.ui        \
           crmaccountMergeResultPage.ui          \
+          crmGroup.ui                          \
+          crmGroups.ui                          \
           crmRole.ui                            \
           crmRoles.ui                           \
           currencies.ui                         \
@@ -233,8 +237,6 @@ FORMS =   absoluteCalendarItem.ui               \
           customer.ui                           \
           customerFormAssignment.ui             \
           customerFormAssignments.ui            \
-          customerGroup.ui                      \
-          customerGroups.ui                     \
           customerType.ui                       \
           customerTypeList.ui                   \
           customerTypes.ui                      \
@@ -264,9 +266,9 @@ FORMS =   absoluteCalendarItem.ui               \
           dspTaxHistory.ui              \
           dspTaxReturn.ui               \
           duplicateAccountNumbers.ui    \
+          dynamicfilters.ui             \
+          dynamicfilter.ui              \
           editOwners.ui                 \
-          empGroup.ui                   \
-          empGroups.ui                  \
           employee.ui                   \
           enterMiscCount.ui             \
           enterPoReceipt.ui             \
@@ -706,6 +708,7 @@ HEADERS = ../common/format.h                    \
           bomItem.h                     \
           bomList.h                     \
           budgets.h                     \
+          buildCRMGroups.h              \
           buyCard.h                     \
           calendar.h                    \
           calendars.h                   \
@@ -791,6 +794,8 @@ HEADERS = ../common/format.h                    \
           crmaccountMergePickTaskPage.h         \
           crmaccountMergeResultPage.h           \
           crmaccounts.h                         \
+          crmGroup.h                            \
+          crmGroups.h                           \
           crmRole.h                             \
           crmRoles.h                            \
           currencies.h                          \
@@ -806,8 +811,6 @@ HEADERS = ../common/format.h                    \
           customer.h                            \
           customerFormAssignment.h              \
           customerFormAssignments.h             \
-          customerGroup.h                       \
-          customerGroups.h                      \
           customerType.h                        \
           customerTypeList.h                    \
           customerTypes.h                       \
@@ -841,9 +844,9 @@ HEADERS = ../common/format.h                    \
           dspTaxHistory.h                       \
           dspTaxReturn.h                        \
           duplicateAccountNumbers.h             \
+          dynamicfilters.h                      \
+          dynamicfilter.h                       \
           editOwners.h                          \
-          empGroup.h                            \
-          empGroups.h                           \
           employee.h                            \
           employees.h                           \
           enterMiscCount.h                      \
@@ -1330,6 +1333,7 @@ SOURCES = absoluteCalendarItem.cpp              \
           bomItem.cpp                           \
           bomList.cpp                           \
           budgets.cpp                           \
+          buildCRMGroups.cpp                    \
           buyCard.cpp                           \
           calendar.cpp                          \
           calendars.cpp                         \
@@ -1415,6 +1419,8 @@ SOURCES = absoluteCalendarItem.cpp              \
           crmaccountMergePickTaskPage.cpp       \
           crmaccountMergeResultPage.cpp         \
           crmaccounts.cpp                       \
+          crmGroup.cpp                          \
+          crmGroups.cpp                         \
           crmRole.cpp                           \
           crmRoles.cpp                          \
           currencies.cpp                        \
@@ -1430,8 +1436,6 @@ SOURCES = absoluteCalendarItem.cpp              \
           customer.cpp                          \
           customerFormAssignment.cpp            \
           customerFormAssignments.cpp           \
-          customerGroup.cpp                     \
-          customerGroups.cpp                    \
           customerType.cpp                      \
           customerTypeList.cpp                  \
           customerTypes.cpp                     \
@@ -1464,9 +1468,9 @@ SOURCES = absoluteCalendarItem.cpp              \
           dspTaxHistory.cpp                     \
           dspTaxReturn.cpp                      \
           duplicateAccountNumbers.cpp           \
+          dynamicfilters.cpp                    \
+          dynamicfilter.cpp                     \
           editOwners.cpp                        \
-          empGroup.cpp                          \
-          empGroups.cpp                         \
           employee.cpp                          \
           employees.cpp                         \
           enterMiscCount.cpp                    \

@@ -131,14 +131,17 @@ void ContactWidget::init()
     _email->setEditable(true);
     _email->setValidator(validator);
     _email->lineEdit()->installEventFilter(this);
-    _email->insertEditor(XComboBox::Adhoc, this, SLOT(sEditEmailList()));
+    _email->insertEditor(XComboBox::Adhoc, this, SLOT(sEditEmailList()),
+                         "MaintainPersonalContacts MaintainAllContacts");
     _emailopt           = new QCheckBox(tr("Opt In"), this);
     _emailopt->setObjectName("_emailopt");
-    _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
+
+    if (_x_metrics)
+      _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
 
     _emailBox->addWidget(_email, 2);
     _emailBox->addWidget(_emailopt, 0);
-
+  
     _webaddrLit		= new QLabel(tr("Web:"), this);
     _webaddrLit->setObjectName("_webaddrLit");
     _webaddr		= new XLineEdit(this, "_webaddr");
@@ -246,14 +249,17 @@ void ContactWidget::findDuplicates()
   if (r.size() == 1)
   {
     r.first();
-    msg = tr("A contact exists with the same first and last name");
+
+    QString msgpart;
     if (_searchAcctId > 0 && r.value("crmacct_id").toInt() == 0)
-      msg += tr(" not associated with any Account");
+      msgpart = QString(" not associated with any Account");
     else if (_searchAcctId == r.value("crmacct_id").toInt())
-      msg += tr(" on the current Account");
+      msgpart = QString(" on the current Account");
     else if (_searchAcctId > 0)
-      msg += tr(" associated with another Account");
-    msg += tr(". Would you like to use the existing contact?");
+      msgpart = QString(" associated with another Account");
+    msg = tr("A contact exists with the same first and last name %1. "
+                  "Would you like to use the existing contact?")
+                  .arg(msgpart);
 
     if (QMessageBox::question(this, tr("Existing Contact"), msg,
                              QMessageBox::Yes | QMessageBox::Default,
@@ -393,7 +399,7 @@ void ContactWidget::silentSetId(const int pId)
 
           if (_mapper->model())
           {
-            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_number)),       _number->text()); 	               _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_number)),       _number->text());
+            _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_number)),       _number->text()); 	               
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_honorific)),    _honorific->currentText());
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_first)),        _first->text());
             _mapper->model()->setData(_mapper->model()->index(_mapper->currentIndex(),_mapper->mappedSection(_last)),         _last->text());
@@ -478,7 +484,10 @@ void ContactWidget::clear()
   _initials->clear();
   _title->clear();
   _email->clear();
-  _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
+  
+  if (_x_metrics)
+    _emailopt->setChecked(_x_metrics->boolean("DefaultEmailOptIn"));
+
   _webaddr->clear();
   _address->clear();
   _active->setChecked(true);
