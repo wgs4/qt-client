@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -67,8 +67,6 @@ CrmaccountMergePickAccountsPage::CrmaccountMergePickAccountsPage(QWidget *parent
   _sources->addColumn(tr("Customer"),  _ynColumn, Qt::AlignCenter,true,  "cust");
   _sources->addColumn(tr("Prospect"),  _ynColumn, Qt::AlignCenter,true,  "prospect");
   _sources->addColumn(tr("Vendor"),    _ynColumn, Qt::AlignCenter,true,  "vend");
-  _sources->addColumn(tr("Competitor"),_ynColumn, Qt::AlignCenter,false, "competitor");
-  _sources->addColumn(tr("Partner"),   _ynColumn, Qt::AlignCenter,false, "partner");
   _sources->addColumn(tr("Tax Auth."), _ynColumn, Qt::AlignCenter,false, "taxauth");
   _sources->addColumn(tr("User"),      _ynColumn, Qt::AlignCenter,false, "usr");
   _sources->addColumn(tr("Employee"),  _ynColumn, Qt::AlignCenter,false, "emp");
@@ -150,7 +148,6 @@ bool CrmaccountMergePickAccountsPage::validatePage()
     updq.prepare("UPDATE crmacctsel SET crmacctsel_dest_crmacct_id=:new,"
                  " crmacctsel_mrg_crmacct_number         = (crmacctsel_src_crmacct_id=:new),"
                  " crmacctsel_mrg_crmacct_active         = (crmacctsel_src_crmacct_id=:new),"
-                 " crmacctsel_mrg_crmacct_competitor_id  = (crmacctsel_src_crmacct_id=:new),"
                  " crmacctsel_mrg_custinfo               = (crmacctsel_src_crmacct_id=:new),"
                  " crmacctsel_mrg_emp                    = (crmacctsel_src_crmacct_id=:new),"
                  " crmacctsel_mrg_prospect               = (crmacctsel_src_crmacct_id=:new),"
@@ -161,7 +158,6 @@ bool CrmaccountMergePickAccountsPage::validatePage()
                  " crmacctsel_mrg_crmacct_notes          = (crmacctsel_src_crmacct_id=:new),"
                  " crmacctsel_mrg_crmacct_owner_username = (crmacctsel_src_crmacct_id=:new),"
                  " crmacctsel_mrg_crmacct_parent_id      = (crmacctsel_src_crmacct_id=:new),"
-                 " crmacctsel_mrg_crmacct_partner_id     = (crmacctsel_src_crmacct_id=:new),"
                  " crmacctsel_mrg_crmacct_type           = (crmacctsel_src_crmacct_id=:new),"
                  " crmacctsel_mrg_crmacct_usr_username   = (crmacctsel_src_crmacct_id=:new)"
                  " WHERE crmacctsel_dest_crmacct_id=:old;");
@@ -181,7 +177,6 @@ bool CrmaccountMergePickAccountsPage::validatePage()
                     "  crmacctsel_src_crmacct_id, crmacctsel_dest_crmacct_id,"
                     "  crmacctsel_mrg_crmacct_number,"
                     "  crmacctsel_mrg_crmacct_active,"
-                    "  crmacctsel_mrg_crmacct_competitor_id,"
                     "  crmacctsel_mrg_custinfo,"
                     "  crmacctsel_mrg_emp,"
                     "  crmacctsel_mrg_prospect,"
@@ -192,7 +187,6 @@ bool CrmaccountMergePickAccountsPage::validatePage()
                     "  crmacctsel_mrg_crmacct_notes,"
                     "  crmacctsel_mrg_crmacct_owner_username,"
                     "  crmacctsel_mrg_crmacct_parent_id,"
-                    "  crmacctsel_mrg_crmacct_partner_id,"
                     "  crmacctsel_mrg_crmacct_type,"
                     "  crmacctsel_mrg_crmacct_usr_username"
                     ") SELECT <? value('srcid') ?>, <? value('destid') ?>,"

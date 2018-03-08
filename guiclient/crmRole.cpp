@@ -1,7 +1,7 @@
 /*
  * This file is part of the xTuple ERP: PostBooks Edition, a free and
  * open source Enterprise Resource Planning software suite,
- * Copyright (c) 1999-2017 by OpenMFG LLC, d/b/a xTuple.
+ * Copyright (c) 1999-2018 by OpenMFG LLC, d/b/a xTuple.
  * It is licensed to you under the Common Public Attribution License
  * version 1.0, the full text of which (including xTuple-specific Exhibits)
  * is available at www.xtuple.com/CPAL.  By using this software, you agree
@@ -84,7 +84,7 @@ void crmRole::sSave()
   QList<GuiErrorCheck> errors;
   errors << GuiErrorCheck(_role->text().trimmed().length() == 0, _role,
                           tr("You must enter a Role before you may save it.") )
-         << GuiErrorCheck(!_addr->isChecked() && !_cntct->isChecked() && !_email->isChecked() && !_phone->isChecked(), _addr,
+         << GuiErrorCheck(!_addr->isChecked() && !_cntct->isChecked() && !_account->isChecked() && !_phone->isChecked(), _addr,
                           tr("You must make at least one assignment before you may save the role.") )
   ;
 
@@ -93,20 +93,20 @@ void crmRole::sSave()
 
   if (_mode == cNew)
     typeSave.prepare( "INSERT INTO crmrole "
-               "(crmrole_name, crmrole_cntct, crmrole_addr, crmrole_email, crmrole_phone, crmrole_sort) "
+               "(crmrole_id, crmrole_name, crmrole_cntct, crmrole_addr, crmrole_crmacct, crmrole_phone, crmrole_sort) "
                "VALUES "
-               "(:crmrole_name, :crmrole_cntct, :crmrole_addr, :crmrole_email, :crmrole_phone, :crmrole_sort);" );
+               "(:crmrole_id, :crmrole_name, :crmrole_cntct, :crmrole_addr, :crmrole_crmacct, :crmrole_phone, :crmrole_sort);" );
   else
     typeSave.prepare( "UPDATE crmrole "
                "SET crmrole_name=:crmrole_name, crmrole_cntct=:crmrole_cntct, crmrole_addr=:crmrole_addr, "
-               "    crmrole_email=:crmrole_email, crmrole_phone=:crmrole_phone, crmrole_sort=:crmrole_sort "
+               "    crmrole_crmacct=:crmrole_crmacct, crmrole_phone=:crmrole_phone, crmrole_sort=:crmrole_sort "
                "WHERE (crmrole_id=:crmrole_id);" );
 
   typeSave.bindValue(":crmrole_id", _crmroleid);
   typeSave.bindValue(":crmrole_name", _role->text());
   typeSave.bindValue(":crmrole_cntct", QVariant(_cntct->isChecked()));
   typeSave.bindValue(":crmrole_addr", QVariant(_addr->isChecked()));
-  typeSave.bindValue(":crmrole_email", QVariant(_email->isChecked()));
+  typeSave.bindValue(":crmrole_crmacct", QVariant(_account->isChecked()));
   typeSave.bindValue(":crmrole_phone", QVariant(_phone->isChecked()));
   typeSave.bindValue(":crmrole_sort", QVariant(_order->value()));
 
@@ -134,7 +134,7 @@ void crmRole::populate()
     _role->setText(rolepopulate.value("crmrole_name").toString());
     _cntct->setChecked(rolepopulate.value("crmrole_cntct").toBool());
     _addr->setChecked(rolepopulate.value("crmrole_addr").toBool());
-    _email->setChecked(rolepopulate.value("crmrole_email").toBool());
+    _account->setChecked(rolepopulate.value("crmrole_crmacct").toBool());
     _phone->setChecked(rolepopulate.value("crmrole_phone").toBool());
     _order->setValue(rolepopulate.value("crmrole_sort").toInt());
   }

@@ -50,9 +50,9 @@ to be bound by its terms.</comment>
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="_email">
+         <widget class="QCheckBox" name="_account">
           <property name="text">
-           <string>Emails</string>
+           <string>Accounts</string>
           </property>
          </widget>
         </item>
