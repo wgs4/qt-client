@@ -170,7 +170,7 @@ void scrapWoMaterialFromWIP::sScrap()
   {
     XSqlQuery itemsite;
     itemsite.prepare("SELECT wo_itemsite_id, wo_prj_id, itemsite_costmethod "
-                     "FROM wo "
+                     "FROM wo JOIN itemsite ON itemsite_id = wo_itemsite_id "
                      "WHERE wo_id=:woId;");
     itemsite.bindValue(":woId", _wo->id());
     itemsite.exec();
