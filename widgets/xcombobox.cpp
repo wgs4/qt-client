@@ -309,7 +309,7 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
                        new XComboBoxDescrip(XComboBox::ClassCodes,
                        "classCodes", "MaintainClassCodes",
                        "SELECT classcode_id,"
-                       "       classcode_code || '-' || classcode_descrip,"
+                       "       classcode_descrip,"
                        "       classcode_code"
                        "  FROM classcode"
                        " ORDER BY classcode_code;", "classcode"));
@@ -534,7 +534,7 @@ XComboBoxPrivate::XComboBoxPrivate(XComboBox *pParent)
                        new XComboBoxDescrip(XComboBox::ProductCategories,
                        "productCategories", "MaintainProductCategories",
                        "SELECT prodcat_id,"
-                       "       prodcat_code || ' - ' || prodcat_descrip,"
+                       "       prodcat_descrip,"
                        "       prodcat_code"
                        "  FROM prodcat"
                        " ORDER BY prodcat_code;", "prodcat"));
