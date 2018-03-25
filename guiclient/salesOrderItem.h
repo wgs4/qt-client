@@ -21,7 +21,7 @@ class salesOrderItem : public XDialog, public Ui::salesOrderItem
 {
   Q_OBJECT
 
-  public: salesOrderItem(QWidget *parent = 0, const char * = 0, Qt::WindowFlags fl = 0);
+  public: salesOrderItem(QWidget *parent = 0, const char * = 0, bool modal = false, Qt::WindowFlags fl = 0);
     ~salesOrderItem();
 
     virtual void  prepare();
