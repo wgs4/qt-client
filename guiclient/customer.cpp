@@ -135,6 +135,7 @@ customer::customer(QWidget* parent, const char* name, Qt::WindowFlags fl)
   connect(_number, SIGNAL(editingFinished()), this, SLOT(sNumberEdited()));
   connect(_number, SIGNAL(editable(bool)), this, SLOT(sNumberEditable(bool)));
   connect(_salesrep, SIGNAL(newID(int)), this, SLOT(sPopulateCommission()));
+  connect(_setSalesRepToShipTo, SIGNAL(clicked()), this, SLOT(sSetSalesRepToAllShipTo()));
   connect(_newShipto, SIGNAL(clicked()), this, SLOT(sNewShipto()));
   connect(_editShipto, SIGNAL(clicked()), this, SLOT(sEditShipto()));
   connect(_viewShipto, SIGNAL(clicked()), this, SLOT(sViewShipto()));
@@ -1740,6 +1741,26 @@ void customer::sNumberEdited()
 {
   _notice = true;
   sCheck();
+}
+
+// Set selected sales rep to all ship to for the current customer
+void customer::sSetSalesRepToAllShipTo()
+{
+  XSqlQuery updateShipTo;
+  updateShipTo.prepare( "UPDATE shiptoinfo "
+                        "SET shipto_commission=:shipto_commission,"
+                        "    shipto_salesrep_id=:shipto_salesrep_id "
+                        "WHERE (shipto_cust_id=:cust_id);" );
+
+  updateShipTo.bindValue(":shipto_commission", (_defaultCommissionPrcnt->toDouble() / 100));
+  if (_salesrep->id() != -1)
+    updateShipTo.bindValue(":shipto_salesrep_id", _salesrep->id());
+  updateShipTo.bindValue(":cust_id", _custid);
+
+  updateShipTo.exec();
+  if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Updating Ship To info"),
+                           updateShipTo, __FILE__, __LINE__))
+    return;
 }
 
 void customer::closeEvent(QCloseEvent *pEvent)

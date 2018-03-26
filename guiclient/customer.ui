@@ -573,6 +573,13 @@ to be bound by its terms.</comment>
                       </property>
                      </spacer>
                     </item>
+                    <item>
+                     <widget class="QPushButton" name="_setSalesRepToShipTo">
+                      <property name="text">
+                       <string>Set to Ship To</string>
+                      </property>
+                     </widget>
+                    </item>
                    </layout>
                   </item>
                   <item row="1" column="0">
