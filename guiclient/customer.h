@@ -92,6 +92,7 @@ protected slots:
     virtual void sCrmAccount();
     virtual void sNumberEdited();
     virtual void sSetSalesRepToAllShipTo();
+    virtual void sSetShipViaToAllShipTo();
 
 signals:
     void populated();
