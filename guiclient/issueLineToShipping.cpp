@@ -135,7 +135,7 @@ void issueLineToShipping::sIssue()
     XMessageBox::message( (isVisible() ? this : parentWidget()), QMessageBox::Warning, tr("Invalid Quantity to Issue to Shipping"),
                           tr(  "<p>Please enter a non-negative, non-zero value to indicate the amount "
                                "of Stock you wish to Issue to Shipping for this Order Line." ),
-                          QString::null, QString::null, _snooze );
+                          QString {}, QString {}, _snooze );
     _qtyToIssue->setFocus();
     return;
   }

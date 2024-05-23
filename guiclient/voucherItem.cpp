@@ -347,7 +347,7 @@ void voucherItem::sSave()
     msg = "The P/O value of ";
     msg.append( voucherSave.value("f_povalue").toString() );
     msg.append( " does not match the total distributed value.\nInvoice matching is required for this vendor.\nStop and correct?" );
-    if ( QMessageBox::warning( this, tr("Invoice Value Mismatch"), msg, tr("Yes"), tr("No"), QString::null ) != 1 )
+    if ( QMessageBox::warning( this, tr("Invoice Value Mismatch"), msg, tr("Yes"), tr("No"), QString {} ) != 1 )
           return;
     }
   }

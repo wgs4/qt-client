@@ -153,7 +153,7 @@ void productCategories::sDeleteUnused()
   XSqlQuery productDeleteUnused;
   if ( QMessageBox::warning( this, tr("Delete Unused Product Categories"),
                              tr("Are you sure that you wish to delete all unused Product Categories?"),
-                             tr("&Yes"), tr("&No"), QString::null, 0, 1 ) == 0 )
+                             tr("&Yes"), tr("&No"), QString {}, 0, 1 ) == 0 )
   {
     productDeleteUnused.exec("SELECT deleteUnusedProductCategories() AS result;");
     sFillList(-1);

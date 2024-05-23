@@ -263,7 +263,7 @@ void arOpenItem::sSave()
                                      "to distribute this change then the A/R Open Item total will be out of balance with the\n"
                                      "A/R Trial Balance(s).\n"
                                      "Are you sure that you want to save this change?" ),
-                                 tr("Yes"), tr("No"), QString::null ) == 1 )
+                                 tr("Yes"), tr("No"), QString {} ) == 1 )
         return;
 
     arSave.prepare( "UPDATE aropen "

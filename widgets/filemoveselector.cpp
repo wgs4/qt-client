@@ -76,11 +76,11 @@ QString FileMoveSelector::code() const
   \return The text code value corresponding to the FileMoveOption enumerated
           value.
           Possible values are "None", "Rename", "Move", and "Delete",
-          or QString::null if poption is invalid or not yet supported.
+          or QString {} if poption is invalid or not yet supported.
   */
 QString FileMoveSelector::codeForOption(FileMoveOption poption) const
 {
-  QString returnValue = QString::null;
+  QString returnValue = QString {};
   switch (poption)
   {
     case Nothing:       returnValue = "None";   break;

@@ -198,7 +198,7 @@ void openReturnAuthorizations::sDelete()
                                   "history will not be deleted or closed upon deletion of "
                                   "this Return Authorization. <p>Are you sure that you want to "
                                   "completely delete the selected Return Authorization?"),
-                               tr("&Yes"), tr("&No"), QString::null, 0, 1 ) == 0 )
+                               tr("&Yes"), tr("&No"), QString {}, 0, 1 ) == 0 )
     {
       openDelete.prepare("DELETE FROM rahead WHERE (rahead_id=:rahead_id);");
       openDelete.bindValue(":rahead_id", _ra->id());
@@ -219,7 +219,7 @@ void openReturnAuthorizations::sDelete()
   {
     if ( QMessageBox::warning( this, tr("Delete Return Authorization?"),
                                tr("Are you sure that you want to completely delete the selected Return Authorization?"),
-                               tr("&Yes"), tr("&No"), QString::null, 0, 1 ) == 0 )
+                               tr("&Yes"), tr("&No"), QString {}, 0, 1 ) == 0 )
     {
       openDelete.prepare("DELETE FROM rahead WHERE (rahead_id=:rahead_id);");
       openDelete.bindValue(":rahead_id", _ra->id());

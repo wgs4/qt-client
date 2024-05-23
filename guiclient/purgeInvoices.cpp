@@ -55,7 +55,7 @@ void purgeInvoices::sPurge()
                                  "You will not be able to re-print an Invoice if you delete that Invoice's Records.\n"
                                  "\n"
                                  "Are you sure that you want to delete the selected Invoice Records?" ),
-                             tr("Yes"), tr("No"), QString::null, 0, 1) == 0)
+                             tr("Yes"), tr("No"), QString {}, 0, 1) == 0)
   {
     
     QString logpath;

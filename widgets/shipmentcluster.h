@@ -74,7 +74,7 @@ class XTUPLEWIDGETS_EXPORT ShipmentCluster : public VirtualCluster
     public slots:
         virtual void limitToOrder(const int);
         virtual void removeOrderLimit();
-        virtual void setId(const int, const QString& = QString::null);
+        virtual void setId(const int, const QString& = QString {});
         virtual void setType(QString);
         virtual void setType(ShipmentClusterLineEdit::ShipmentType);
         virtual void setStatus(QString);

@@ -25,7 +25,7 @@
 
 #define DEBUG true
 
-QString exportData::exportFileDir = QString::null;
+QString exportData::exportFileDir = QString {};
 
 exportData::exportData(QWidget *parent, const char *name, Qt::WindowFlags fl)
   : XWidget(parent, name, fl)

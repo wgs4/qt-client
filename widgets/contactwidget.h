@@ -261,7 +261,7 @@ public slots:
   virtual void	setActiveVisible(const bool);
   virtual void	setAddressVisible(const bool);
   virtual void	setEmailVisible(const bool);
-  virtual void	setId(const int, const QString& = QString::null);
+  virtual void	setId(const int, const QString& = QString {});
   virtual void	setInitialsVisible(const bool);
   virtual void	setMinimalLayout(const bool);
   virtual void	setName(int, const QString& p);

@@ -2412,7 +2412,7 @@ QString CreditCardProcessor::typeToCode(CCTransaction ptranstype)
     case Void:      return QString("V");
   }
 
-  return QString::null;
+  return QString {};
 }
 
 /** @brief Convert between two %currencies.

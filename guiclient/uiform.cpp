@@ -64,7 +64,7 @@ uiform::uiform(QWidget* parent, const char* name, Qt::WindowFlags fl)
   _uiformid      = -1;
   _changed       = false;
   _pkgheadidOrig = -1;
-  _source        = QString::null;
+  _source        = QString {};
 }
 
 uiform::~uiform()

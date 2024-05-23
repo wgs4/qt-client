@@ -479,7 +479,7 @@ QString ParameterGroup::pattern()
   if (_usePattern->isChecked())
     return _pattern->text();
   else
-    return QString::null;
+    return QString {};
 }
 
 QString ParameterGroup::selected()
@@ -487,7 +487,7 @@ QString ParameterGroup::selected()
   if (_selected->isChecked())
     return _items->code();
   else
-    return QString::null;
+    return QString {};
 }
 
 void ParameterGroup::setSelected(const QString &p)

@@ -1576,7 +1576,7 @@ void audioReject()
  */
 QString translationFile(QString localestr, const QString component)
 {
-  QString version = QString::null;
+  QString version = QString {};
   return translationFile(localestr, component, version);
 }
 

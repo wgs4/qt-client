@@ -111,7 +111,7 @@ void enterPoReturn::sPost()
       if ( QMessageBox::question( this, tr("Create Credit Memo"),
                                         tr("One or more line items on this P/O are closed. \n"
                                            "Would you like to automatically create a credit memo against this return?"),
-                                        tr("&Yes"), tr("&No"), QString::null, 0, 1 ) == 0 )
+                                        tr("&Yes"), tr("&No"), QString {}, 0, 1 ) == 0 )
         createMemo = true;
   }
   else if (ErrorReporter::error(QtCriticalMsg, this, tr("Error Posting P/O Return"),

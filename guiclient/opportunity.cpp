@@ -943,7 +943,7 @@ void opportunity::sDeleteQuote()
   XSqlQuery opportunityDeleteQuote;
   if ( QMessageBox::warning( this, tr("Delete Selected Quote"),
                              tr("Are you sure that you want to delete the selected Quote?" ),
-                             tr("&Yes"), tr("&No"), QString::null, 0, 1 ) == 0)
+                             tr("&Yes"), tr("&No"), QString {}, 0, 1 ) == 0)
   {
     opportunityDeleteQuote.prepare("SELECT deleteQuote(:quhead_id) AS result;");
     opportunityDeleteQuote.bindValue(":quhead_id", _salesList->id());

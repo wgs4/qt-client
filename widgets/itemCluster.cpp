@@ -326,7 +326,7 @@ void ItemLineEdit::setItemNumber(const QString& pNumber)
       clauses = _extraClauses;
       clauses << "(item_number=:item_number OR item_upccode=:item_number)";
 
-      item.prepare(buildItemLineEditQuery(pre, clauses, QString::null, _type, false));
+      item.prepare(buildItemLineEditQuery(pre, clauses, QString {}, _type, false));
       item.bindValue(":item_number", pNumber);
       item.exec();
 
@@ -425,7 +425,7 @@ void ItemLineEdit::silentSetId(const int pId)
     clauses = _extraClauses;
     clauses << "(item_id=:item_id)";
 
-    item.prepare(buildItemLineEditQuery(pre, clauses, QString::null, _type, false));
+    item.prepare(buildItemLineEditQuery(pre, clauses, QString {}, _type, false));
     item.bindValue(":item_id", pId);
     item.exec();
 
@@ -596,7 +596,7 @@ void ItemLineEdit::sHandleCompleter()
     if (_crmacct > 0)
       clauses << QString("(itemalias_crmacct_id IS NULL OR itemalias_crmacct_id = %1)")
                     .arg(_crmacct);
-    numQ.prepare(buildItemLineEditQuery(pre, clauses, QString::null, _type, true)
+    numQ.prepare(buildItemLineEditQuery(pre, clauses, QString {}, _type, true)
                               .replace(";"," ORDER BY item_number LIMIT 10;"));
     numQ.bindValue(":searchString", QString(text().trimmed().toUpper()));
   }
@@ -880,7 +880,7 @@ void ItemLineEdit::sParse()
       if (_crmacct > 0)
         clauses << QString("(itemalias_crmacct_id IS NULL OR itemalias_crmacct_id = %1)")
                       .arg(_crmacct);
-      item.prepare(buildItemLineEditQuery(pre, clauses, QString::null, _type, true)
+      item.prepare(buildItemLineEditQuery(pre, clauses, QString {}, _type, true)
                                .replace(";"," ORDER BY item_number LIMIT 1;"));
       item.bindValue(":searchString", stripped);
       item.exec();
@@ -894,7 +894,7 @@ void ItemLineEdit::sParse()
       // item number not found, check upccode
       clauses = _extraClauses;
       clauses << "(POSITION(:searchString IN item_upccode) = 1)";
-      item.prepare(buildItemLineEditQuery(pre, clauses, QString::null, _type, true)
+      item.prepare(buildItemLineEditQuery(pre, clauses, QString {}, _type, true)
                    .replace(";"," ORDER BY item_number LIMIT 1;"));
       item.bindValue(":searchString", stripped);
       item.exec();

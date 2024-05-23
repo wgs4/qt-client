@@ -359,9 +359,9 @@ class XTUPLEWIDGETS_EXPORT VirtualCluster : public QWidget, public ScriptableWid
         virtual void clearExtraClause();
         virtual void setDefaultNumber(const QString& p);
         virtual void setDescription(const QString& p);
-        virtual void setExtraClause(const QString& p, const QString& = QString::null);
+        virtual void setExtraClause(const QString& p, const QString& = QString {});
         virtual void setFieldName(QString p);
-        virtual void setId(const int p, const QString& = QString::null);
+        virtual void setId(const int p, const QString& = QString {});
         virtual void setName(int, const QString& p);
         virtual void setNumber(const int p);
         virtual void setNumber(QString p);

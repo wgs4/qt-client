@@ -159,7 +159,7 @@ class XTUPLEWIDGETS_EXPORT AddressCluster : public VirtualCluster
 	virtual void	sInfo();
 	virtual void	sList();
 	virtual void	sSearch();
-	virtual void	setId(const int, const QString& = QString::null);
+	virtual void	setId(const int, const QString& = QString {});
         virtual void	setSearchAcct(const int crmAcctId) { _searchAcctId = crmAcctId; }
         virtual int	save(enum SaveFlags);
         virtual void    check();

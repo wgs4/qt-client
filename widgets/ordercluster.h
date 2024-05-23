@@ -81,7 +81,7 @@ class XTUPLEWIDGETS_EXPORT OrderLineEdit : public VirtualClusterLineEdit
     virtual void          setAllowedType(const QString &);
     virtual void          setAllowedTypes(const OrderTypes);
     virtual void          setCustId(int);
-    virtual void          setId(const int, const QString & = QString::null);
+    virtual void          setId(const int, const QString & = QString {});
     virtual void          sList();
     virtual void          sSearch();
 
@@ -173,7 +173,7 @@ class XTUPLEWIDGETS_EXPORT OrderCluster : public VirtualCluster
     virtual void        setAllowedTypes(const OrderLineEdit::OrderTypes);
     virtual void        setAllowedTypes(const int);
     virtual void        setCustId(int);
-    virtual void        setId(const int, const QString& = QString::null);
+    virtual void        setId(const int, const QString& = QString {});
     virtual void        setFromSitePrivsEnforced(const bool p);
     virtual void        setToSitePrivsEnforced(const bool p);
     virtual void        sRefresh();

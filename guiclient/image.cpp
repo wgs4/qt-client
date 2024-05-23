@@ -182,7 +182,7 @@ void image::sFileList()
   bool first = true;
   bool havejpg = false;
   QString frmtList = QString(tr("Images ("));
-  QString ext = QString::null;
+  QString ext = QString {};
   QList<QByteArray> list = QImageReader::supportedImageFormats();
   for (int i = 0; i < list.size(); ++i)
   {
@@ -206,7 +206,7 @@ void image::sFileList()
   if (first)
     frmtList = QString(tr("Images (*.png *.xpm *.jpg *.gif)")); // should I do this?
 
-  _fileName->setText(QFileDialog::getOpenFileName( this, tr("Select Image File"), QString::null, frmtList));
+  _fileName->setText(QFileDialog::getOpenFileName( this, tr("Select Image File"), QString {}, frmtList));
 
   if (_fileName->text().length())
   {

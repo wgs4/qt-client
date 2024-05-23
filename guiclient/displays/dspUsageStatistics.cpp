@@ -133,7 +133,7 @@ void dspUsageStatistics::sPreview()
 
 void dspUsageStatistics::sViewAll()
 {
-  viewTransactions(QString::null);
+  viewTransactions(QString {});
 }
 
 void dspUsageStatistics::sViewReceipt()

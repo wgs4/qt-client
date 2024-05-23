@@ -104,7 +104,7 @@ void unpostedInvoices::sDelete()
   if ( QMessageBox::warning( this, tr("Delete Selected Invoices"),
                              tr("<p>Are you sure that you want to delete the "
 			        "selected Invoices?"),
-                             tr("Delete"), tr("Cancel"), QString::null, 1, 1 ) == 0)
+                             tr("Delete"), tr("Cancel"), QString {}, 1, 1 ) == 0)
   {
     unpostedDelete.prepare("SELECT deleteInvoice(:invchead_id) AS result;");
 

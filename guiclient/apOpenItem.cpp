@@ -236,7 +236,7 @@ void apOpenItem::sSave()
                                     "of balance with the A/P Trial Balance(s). "
                                     "Are you sure that you want to save this "
                                     "change?" ),
-                                 tr("Yes"), tr("No"), QString::null ) == 1 )
+                                 tr("Yes"), tr("No"), QString {} ) == 1 )
         return;
 
     saveOpenItem.prepare( "UPDATE apopen "

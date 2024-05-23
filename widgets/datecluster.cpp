@@ -118,7 +118,7 @@ XDateEdit::XDateEdit(QWidget *parent, const char *name) :
   _allowNull   = false;
   _default     = Empty;
   _parsed      = false;
-  _nullString  = QString::null;
+  _nullString  = QString {};
   _valid       = false;
   _siteId      = -1;
 }

@@ -201,7 +201,7 @@ QString ExportHelper::generateDelimited(QString qtext, ParameterList &params, QS
     qDebug("ExportHelper::generateDelimited(%s..., %d params, errmsg) entered",
            qPrintable(qtext.left(80)), params.size());
   if (qtext.isEmpty())
-    return QString::null;
+    return QString {};
 
   if (DEBUG)
   {
@@ -311,7 +311,7 @@ QString ExportHelper::generateHTML(QString qtext, ParameterList &params, QString
     qDebug("ExportHelper::generateHTML(%s..., %d params, errmsg) entered",
            qPrintable(qtext.left(80)), params.size());
   if (qtext.isEmpty())
-    return QString::null;
+    return QString {};
 
   QTextDocument    doc(0);
   QTextCursor      cursor(&doc);
@@ -754,8 +754,8 @@ static QScriptValue exportXML(QScriptContext *context,
 static QScriptValue generateDelimited(QScriptContext *context,
                                       QScriptEngine  * /*engine*/)
 {
-  QString result = QString::null;
-  QString errmsg = QString::null;
+  QString result = QString {};
+  QString errmsg = QString {};
 
   if (context->argumentCount() < 2)
     context->throwError(QScriptContext::UnknownError,
@@ -783,8 +783,8 @@ static QScriptValue generateDelimited(QScriptContext *context,
 static QScriptValue generateHTML(QScriptContext *context,
                                  QScriptEngine  * /*engine*/)
 {
-  QString result = QString::null;
-  QString errmsg = QString::null;
+  QString result = QString {};
+  QString errmsg = QString {};
 
   if (context->argumentCount() < 2)
     context->throwError(QScriptContext::UnknownError,
@@ -812,8 +812,8 @@ static QScriptValue generateHTML(QScriptContext *context,
 static QScriptValue generateXML(QScriptContext *context,
                                 QScriptEngine  * /*engine*/)
 {
-  QString result = QString::null;
-  QString errmsg = QString::null;
+  QString result = QString {};
+  QString errmsg = QString {};
 
     
   if (context->argument(0).isNumber() && context->argumentCount() == 3)

@@ -116,7 +116,7 @@ void changeWoQty::sChangeQty()
                                    "Order to %2?" )
                                    .arg(formatQty(changeChangeQty.value("qty").toDouble()))
                                    .arg(formatQty(changeChangeQty.value("qty").toDouble())),
-                                   tr("&Yes"), tr("&No"), QString::null, 0, 1 ) == 1 )
+                                   tr("&Yes"), tr("&No"), QString {}, 0, 1 ) == 1 )
           return;
         else
           newQty = changeChangeQty.value("qty").toDouble();

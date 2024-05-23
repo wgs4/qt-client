@@ -93,7 +93,7 @@ void expenseCategories::sDelete()
       int result = QMessageBox::warning( this, tr("Cannot Delete Expense Category"),
                                          tr( "<p>The selected Expense Category cannot be deleted as there are closed P/O Lines assigned to it. "
                                              "Would you like to mark the selected Expense Category as inactive instead?</p>" ),
-                                         tr("&Yes"), tr("&No"), QString::null );
+                                         tr("&Yes"), tr("&No"), QString {} );
       if (result == 0)
       {
         expenseDelete.prepare( "UPDATE expcat "

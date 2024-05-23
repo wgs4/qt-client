@@ -151,7 +151,7 @@ void shippingInformation::sSave()
   if (_captive)
     accept();
   else
-    _order->setId(-1, QString::null);
+    _order->setId(-1, QString {});
 }
 
 void shippingInformation::sPopulateMenu(QMenu *menuThis)

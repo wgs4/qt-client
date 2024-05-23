@@ -17,8 +17,8 @@ class XMessageBox {
   public:
     static int message( QWidget * parent, QMessageBox::Icon severity,
                         const QString & caption, const QString & text,
-                        const QString & button0Text = QString::null,
-                        const QString & button1Text = QString::null,
+                        const QString & button0Text = QString {},
+                        const QString & button1Text = QString {},
                         bool snooze = true,
                         int defaultButtonNumber = 0, int escapeButtonNumber = -1 );
 

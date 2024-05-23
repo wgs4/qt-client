@@ -667,7 +667,7 @@ void docAttach::sSave()
 
 void docAttach::sFileList()
 {
-  _file->setText(QString("file:%1").arg(QFileDialog::getOpenFileName( this, tr("Select File"), QString::null)));
+  _file->setText(QString("file:%1").arg(QFileDialog::getOpenFileName( this, tr("Select File"), QString {})));
   if (!_filetitle->text().length())
   {
     QFileInfo fi = QFileInfo(_file->text());
