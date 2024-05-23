@@ -45,3 +45,5 @@ bin/
 guiclient/altVersion.cpp
 share/XTupleGUIClient.qch
 share/XTupleGUIClient.qhc
+
+build*/
