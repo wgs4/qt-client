@@ -21,7 +21,7 @@ class postMiscProduction : public XDialog, public Ui::postMiscProduction
     Q_OBJECT
 
 public:
-    postMiscProduction(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    postMiscProduction(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~postMiscProduction();
     
     Q_INVOKABLE int     getwoid() { return _woid; }

@@ -22,7 +22,7 @@ class project : public XDialog, public Ui::project
     Q_OBJECT
 
 public:
-    project(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    project(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~project();
 
     Q_INVOKABLE virtual int id();

@@ -19,7 +19,7 @@ class incidentHistory : public XDialog, public Ui::incidentHistory
   Q_OBJECT
 
   public:
-    incidentHistory(QWidget* = 0, const char* = 0, bool = false, Qt::WindowFlags = 0);
+    incidentHistory(QWidget* = 0, const char* = 0, bool = false, Qt::WindowFlags = Qt::WindowFlags {});
 
   public slots:
     virtual enum SetResponse set(const ParameterList&);

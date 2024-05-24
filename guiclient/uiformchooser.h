@@ -21,7 +21,7 @@ class uiformchooser : public XDialog, public Ui::uiformchooser
   Q_OBJECT
 
   public:
-    explicit uiformchooser(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    explicit uiformchooser(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
 
   public slots:
     void populate(const XSqlQuery pQuery);

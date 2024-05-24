@@ -21,7 +21,7 @@ class reverseGLSeries : public XDialog, public Ui::reverseGLSeries
     Q_OBJECT
 
 public:
-    reverseGLSeries(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    reverseGLSeries(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~reverseGLSeries();
 
 public slots:

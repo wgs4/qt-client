@@ -21,7 +21,7 @@ class poType : public XDialog, public Ui::poType
     Q_OBJECT
 
 public:
-    poType(QWidget* parent = 0, const char* name = 0, bool modal = true, Qt::WindowFlags fl = 0);
+    poType(QWidget* parent = 0, const char* name = 0, bool modal = true, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~poType();
 
 public slots:

@@ -22,7 +22,7 @@ class EmpInfo : public VirtualInfo
     Q_OBJECT
 
     public:
-      EmpInfo(QWidget*, Qt::WindowFlags = 0);
+      EmpInfo(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class EmpList : public VirtualList
@@ -30,7 +30,7 @@ class EmpList : public VirtualList
     Q_OBJECT
 
     public:
-      EmpList(QWidget*, Qt::WindowFlags = 0);
+      EmpList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class EmpSearch : public VirtualSearch
@@ -38,7 +38,7 @@ class EmpSearch : public VirtualSearch
     Q_OBJECT
 
     public:
-      EmpSearch(QWidget*, Qt::WindowFlags = 0);
+      EmpSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 

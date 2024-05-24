@@ -35,7 +35,7 @@ class XTUPLEWIDGETS_EXPORT AddressList : public VirtualList
     friend class AddressSearch;
 
     public:
-	AddressList(QWidget*, const char* = 0, bool = false, Qt::WindowFlags = 0);
+	AddressList(QWidget*, const char* = 0, bool = false, Qt::WindowFlags = Qt::WindowFlags {});
 
     public slots:
 	virtual void sFillList();
@@ -59,7 +59,7 @@ class XTUPLEWIDGETS_EXPORT AddressSearch : public VirtualSearch
     friend class AddressCluster;
 
     public:
-	AddressSearch(QWidget*, Qt::WindowFlags = 0);
+	AddressSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 
     public slots:
 	virtual void sFillList();
@@ -98,13 +98,13 @@ class XTUPLEWIDGETS_EXPORT AddressCluster : public VirtualCluster
     friend class AddressSearch;
 
     public:
-	enum SaveFlags { CHECK = 0, CHANGEONE = 1, CHANGEALL = 2 }; 
+	enum SaveFlags { CHECK = 0, CHANGEONE = 1, CHANGEALL = 2 };
         Q_ENUM(SaveFlags)
         enum Mode      { Edit, View, Select };
         Q_ENUM(Mode)
 
 	AddressCluster(QWidget*, const char* = 0);
-	
+
 	inline virtual bool    activeVisible() const { return _active->isVisible(); };
         inline virtual QString addrChange()   const { return _addrChange->text(); };
 	Q_INVOKABLE virtual QString city()    const { return _city->text(); }
@@ -122,7 +122,7 @@ class XTUPLEWIDGETS_EXPORT AddressCluster : public VirtualCluster
 	Q_INVOKABLE virtual QString postalCode()  const { return _postalcode->text(); }
 	Q_INVOKABLE virtual QString state()   const { return _state->currentText(); }
         Q_INVOKABLE virtual int searchAcctId() { return _searchAcctId; }
-	
+
 	// Return data map values
 	virtual QString  fieldNameAddrChange()  const { return _fieldNameAddrChange; };
 	virtual QString  fieldNameNumber()	const { return _fieldNameNumber; };
@@ -165,7 +165,7 @@ class XTUPLEWIDGETS_EXPORT AddressCluster : public VirtualCluster
         virtual void    check();
 	virtual void    populateStateComboBox();
 
-	// Set data map values      
+	// Set data map values
         virtual void 	setDataWidgetMap(XDataWidgetMapper* m);
 	virtual void  	setFieldNameAddrChange(QString p)   { _fieldNameAddrChange = p ; };
 	virtual void  	setFieldNameNumber(QString p)       { _fieldNameNumber = p ; };
@@ -187,7 +187,7 @@ class XTUPLEWIDGETS_EXPORT AddressCluster : public VirtualCluster
 	void changed();
 
     protected:
-	QString		_query;	
+	QString		_query;
 	QString		_extraClause;
         XLineEdit*      _addrChange;
 	XLineEdit*      _number;

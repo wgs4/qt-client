@@ -22,7 +22,7 @@ class ConfigAuthorizeDotNetProcessor : public ConfigCreditCardProcessor,
   Q_OBJECT
 
   public:
-    ConfigAuthorizeDotNetProcessor(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    ConfigAuthorizeDotNetProcessor(QWidget *parent = 0, Qt::WindowFlags flags = Qt::WindowFlags {});
     virtual ~ConfigAuthorizeDotNetProcessor();
 
   public slots:

@@ -22,7 +22,7 @@ class unpostedGLTransactions : public XDialog, public Ui::unpostedGLTransactions
     Q_OBJECT
 
 public:
-    unpostedGLTransactions(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    unpostedGLTransactions(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~unpostedGLTransactions();
 
 public slots:

@@ -21,7 +21,7 @@ class shippingZone : public XDialog, public Ui::shippingZone
     Q_OBJECT
 
 public:
-    shippingZone(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    shippingZone(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~shippingZone();
 
 public slots:

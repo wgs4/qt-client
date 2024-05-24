@@ -21,7 +21,7 @@ class taxAdjustment : public XDialog, public Ui::taxAdjustment
     Q_OBJECT
 
 public:
-    taxAdjustment(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    taxAdjustment(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~taxAdjustment();
 
 public slots:

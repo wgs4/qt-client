@@ -22,7 +22,7 @@ class freightClass : public XDialog, public Ui::freightClass
     Q_OBJECT
 
 public:
-    freightClass(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    freightClass(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~freightClass();
 
 public slots:

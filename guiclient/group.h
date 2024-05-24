@@ -21,7 +21,7 @@ class group : public XDialog, public Ui::group
     Q_OBJECT
 
 public:
-    group(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    group(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~group();
 
 public slots:

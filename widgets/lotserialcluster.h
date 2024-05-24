@@ -22,7 +22,7 @@ class XTUPLEWIDGETS_EXPORT  LotserialList : public VirtualList
   friend class LotSerialLineEdit;
 
   public:
-    LotserialList(QWidget*, Qt::WindowFlags = 0);
+    LotserialList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 
   private:
     LotserialCluster* _parent;
@@ -35,7 +35,7 @@ class XTUPLEWIDGETS_EXPORT  LotserialSearch : public VirtualSearch
   friend class LotSerialLineEdit;
 
   public:
-    LotserialSearch(QWidget*, Qt::WindowFlags = 0);
+    LotserialSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 
   private:
     LotserialCluster* _parent;

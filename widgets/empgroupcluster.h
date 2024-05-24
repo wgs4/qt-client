@@ -18,7 +18,7 @@ class EmpGroupInfo : public VirtualInfo
     Q_OBJECT
 
     public:
-      EmpGroupInfo(QWidget*, Qt::WindowFlags = 0);
+      EmpGroupInfo(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class EmpGroupList : public VirtualList
@@ -26,7 +26,7 @@ class EmpGroupList : public VirtualList
     Q_OBJECT
 
     public:
-      EmpGroupList(QWidget*, Qt::WindowFlags = 0);
+      EmpGroupList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class EmpGroupSearch : public VirtualSearch
@@ -34,7 +34,7 @@ class EmpGroupSearch : public VirtualSearch
     Q_OBJECT
 
     public:
-      EmpGroupSearch(QWidget*, Qt::WindowFlags = 0);
+      EmpGroupSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 

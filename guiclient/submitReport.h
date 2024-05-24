@@ -21,7 +21,7 @@ class submitReport : public XDialog, public Ui::submitReport
     Q_OBJECT
 
 public:
-    submitReport(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    submitReport(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~submitReport();
 
     Q_INVOKABLE virtual int check();

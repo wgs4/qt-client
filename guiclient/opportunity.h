@@ -23,7 +23,7 @@ class opportunity : public XDialog, public Ui::opportunity
     Q_OBJECT
 
 public:
-    opportunity(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    opportunity(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~opportunity();
 
     static bool userHasPriv(const int = cView, const int = 0);

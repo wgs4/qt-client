@@ -19,8 +19,8 @@ class XDocumentWindow : public XWidget
   Q_OBJECT
 
   public:
-    XDocumentWindow(QWidget * parent = 0, Qt::WindowFlags flags = 0);
-    XDocumentWindow(QWidget * parent, const char * name, Qt::WindowFlags flags = 0);
+    XDocumentWindow(QWidget * parent = 0, Qt::WindowFlags flags = Qt::WindowFlags {});
+    XDocumentWindow(QWidget * parent, const char * name, Qt::WindowFlags flags = Qt::WindowFlags {});
     ~XDocumentWindow();
 
     Q_INVOKABLE QWidget * widget();

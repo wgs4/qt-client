@@ -22,7 +22,7 @@ class EditWatermark : public QDialog, public Ui::EditWatermark
     Q_OBJECT
 
   public:
-    EditWatermark(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    EditWatermark(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~EditWatermark();
 
     virtual bool    showPrices();

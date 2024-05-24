@@ -21,7 +21,7 @@ class shipOrder : public XDialog, public Ui::shipOrder
     Q_OBJECT
 
 public:
-    shipOrder(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    shipOrder(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~shipOrder();
 
 public slots:

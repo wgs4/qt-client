@@ -22,7 +22,7 @@ class distributeInventory : public XDialog, public Ui::distributeInventory
     Q_OBJECT
 
 public:
-    distributeInventory(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    distributeInventory(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~distributeInventory();
 
     static int SeriesCreate(int itemsiteId, double qty, const QString & orderType, const QString & transType,

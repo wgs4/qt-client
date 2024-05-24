@@ -21,7 +21,7 @@ class purchaseRequest : public XDialog, public Ui::purchaseRequest
     Q_OBJECT
 
 public:
-    purchaseRequest(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    purchaseRequest(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~purchaseRequest();
 
 public slots:

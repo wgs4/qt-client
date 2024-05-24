@@ -129,8 +129,8 @@ class ScriptToolbox : public QObject
     QWidget * loadUi(const QString & screenName, QWidget * parent = 0);
 
     QWidget * lastWindow() const;
-    QWidget * openWindow(const QString pname, QWidget *parent = 0, Qt::WindowModality modality = Qt::NonModal, Qt::WindowFlags flags = 0);
-    QWidget * newDisplay(const QString pname, QWidget *parent = 0, Qt::WindowModality modality = Qt::NonModal, Qt::WindowFlags flags = 0);
+    QWidget * openWindow(const QString pname, QWidget *parent = 0, Qt::WindowModality modality = Qt::NonModal, Qt::WindowFlags flags = Qt::WindowFlags {});
+    QWidget * newDisplay(const QString pname, QWidget *parent = 0, Qt::WindowModality modality = Qt::NonModal, Qt::WindowFlags flags = Qt::WindowFlags {});
 
     void addColumnXTreeWidget(QWidget * tree, const QString &, int, int, bool = true, const QString = QString(), const QString = QString());
     void populateXTreeWidget(QWidget * tree, XSqlQuery pSql, bool = false);

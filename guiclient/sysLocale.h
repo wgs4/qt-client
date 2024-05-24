@@ -22,7 +22,7 @@ class sysLocale : public XDialog, public Ui::sysLocale
     Q_OBJECT
 
 public:
-    sysLocale(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    sysLocale(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~sysLocale();
 
 public slots:

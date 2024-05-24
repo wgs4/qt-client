@@ -27,7 +27,7 @@ class QuoteSearch : public VirtualSearch
   Q_OBJECT
 
   public:
-    QuoteSearch(QWidget *pParent, Qt::WindowFlags flags = 0);
+    QuoteSearch(QWidget *pParent, Qt::WindowFlags flags = Qt::WindowFlags {});
 
 };
 

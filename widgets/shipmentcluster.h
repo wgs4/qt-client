@@ -18,7 +18,7 @@ class ShipmentList : public VirtualList
     Q_OBJECT
 
     public:
-        ShipmentList(QWidget*, Qt::WindowFlags = 0);
+        ShipmentList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class ShipmentSearch : public VirtualSearch
@@ -26,7 +26,7 @@ class ShipmentSearch : public VirtualSearch
     Q_OBJECT
 
     public:
-        ShipmentSearch(QWidget*, Qt::WindowFlags = 0);
+        ShipmentSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class XTUPLEWIDGETS_EXPORT ShipmentClusterLineEdit : public VirtualClusterLineEdit

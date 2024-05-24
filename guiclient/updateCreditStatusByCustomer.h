@@ -20,7 +20,7 @@ class updateCreditStatusByCustomer : public XDialog, public Ui::updateCreditStat
     Q_OBJECT
 
 public:
-    updateCreditStatusByCustomer(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    updateCreditStatusByCustomer(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~updateCreditStatusByCustomer();
 
 public slots:

@@ -24,7 +24,7 @@ class QueryItem : public QWidget, public Ui::QueryItem
     Q_OBJECT
 
   public:
-    QueryItem(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    QueryItem(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~QueryItem();
 
     Q_INVOKABLE virtual int id()       const;

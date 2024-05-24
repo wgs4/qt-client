@@ -22,7 +22,7 @@ class deletePlannedOrdersByPlannerCode : public XDialog, public Ui::deletePlanne
     Q_OBJECT
 
 public:
-    deletePlannedOrdersByPlannerCode(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    deletePlannedOrdersByPlannerCode(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~deletePlannedOrdersByPlannerCode();
 
 public slots:

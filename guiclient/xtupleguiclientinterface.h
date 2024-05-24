@@ -17,7 +17,7 @@ class xTupleGuiClientInterface : public GuiClientInterface
   public:
     xTupleGuiClientInterface(QObject *pParent);
 
-    virtual QWidget          *openWindow(const QString pname, ParameterList pparams, QWidget *parent = 0, Qt::WindowModality modality = Qt::NonModal, Qt::WindowFlags flags = 0);
+    virtual QWidget          *openWindow(const QString pname, ParameterList pparams, QWidget *parent = 0, Qt::WindowModality modality = Qt::NonModal, Qt::WindowFlags flags = Qt::WindowFlags {});
     virtual QAction          *findAction(const QString pname);
     virtual void              addDocumentWatch(QString path, int id);
     virtual void              removeDocumentWatch(QString path);

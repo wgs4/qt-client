@@ -23,7 +23,7 @@ class todoItem : public XDialog, public Ui::todoItem
     Q_OBJECT
 
 public:
-    todoItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    todoItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
 
     static bool userHasPriv(const int = cView, const int = 0);
 

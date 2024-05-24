@@ -21,7 +21,7 @@ class subAccntType : public XDialog, public Ui::subAccntType
     Q_OBJECT
 
 public:
-    subAccntType(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    subAccntType(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~subAccntType();
 
     virtual SetResponse set( const ParameterList & pParams );

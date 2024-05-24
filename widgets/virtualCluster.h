@@ -49,7 +49,7 @@ class XTUPLEWIDGETS_EXPORT VirtualList : public QDialog, public ScriptableWidget
 
     public:
         VirtualList();
-        VirtualList(QWidget*, Qt::WindowFlags = 0);
+        VirtualList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 
     public slots:
         virtual void sClose();
@@ -79,7 +79,7 @@ class XTUPLEWIDGETS_EXPORT VirtualSearch : public QDialog, public ScriptableWidg
     friend class VirtualClusterLineEdit;
 
     public:
-        VirtualSearch(QWidget*, Qt::WindowFlags = 0);
+        VirtualSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 
         Q_INVOKABLE virtual void setQuery(QSqlQuery query);
         Q_INVOKABLE virtual void setSearchText(const QString& text);
@@ -119,7 +119,7 @@ class XTUPLEWIDGETS_EXPORT VirtualInfo : public QDialog, public ScriptableWidget
     friend class VirtualClusterLineEdit;
 
     public:
-        VirtualInfo(QWidget*,  Qt::WindowFlags = 0);
+        VirtualInfo(QWidget*,  Qt::WindowFlags = Qt::WindowFlags {});
 
     public slots:
         virtual void sPopulate();
@@ -161,7 +161,7 @@ class XTUPLEWIDGETS_EXPORT VirtualInfo : public QDialog, public ScriptableWidget
 class XTUPLEWIDGETS_EXPORT VirtualClusterLineEdit : public XLineEdit
 {
     Q_OBJECT
-    
+
     friend class VirtualCluster;
     friend class VirtualInfo;
     friend class VirtualList;
@@ -303,7 +303,7 @@ class XTUPLEWIDGETS_EXPORT VirtualClusterLineEdit : public XLineEdit
     the user invoke VirtualClusterLineEdit's sInfo slot while another
     button invokes either sSearch() or sList(), depending on the
     user's preferences.
-    
+
     VirtualCluster provides a copy of much of the VirtualClusterLineEdit
     API to hide from the caller the fact that it contains one of these
     objects.  It also lets the calling code set it as read-only.

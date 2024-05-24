@@ -24,8 +24,8 @@ class XWidget : public QWidget, protected ScriptablePrivate
   Q_OBJECT
 
   public:
-    XWidget(QWidget * parent = 0, Qt::WindowFlags flags = 0);
-    XWidget(QWidget * parent, const char * name, Qt::WindowFlags flags = 0);
+    XWidget(QWidget * parent = 0, Qt::WindowFlags flags = Qt::WindowFlags {});
+    XWidget(QWidget * parent, const char * name, Qt::WindowFlags flags = Qt::WindowFlags {});
     ~XWidget();
     Q_INVOKABLE virtual ParameterList get() const;
 

@@ -21,7 +21,7 @@ class createItemSitesByClassCode : public XDialog, public Ui::createItemSitesByC
     Q_OBJECT
 
 public:
-    createItemSitesByClassCode(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    createItemSitesByClassCode(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~createItemSitesByClassCode();
 
 public slots:

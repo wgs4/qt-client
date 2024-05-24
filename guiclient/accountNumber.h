@@ -22,7 +22,7 @@ class accountNumber : public XDialog, public Ui::accountNumber
     Q_OBJECT
 
 public:
-    accountNumber(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    accountNumber(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~accountNumber();
 
 public slots:

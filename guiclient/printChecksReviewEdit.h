@@ -19,7 +19,7 @@ class printChecksReviewEdit : public XDialog, public Ui::printChecksReviewEdit
     Q_OBJECT
 
 public:
-    printChecksReviewEdit(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    printChecksReviewEdit(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~printChecksReviewEdit();
 
 public slots:

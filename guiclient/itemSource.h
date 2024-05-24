@@ -22,7 +22,7 @@ class itemSource : public XDialog, public Ui::itemSource
     Q_OBJECT
 
 public:
-    itemSource(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    itemSource(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~itemSource();
 
     Q_INVOKABLE virtual int id()   const;

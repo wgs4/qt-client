@@ -22,7 +22,7 @@ class creditCard : public XDialog, public Ui::creditCard
     Q_OBJECT
 
 public:
-    creditCard(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    creditCard(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~creditCard();
 
     virtual SetResponse set(const ParameterList & pParams );

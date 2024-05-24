@@ -21,7 +21,7 @@ class salesRep : public XDialog, public Ui::salesRep
     Q_OBJECT
 
 public:
-    salesRep(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    salesRep(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~salesRep();
 
     Q_INVOKABLE virtual int id()   const;

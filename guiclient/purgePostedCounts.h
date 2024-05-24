@@ -20,7 +20,7 @@ class purgePostedCounts : public XDialog, public Ui::purgePostedCounts
     Q_OBJECT
 
 public:
-    purgePostedCounts(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    purgePostedCounts(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~purgePostedCounts();
 
 public slots:

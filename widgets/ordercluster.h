@@ -197,7 +197,7 @@ class XTUPLEWIDGETS_EXPORT OrderList : public VirtualList
   Q_OBJECT
 
   public:
-    OrderList(QWidget*, Qt::WindowFlags = 0);
+    OrderList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 
     QString type() const;
 
@@ -216,7 +216,7 @@ class XTUPLEWIDGETS_EXPORT OrderSearch : public VirtualSearch
   Q_OBJECT
 
   public:
-    OrderSearch(QWidget*, Qt::WindowFlags = 0);
+    OrderSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 
     QString     type() const;
 

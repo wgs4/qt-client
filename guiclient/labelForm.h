@@ -22,7 +22,7 @@ class labelForm : public XDialog, public Ui::labelForm
     Q_OBJECT
 
 public:
-    labelForm(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    labelForm(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~labelForm();
 
 public slots:

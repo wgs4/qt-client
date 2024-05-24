@@ -29,7 +29,7 @@ class XTUPLEWIDGETS_EXPORT projectCopy : public QDialog
     Q_OBJECT
 
   public:
-    projectCopy(QWidget * = 0, const char * = 0, bool = false, Qt::WindowFlags = 0 );
+    projectCopy(QWidget * = 0, const char * = 0, bool = false, Qt::WindowFlags = Qt::WindowFlags {} );
 
     virtual void set(const ParameterList & pParams);
 

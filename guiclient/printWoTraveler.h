@@ -22,7 +22,7 @@ class printWoTraveler : public XDialog, public Ui::printWoTraveler
     Q_OBJECT
 
 public:
-    printWoTraveler(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    printWoTraveler(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~printWoTraveler();
 
     Q_INVOKABLE virtual bool errorPrinting() const    { return _errorPrinting; }

@@ -25,7 +25,7 @@ class display : public XWidget
     friend class displayPrivate;
 
 public:
-    display(QWidget* = 0, const char* = 0, Qt::WindowFlags = 0);
+    display(QWidget* = 0, const char* = 0, Qt::WindowFlags = Qt::WindowFlags {});
     ~display();
 
     Q_INVOKABLE virtual bool setParams(ParameterList &);

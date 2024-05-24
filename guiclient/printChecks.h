@@ -21,7 +21,7 @@ class printChecks : public XDialog, public Ui::printChecks
     Q_OBJECT
 
 public:
-    printChecks(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    printChecks(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~printChecks();
 
 public slots:

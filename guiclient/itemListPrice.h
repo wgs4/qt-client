@@ -22,7 +22,7 @@ class itemListPrice : public XDialog, public Ui::itemListPrice
     Q_OBJECT
 
 public:
-    itemListPrice(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    itemListPrice(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~itemListPrice();
 
 public slots:

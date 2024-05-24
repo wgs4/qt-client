@@ -25,7 +25,7 @@ class XTUPLEWIDGETS_EXPORT shipToList : public VirtualList
     Q_OBJECT
 
 public:
-    shipToList(QWidget*, Qt::WindowFlags = 0);
+    shipToList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
     void set(const ParameterList & pParams);
 
 private:
@@ -40,7 +40,7 @@ class XTUPLEWIDGETS_EXPORT shipToSearch : public VirtualSearch
     Q_OBJECT
 
 public:
-    shipToSearch(QWidget*, Qt::WindowFlags = 0);
+    shipToSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
     void set(const ParameterList & pParams);
 
 private:

@@ -13,7 +13,7 @@
 
 #include <QWidget>
 
-QWidget * xtGetScreen(const QString &, QWidget *, Qt::WindowFlags = 0, const QString & = QString {});
+QWidget * xtGetScreen(const QString &, QWidget *, Qt::WindowFlags = Qt::WindowFlags {}, const QString & = QString {});
 
 #endif
 

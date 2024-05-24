@@ -21,7 +21,7 @@ class ImageInfo : public VirtualInfo
     Q_OBJECT
 
     public:
-      ImageInfo(QWidget*, Qt::WindowFlags = 0);
+      ImageInfo(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class ImageList : public VirtualList
@@ -29,7 +29,7 @@ class ImageList : public VirtualList
     Q_OBJECT
 
     public:
-      ImageList(QWidget*, Qt::WindowFlags = 0);
+      ImageList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class ImageSearch : public VirtualSearch
@@ -37,7 +37,7 @@ class ImageSearch : public VirtualSearch
     Q_OBJECT
 
     public:
-      ImageSearch(QWidget*, Qt::WindowFlags = 0);
+      ImageSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 

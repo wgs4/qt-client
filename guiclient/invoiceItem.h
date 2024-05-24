@@ -23,7 +23,7 @@ class invoiceItem : public XDialog, public Ui::invoiceItem
     Q_OBJECT
 
 public:
-    invoiceItem(QWidget* = 0, const char * = 0, Qt::WindowFlags = 0);
+    invoiceItem(QWidget* = 0, const char * = 0, Qt::WindowFlags = Qt::WindowFlags {});
     ~invoiceItem();
 
     Q_INVOKABLE virtual int id()   const;

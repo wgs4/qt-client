@@ -20,7 +20,7 @@ class printStatementByCustomer : public printSinglecopyDocument,
     Q_OBJECT
 
   public:
-    printStatementByCustomer(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    printStatementByCustomer(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~printStatementByCustomer();
 
     Q_INVOKABLE virtual void          clear();

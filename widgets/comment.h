@@ -26,7 +26,7 @@ class XTUPLEWIDGETS_EXPORT comment : public QDialog, public Ui::comment
     friend class Comments;
 
   public:
-    comment(QWidget * = 0, const char * = 0, bool = false, Qt::WindowFlags = 0);
+    comment(QWidget * = 0, const char * = 0, bool = false, Qt::WindowFlags = Qt::WindowFlags {});
 
     QPushButton* _close;
     QPushButton* _save;

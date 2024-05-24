@@ -23,7 +23,7 @@ class alarmMaint : public QDialog, public Ui::alarmMaint
     Q_OBJECT
 
 public:
-    alarmMaint(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    alarmMaint(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~alarmMaint();
 
     QPushButton* _userLookup;
