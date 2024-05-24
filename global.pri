@@ -20,7 +20,11 @@ OPENRPT_HEADERS = $$(OPENRPT_HEADERS)
     OPENRPT_DIR_REL=true
 }
 
-OPENRPT_BLD = $${OPENRPT_DIR}
+OPENRPT_BLD = $$(OPENRPT_BLD)
+isEmpty( OPENRPT_BLD ) {
+  OPENRPT_BLD = $${OPENRPT_DIR}
+  OPENRPT_BLD_REL=true
+}
 exists($${OPENRPT_DIR}-build-desktop) {
   OPENRPT_BLD = $${OPENRPT_DIR}-build-desktop
 }
@@ -60,8 +64,8 @@ exists($${OPENRPT_LIBDIR}/libdmtx.lib)         { DMTXLIB = -ldmtx }
 exists($${OPENRPT_LIBDIR}/libDmtx_Library.lib) { DMTXLIB = -lDmtx_Library }
 
 # global.pri is processed at the top level but the variables are used down 1 level
-! isEmpty( OPENRPT_DIR_REL    ) { OPENRPT_DIR    = ../$${OPENRPT_DIR}
-                                  OPENRPT_BLD    = ../$${OPENRPT_BLD}    }
+! isEmpty( OPENRPT_DIR_REL    ) { OPENRPT_DIR    = ../$${OPENRPT_DIR}    }
+! isEmpty( OPENRPT_BLD_REL    ) { OPENRPT_BLD    = ../$${OPENRPT_BLD}    }
 ! isEmpty( OPENRPT_LIBDIR_REL ) { OPENRPT_LIBDIR = ../$${OPENRPT_LIBDIR} }
 ! isEmpty( CSVIMP_HEADERS_REL ) { CSVIMP_HEADERS = ../$${CSVIMP_HEADERS} }
 
