@@ -13,6 +13,7 @@
 #include <QAction>
 #include <QMenu>
 #include <QVariant>
+#include <QButtonGroup>
 
 #include "adjustmentTrans.h"
 #include "enterMiscCount.h"
@@ -153,7 +154,7 @@ void dspQOH::sPopulateMenu(QMenu *pMenu, QTreeWidgetItem *pSelected, int)
   if (((XTreeWidgetItem *)pSelected)->id() != -1)
   {
     QAction *menuItem;
-  
+
     if (((XTreeWidgetItem *)pSelected)->altId())
     {
       pMenu->addAction(tr("View Location/Lot/Serial # Detail..."), this, SLOT(sViewDetail()));
@@ -186,7 +187,7 @@ void dspQOH::sPopulateMenu(QMenu *pMenu, QTreeWidgetItem *pSelected, int)
     menuItem = pMenu->addAction(tr("Issue Count Tag..."), this, SLOT(sIssueCountTag()));;
     if (!_privileges->check("IssueCountTags"))
       menuItem->setEnabled(false);
-  } 
+  }
 }
 
 void dspQOH::sViewDetail()
@@ -249,7 +250,7 @@ void dspQOH::sIssueCountTag()
 {
   ParameterList params;
   params.append("itemsite_id", list()->id());
-  
+
   createCountTagsByItem newdlg(this, "", true);
   newdlg.set(params);
   newdlg.exec();

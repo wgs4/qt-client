@@ -18,6 +18,7 @@
 #include <QMessageBox>
 #include <QVariant>
 #include <QSqlError>
+#include <QButtonGroup>
 
 #include "dspItemCostSummary.h"
 #include "maintainItemCosts.h"

@@ -14,6 +14,7 @@
 #include <QSqlError>
 #include <QValidator>
 #include <QVariant>
+#include <QButtonGroup>
 #include "guiErrorCheck.h"
 
 createItemSitesByClassCode::createItemSitesByClassCode(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)
@@ -60,7 +61,7 @@ createItemSitesByClassCode::createItemSitesByClassCode(QWidget* parent, const ch
     _createPlannedTransfers->hide();
 
   sHandlePlanningType();
-  
+
   _reorderLevel->setValidator(omfgThis->qtyVal());
   _orderUpToQty->setValidator(omfgThis->qtyVal());
   _minimumOrder->setValidator(omfgThis->qtyVal());
@@ -94,7 +95,7 @@ createItemSitesByClassCode::createItemSitesByClassCode(QWidget* parent, const ch
 
   _eventFence->setValue(_metrics->value("DefaultEventFence").toInt());
 //  _costcat->setEnabled(_metrics->boolean("InterfaceToGL"));
-  
+
   if (!_metrics->boolean("MultiWhs"))
   {
     _warehouseLit->hide();
@@ -115,7 +116,7 @@ createItemSitesByClassCode::createItemSitesByClassCode(QWidget* parent, const ch
     _autoNumberGroup->hide();
     _tab->removeTab(_tab->indexOf(_expireTab));
   }
-  
+
   //If routings disabled, hide options
   if (!_metrics->boolean("Routings"))
   {
@@ -124,7 +125,7 @@ createItemSitesByClassCode::createItemSitesByClassCode(QWidget* parent, const ch
 
   _costAvg->setVisible(_metrics->boolean("AllowAvgCostMethod"));
   _costStd->setVisible(_metrics->boolean("AllowStdCostMethod"));
-  
+
   adjustSize();
 
 }
@@ -166,14 +167,14 @@ void createItemSitesByClassCode::sSave()
 
   if(GuiErrorCheck::reportErrors(this,tr("Cannot Save Item Site"),errors))
       return;
-  
+
   if ( _locationControl->isChecked() )
   {
     XSqlQuery locationid;
     locationid.prepare( "SELECT location_id "
                         "FROM location "
                         "WHERE ((location_warehous_id=:warehous_id) "
-                        " AND (location_active) ) " 
+                        " AND (location_active) ) "
                         "LIMIT 1;" );
     locationid.bindValue(":warehous_id", _warehouse->id());
     locationid.exec();
@@ -331,16 +332,16 @@ void createItemSitesByClassCode::sSave()
     createSave.bindValue(":itemsite_costmethod", "S");
 
   if (_woCostGroup->isChecked())
-  {    
+  {
     if (_todate->isChecked())
 	  createSave.bindValue(":itemsite_cosdefault", QString("D"));
-    else 
+    else
       createSave.bindValue(":itemsite_cosdefault", QString("P"));
   }
-  
+
   if (_sequence->isValid())
     createSave.bindValue(":itemsite_lsseq_id", _sequence->id());
-  
+
   createSave.bindValue(":warehous_id", _warehouse->id());
   _classCode->bindValue(createSave);
   createSave.exec();
@@ -361,7 +362,7 @@ void createItemSitesByClassCode::sHandlePOSupply(bool /*pSupplied*/)
     _createPr->setChecked(false);
   }
   */
-} 
+}
 
 void createItemSitesByClassCode::sHandleWOSupply(bool pSupplied)
 {
@@ -372,7 +373,7 @@ void createItemSitesByClassCode::sHandleWOSupply(bool pSupplied)
     _createWo->setEnabled(false);
     _createWo->setChecked(false);
   }
-} 
+}
 
 void createItemSitesByClassCode::sHandleControlMethod()
 {
@@ -426,7 +427,7 @@ void createItemSitesByClassCode::sHandlePlanningType()
     _mpsTimeFence->setEnabled(false);
   }
 
-} 
+}
 
 void createItemSitesByClassCode::populateLocations()
 {
@@ -484,7 +485,7 @@ void createItemSitesByClassCode::clear()
   _locationComments->clear();
 
   _costcat->setId(-1);
-  
+
   _woCostGroup->setChecked(false);
 
   populateLocations();

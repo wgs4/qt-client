@@ -12,6 +12,7 @@
 
 #include <QMessageBox>
 #include <QVariant>
+#include <QButtonGroup>
 
 substituteList::substituteList(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)
   : XDialog(parent, name, modal, fl)
@@ -91,7 +92,7 @@ enum SetResponse substituteList::set(const ParameterList &pParams)
       _item->setItemsiteid(substituteet.value("womatl_itemsite_id").toInt());
       _item->setReadOnly(true);
       _warehouse->setEnabled(false);
-      
+
       _bomitemid = substituteet.value("bomitem_id").toInt();
       _itemsiteid = substituteet.value("womatl_itemsite_id").toInt();
       _source = substituteet.value("subtype").toString();

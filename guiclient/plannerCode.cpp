@@ -12,6 +12,7 @@
 
 #include <QVariant>
 #include <QMessageBox>
+#include <QButtonGroup>
 #include "errorReporter.h"
 
 plannerCode::plannerCode(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)
@@ -34,7 +35,7 @@ plannerCode::plannerCode(QWidget* parent, const char* name, bool modal, Qt::Wind
     _autoExplode->hide();
     _explosionGroup->hide();
   }
-  
+
   connect(_buttonBox, SIGNAL(accepted()), this, SLOT(sSave()));
   connect(_buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
   connect(_code, SIGNAL(editingFinished()), this, SLOT(sCheck()));
@@ -161,7 +162,7 @@ void plannerCode::sSave()
               " WHERE((plancode_id != :plancode_id)"
               " AND (plancode_code = :plancode_code));");
 
-  plannerSave.bindValue(":plancode_id", _plancodeid); 
+  plannerSave.bindValue(":plancode_id", _plancodeid);
   plannerSave.bindValue(":plancode_code", _code->text());
   plannerSave.exec();
   if(plannerSave.first())
@@ -229,5 +230,5 @@ void plannerCode::populate()
         _multipleLevel->setChecked(true);
     }
   }
-} 
+}
 

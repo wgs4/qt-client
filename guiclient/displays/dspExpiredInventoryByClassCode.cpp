@@ -12,6 +12,7 @@
 
 #include <QMenu>
 #include <QMessageBox>
+#include <QButtonGroup>
 
 #include <openreports.h>
 #include <parameter.h>
@@ -103,7 +104,7 @@ void dspExpiredInventoryByClassCode::sPopulateMenu(QMenu *, QTreeWidgetItem *, i
     menuItem = pMenu->insertItem(tr("Issue Count Tag..."), this, SLOT(sIssueCountTag()), 0);
     if (!_privileges->check("IssueCountTags"))
       pMenu->setItemEnabled(menuItem, false);
-  } 
+  }
 #endif
 }
 
@@ -145,7 +146,7 @@ void dspExpiredInventoryByClassCode::sMiscCount()
 {
   ParameterList params;
   params.append("itemsite_id", list()->id());
-  
+
   enterMiscCount newdlg(this, "", true);
   newdlg.set(params);
   if (newdlg.exec())
@@ -156,7 +157,7 @@ void dspExpiredInventoryByClassCode::sIssueCountTag()
 {
   ParameterList params;
   params.append("itemsite_id", list()->id());
-  
+
   createCountTagsByItem newdlg(this, "", true);
   newdlg.set(params);
   newdlg.exec();
@@ -213,7 +214,7 @@ bool dspExpiredInventoryByClassCode::setParams(ParameterList &params)
   if (_useStandardCosts->isChecked())
     params.append("useStandardCosts");
   else if (_useActualCosts->isChecked())
-    params.append("useActualCosts"); 
+    params.append("useActualCosts");
   else if (_usePostedCosts->isChecked())
     params.append("usePostedCosts");
 

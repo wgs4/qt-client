@@ -16,6 +16,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QSqlError>
+#include <QButtonGroup>
 
 #include <metasql.h>
 #include <parameter.h>
@@ -74,7 +75,7 @@ dspCountTagEditList::dspCountTagEditList(QWidget* parent, const char* name, Qt::
   _cnttag->addColumn(tr("%"),         _prcntColumn, Qt::AlignRight, true, "varianceprcnt");
   _cnttag->addColumn(tr("Amount"),     _costColumn, Qt::AlignRight, true, "variancecost");
   _cnttag->setIndentation(10);
-  
+
   if (_privileges->check("EnterCountTags"))
   {
     connect(_cnttag, SIGNAL(itemSelected(int)), _edit, SLOT(animateClick()));
@@ -196,7 +197,7 @@ void dspCountTagEditList::sEnterCountSlip()
   ParameterList params;
   params.append("mode", "new");
   params.append("cnttag_id", _cnttag->id());
-  
+
   countSlip newdlg(this, "", true);
   newdlg.set(params);
 
@@ -293,7 +294,7 @@ void dspCountTagEditList::sEditSlip()
   ParameterList params;
   params.append("mode", "edit");
   params.append("cntslip_id", _cnttag->altId());
-  
+
   countSlip newdlg(this, "", true);
   newdlg.set(params);
 
@@ -423,7 +424,7 @@ void dspCountTagEditList::sDeleteTag()
   {
     return;
   }
-  
+
   dspDeleteTag.prepare( "DELETE FROM invcnt "
 	     "WHERE (invcnt_id=:cnttag_id);" );
   dspDeleteTag.bindValue(":cnttag_id", _cnttag->id());
@@ -539,7 +540,7 @@ void dspCountTagEditList::sPostSlip()
   ParameterList params;
   params.append("mode", "post");
   params.append("cntslip_id", _cnttag->altId());
-  
+
   countSlip newdlg(this, "", true);
   newdlg.set(params);
 
@@ -574,7 +575,7 @@ void dspCountTagEditList::sFillList()
   {
     return;
   }
-  
+
   _cnttag->expandAll();
 
   if (_searchFor->text().trimmed().length())

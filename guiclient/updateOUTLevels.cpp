@@ -11,6 +11,7 @@
 #include "updateOUTLevels.h"
 
 #include <QMessageBox>
+#include <QButtonGroup>
 
 updateOUTLevels::updateOUTLevels(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)
   : XDialog(parent, name, modal, fl)
@@ -27,7 +28,7 @@ updateOUTLevels::updateOUTLevels(QWidget* parent, const char* name, bool modal, 
   connect(_calendar, SIGNAL(newCalendarId(int)), _periods, SLOT(populate(int)));
   connect(_fixedDays, SIGNAL(toggled(bool)), _days, SLOT(setEnabled(bool)));
   connect(_leadTime, SIGNAL(toggled(bool)), _leadTimePad, SLOT(setEnabled(bool)));
-  
+
   _plannerCode->setType(ParameterGroup::PlannerCode);
 }
 

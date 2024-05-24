@@ -14,6 +14,7 @@
 #include <QSqlError>
 #include <QVariant>
 #include <QDebug>
+#include <QButtonGroup>
 #include <metasql.h>
 
 #include "cashReceiptItem.h"
@@ -782,7 +783,7 @@ void cashReceipt::sSave()
   if (save(false))
   {
     if (_postReceipt->isChecked() && !_posted)
-    {    
+    {
       if (!postReceipt())
         return;
     }
@@ -988,7 +989,7 @@ bool cashReceipt::postReceipt()
   bool changeDate = false;
   QDate newDate = QDate();
   QDate seriesDate;
-  
+
   if (_privileges->check("ChangeCashRecvPostDate"))
   {
     getGLDistDate newdlg(this, "", true);
@@ -1002,7 +1003,7 @@ bool cashReceipt::postReceipt()
     else
       return false;
   }
-  
+
   XSqlQuery tx;
   tx.exec("BEGIN;");
 
@@ -1011,7 +1012,7 @@ bool cashReceipt::postReceipt()
                   "                    cashrcpt_applydate=CASE WHEN (cashrcpt_applydate < :distdate) THEN :distdate"
                   "                                            ELSE cashrcpt_applydate END "
                   "WHERE cashrcpt_id=:cashrcpt_id;");
-   
+
   if (changeDate)
   {
     setDate.bindValue(":distdate",    newDate);
@@ -1024,7 +1025,7 @@ bool cashReceipt::postReceipt()
       return false;
     }
   }
-  
+
   cashPost.prepare("SELECT postCashReceipt(:cashrcpt_id, fetchJournalNumber('C/R', :seriesDate)) AS result;");
   cashPost.bindValue(":cashrcpt_id", _cashrcptid);
   cashPost.bindValue(":seriesDate", seriesDate);

@@ -12,6 +12,7 @@
 
 #include <QVariant>
 #include <QMessageBox>
+#include <QButtonGroup>
 
 #include "xtreewidget.h"
 

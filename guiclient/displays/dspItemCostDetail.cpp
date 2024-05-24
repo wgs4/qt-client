@@ -13,6 +13,7 @@
 #include <QSqlError>
 #include <QMessageBox>
 #include <QVariant>
+#include <QButtonGroup>
 
 #include "errorReporter.h"
 #include "xtreewidget.h"

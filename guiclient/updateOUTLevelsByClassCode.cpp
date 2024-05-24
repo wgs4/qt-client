@@ -11,6 +11,7 @@
 #include "updateOUTLevelsByClassCode.h"
 
 #include <QMessageBox>
+#include <QButtonGroup>
 #include <parameter.h>
 
 updateOUTLevelsByClassCode::updateOUTLevelsByClassCode(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)
@@ -28,7 +29,7 @@ updateOUTLevelsByClassCode::updateOUTLevelsByClassCode(QWidget* parent, const ch
   connect(_calendar, SIGNAL(newCalendarId(int)), _periods, SLOT(populate(int)));
   connect(_fixedDays, SIGNAL(toggled(bool)), _days, SLOT(setEnabled(bool)));
   connect(_leadTime, SIGNAL(toggled(bool)), _leadTimePad, SLOT(setEnabled(bool)));
-    
+
   _classCode->setType(ParameterGroup::ClassCode);
 }
 

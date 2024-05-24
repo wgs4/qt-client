@@ -14,6 +14,7 @@
 #include <QSqlError>
 #include <QValidator>
 #include <QVariant>
+#include <QButtonGroup>
 
 #include <metasql.h>
 
@@ -63,7 +64,7 @@ bomItem::bomItem(QWidget* parent, const char* name, bool modal, Qt::WindowFlags 
 
   _bomitemsub->addColumn(tr("Rank"),        _whsColumn,  Qt::AlignCenter, true, "bomitemsub_rank");
   _bomitemsub->addColumn(tr("Item Number"), _itemColumn, Qt::AlignLeft,  true, "item_number");
-  _bomitemsub->addColumn(tr("Description"), -1,          Qt::AlignLeft,  true, 
+  _bomitemsub->addColumn(tr("Description"), -1,          Qt::AlignLeft,  true,
 		  "item_descrip1");
   _bomitemsub->addColumn(tr("Ratio"),       _qtyColumn,  Qt::AlignRight, true, "bomitemsub_uomratio");
 
@@ -110,7 +111,7 @@ enum SetResponse bomItem::set(const ParameterList &pParams)
   param = pParams.value("bomhead_id", &valid);
   if (valid)
     _bomheadid = param.toInt();
-  
+
   param = pParams.value("item_id", &valid);
   if (valid)
     _parentitemid = param.toInt();
@@ -146,7 +147,7 @@ enum SetResponse bomItem::set(const ParameterList &pParams)
       {
         return UndefinedError;
       }
-  
+
       //Set up configuration tab if parent item is configured or kit
       bomet.prepare("SELECT item_config, item_type "
                 "FROM item "
@@ -169,7 +170,7 @@ enum SetResponse bomItem::set(const ParameterList &pParams)
         }
         else
           _tab->removeTab(_tab->indexOf(_configurationTab));
-          
+
         if (bomet.value("item_type").toString() == "K")
         {
           if (_metrics->boolean("AllowInactiveBomItems"))
@@ -262,7 +263,7 @@ enum SetResponse bomItem::set(const ParameterList &pParams)
     _issueMethod->setEnabled(false);
     _tab->setTabEnabled(_tab->indexOf(_substitutionsTab), false);
   }
-  
+
   return NoError;
 }
 
@@ -358,7 +359,7 @@ void bomItem::sSave()
     bomitem.bindValue(":bomitem_subtype", "I");
   else if (_bomDefinedSubstitutes->isChecked())
     bomitem.bindValue(":bomitem_subtype", "B");
-  
+
   if (_char->id() != -1)
   {
     bomitem.bindValue(":bomitem_char_id", _char->id());
@@ -417,7 +418,7 @@ void bomItem::sSave()
   }
 
   omfgThis->sBOMsUpdated(_parentitemid, true);
-  
+
   emit saved(_bomitemid);
 
   _saved=true;
@@ -468,18 +469,18 @@ void bomItem::sPopulateUOM()
   {
     // Get list of active, valid Material Issue UOMs
     MetaSQLQuery muom = mqlLoad("uoms", "item");
-    
+
     ParameterList params;
     params.append("uomtype", "MaterialIssue");
     params.append("item_id", _item->id());
-    
+
     // Include Global UOMs
     if (_privileges->check("MaintainUOMs"))
     {
       params.append("includeGlobal", true);
       params.append("global", tr("-Global"));
     }
-    
+
     // Also have to factor UOMs previously used on BOM Item now inactive
     if (_bomitemid != -1)
     {
@@ -530,7 +531,7 @@ void bomItem::sUOMChanged()
       if (ErrorReporter::error(QtCriticalMsg, this, tr("Creating Item UOM Conv"),
                                adduom, __FILE__, __LINE__))
         return;
-      
+
       // repopulate uom combobox
       sPopulateUOM();
     }
@@ -733,7 +734,7 @@ void bomItem::sItemIdChanged()
 
     if (_scrap->text().length() == 0)
       _scrap->setDouble(0.0);
-    
+
   }
 }
 
