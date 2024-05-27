@@ -20,9 +20,9 @@ DEPENDPATH  += $${INCLUDEPATH} ../lib
 LIBS        += -lxtuplescriptapi -lxtuplecommon -lwrtembed \
                -lrenderer -ldmtx -lqzint -lMetaSQL -lopenrptcommon
 
-dynamic { 
+dynamic {
     CONFIG      += dll # plugin implies dll but this fixes a cross-compile problem
-    DESTDIR      = $$[QT_INSTALL_PLUGINS]/designer
+    # DESTDIR      = $$[QT_INSTALL_PLUGINS]/designer
     MOC_DIR      = tmp/dll
     OBJECTS_DIR  = tmp/dll
     UI_DIR       = tmp/dll
