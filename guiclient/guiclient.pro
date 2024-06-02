@@ -960,6 +960,7 @@ HEADERS = ../common/format.h                    \
           lotSerialSequences.h          \
           lotSerialRegistration.h       \
           lotSerialUtils.h              \
+          macpreviewfix.h               \
           maintainBudget.h              \
           maintainItemCosts.h           \
           maintainShipping.h            \
@@ -1578,6 +1579,7 @@ SOURCES = absoluteCalendarItem.cpp              \
           lotSerialSequences.cpp        \
           lotSerialRegistration.cpp     \
           lotSerialUtils.cpp            \
+          macpreviewfix.cpp             \
           main.cpp                      \
           maintainBudget.cpp            \
           maintainItemCosts.cpp         \

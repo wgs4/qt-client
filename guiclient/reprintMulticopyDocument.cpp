@@ -20,6 +20,7 @@
 
 #include "errorReporter.h"
 #include "storedProcErrorLookup.h"
+#include "macpreviewfix.h"
 
 class reprintMulticopyDocumentPrivate : public Ui::reprintMulticopyDocument
 {
@@ -126,13 +127,15 @@ void reprintMulticopyDocument::sPrint()
 
   foreach (XTreeWidgetItem *item, list()->selectedItems())
   {
-    message(tr("Printing %1 #%2")
+    if (!isMacPrintPreview(_data->_printer))
+      message(tr("Printing %1 #%2")
             .arg(_data->_doctypefull, item->text("docnumber")));
 
     emit aboutToStart(item);
     emit timeToPrintOneDoc(item);
 
-    message("");
+    if (!isMacPrintPreview(_data->_printer))
+      message("");
   }
 
   orReport::endMultiPrint(_data->_printer);
@@ -141,6 +144,9 @@ void reprintMulticopyDocument::sPrint()
   if (_data->_printed.size() == 0)
     QMessageBox::information(this, tr("No Documents to Print"),
                              tr("There aren't any documents to print."));
+
+  if (isMacPrintPreview(_data->_printer))
+    orReport::endMultiPrint(_data->_printer);
 
   _data->_printed.clear();
   emit finishedWithAll();

@@ -20,6 +20,7 @@
 
 #include "errorReporter.h"
 #include "storedProcErrorLookup.h"
+#include "macpreviewfix.h"
 
 class printMulticopyDocumentPrivate : public Ui::printMulticopyDocument
 {
@@ -216,7 +217,8 @@ bool printMulticopyDocument::sPostOneDoc(XSqlQuery *docq, int itemlocSeries)
       ! docq->value("posted").toBool())
   {
     QString docnumber = docq->value("docnumber").toString();
-    message(tr("Posting %1 #%2").arg(_data->_doctypefull, docnumber));
+    if (!isMacPrintPreview(_data->_printer))
+      message(tr("Posting %1 #%2").arg(_data->_doctypefull, docnumber));
 
     ParameterList postp;
     postp.append("docid",     docq->value("docid"));
@@ -225,7 +227,7 @@ bool printMulticopyDocument::sPostOneDoc(XSqlQuery *docq, int itemlocSeries)
     XSqlQuery cleanup; // Stage cleanup function to be called on error
     cleanup.prepare("SELECT deleteitemlocseries(:itemlocSeries, TRUE);");
     cleanup.bindValue(":itemlocSeries", itemlocSeries);
-  
+
     if (itemlocSeries > 0)
       postp.append("itemlocSeries", itemlocSeries);
 
@@ -240,7 +242,7 @@ bool printMulticopyDocument::sPostOneDoc(XSqlQuery *docq, int itemlocSeries)
         cleanup.exec();
         return false;
       }
-        
+
       else if (askq.value("ask").toBool() &&
                QMessageBox::question(this, tr("Post Anyway?"),
                                      _askBeforePostingMsg.arg(docnumber),
@@ -330,8 +332,9 @@ void printMulticopyDocument::sPrint()
   XSqlQuery     docinfoq = docinfom.toQuery(alldocsp);
   while (docinfoq.next())
   {
-    message(tr("Processing %1 #%2")
-              .arg(_data->_doctypefull, docinfoq.value("docnumber").toString()));
+    if (!isMacPrintPreview(_data->_printer))
+      message(tr("Processing %1 #%2")
+                .arg(_data->_doctypefull, docinfoq.value("docnumber").toString()));
 
     // This indirection allows scripts to replace core behavior - 14285
     emit aboutToStart(&docinfoq);
@@ -347,10 +350,11 @@ void printMulticopyDocument::sPrint()
       if (itemlocSeries <= 0)
         return;
     }
-    
+
     emit timeToPostOneDoc(&docinfoq, itemlocSeries);
 
-    message("");
+    if (!isMacPrintPreview(_data->_printer))
+      message("");
   }
 
 //  if (! mpStartedInitialized)
@@ -382,8 +386,10 @@ void printMulticopyDocument::sPrint()
   _data->_printed.clear();
   emit finishedWithAll();
 
-  if (_data->_captive)
+  if (_data->_captive) {
+    orReport::endMultiPrint(_data->_printer);
     accept();
+  }
   else
     clear();
 
