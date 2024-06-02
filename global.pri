@@ -85,7 +85,7 @@ exists(../qt-client-build-desktop) {
 
 DEPENDPATH  += $${INCLUDEPATH}
 
-CONFIG += release thread
+CONFIG += thread
 
 # The packaged version of OpenRPT installs the images to
 # /usr/share/openrpt/OpenRPT/images
