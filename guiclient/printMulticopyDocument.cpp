@@ -217,8 +217,7 @@ bool printMulticopyDocument::sPostOneDoc(XSqlQuery *docq, int itemlocSeries)
       ! docq->value("posted").toBool())
   {
     QString docnumber = docq->value("docnumber").toString();
-    if (!isMacPrintPreview(_data->_printer))
-      message(tr("Posting %1 #%2").arg(_data->_doctypefull, docnumber));
+    message(tr("Posting %1 #%2").arg(_data->_doctypefull, docnumber));
 
     ParameterList postp;
     postp.append("docid",     docq->value("docid"));
@@ -332,9 +331,8 @@ void printMulticopyDocument::sPrint()
   XSqlQuery     docinfoq = docinfom.toQuery(alldocsp);
   while (docinfoq.next())
   {
-    if (!isMacPrintPreview(_data->_printer))
-      message(tr("Processing %1 #%2")
-                .arg(_data->_doctypefull, docinfoq.value("docnumber").toString()));
+    message(tr("Processing %1 #%2")
+              .arg(_data->_doctypefull, docinfoq.value("docnumber").toString()));
 
     // This indirection allows scripts to replace core behavior - 14285
     emit aboutToStart(&docinfoq);
@@ -353,8 +351,7 @@ void printMulticopyDocument::sPrint()
 
     emit timeToPostOneDoc(&docinfoq, itemlocSeries);
 
-    if (!isMacPrintPreview(_data->_printer))
-      message("");
+    message("");
   }
 
 //  if (! mpStartedInitialized)
@@ -386,10 +383,8 @@ void printMulticopyDocument::sPrint()
   _data->_printed.clear();
   emit finishedWithAll();
 
-  if (_data->_captive) {
-    orReport::endMultiPrint(_data->_printer);
+  if (_data->_captive)
     accept();
-  }
   else
     clear();
 
@@ -452,6 +447,9 @@ bool printMulticopyDocument::sPrintOneDoc(XSqlQuery *docq)
       }
     }
   }
+
+  if (isMacPrintPreview(_data->_printer))
+    orReport::endMultiPrint(_data->_printer);
 
   if (printedOk)
     emit finishedPrinting(docq->value("docid").toInt());

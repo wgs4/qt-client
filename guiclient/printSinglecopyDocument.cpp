@@ -186,8 +186,7 @@ void printSinglecopyDocument::sPrint()
   XSqlQuery     docinfoq = docinfom.toQuery(alldocsp);
   while (docinfoq.next())
   {
-    if (!isMacPrintPreview(_data->_printer))
-      message(tr("Processing %1 #%2")
+    message(tr("Processing %1 #%2")
               .arg(_data->_doctypefull, docinfoq.value("docnumber").toString()));
 
     // This indirection allows scripts to replace core behavior - 14285
@@ -195,8 +194,7 @@ void printSinglecopyDocument::sPrint()
     emit timeToPrintOneDoc(&docinfoq);
     emit timeToMarkOnePrinted(&docinfoq);
 
-    if (!isMacPrintPreview(_data->_printer))
-      message("");
+    message("");
   }
 
   if (! mpStartedInitialized)
@@ -227,10 +225,8 @@ void printSinglecopyDocument::sPrint()
   sClearPrintedList();
   emit finishedWithAll();
 
-  if (_data->_captive) {
-    orReport::endMultiPrint(_data->_printer);
+  if (_data->_captive)
     accept();
-  }
   else
     clear();
 
@@ -288,6 +284,9 @@ bool printSinglecopyDocument::sPrintOneDoc(XSqlQuery *docq)
       printedOk = false;
     }
   }
+
+  if (isMacPrintPreview(_data->_printer))
+    orReport::endMultiPrint(_data->_printer);
 
   if (printedOk)
     emit finishedPrinting(docq->value("docid").toInt());
