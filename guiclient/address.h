@@ -23,7 +23,7 @@ class address : public XDialog, public Ui::address
     Q_OBJECT
 
 public:
-    address(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    address(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~address();
 
     Q_INVOKABLE virtual int id();

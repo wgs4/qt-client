@@ -186,7 +186,7 @@ void dspBillingSelections::sCancel()
   XSqlQuery dspCancel;
   if ( QMessageBox::critical( this, tr("Cancel Billing"),
                               tr("Are you sure that you want to cancel billing for the selected order?"),
-                              tr("&Yes"), tr("&No"), QString::null, 0, 1) == 0)
+                              tr("&Yes"), tr("&No"), QString {}, 0, 1) == 0)
   {
     dspCancel.prepare( "SELECT cancelBillingSelection(cobmisc_id) AS result "
                "FROM cobmisc "

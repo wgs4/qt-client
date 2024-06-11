@@ -80,7 +80,7 @@ void bomList::sDelete()
   XSqlQuery bomDelete;
   if (QMessageBox::critical( this, tr("Delete Bill of Materials"),
                              tr( "Are you sure that you want to delete the selected Bill of Materials?"),
-                             tr("&Yes"), tr("&No"), QString::null, 0, 1) == 0)
+                             tr("&Yes"), tr("&No"), QString {}, 0, 1) == 0)
   {
     bomDelete.prepare( "SELECT deletebom(:item_id);" );
     bomDelete.bindValue(":item_id", _bom->id());

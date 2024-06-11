@@ -23,8 +23,8 @@ class XDialog : public QDialog, protected ScriptablePrivate
   Q_OBJECT
 
   public:
-    XDialog(QWidget * parent = 0, Qt::WindowFlags flags = 0);
-    XDialog(QWidget * parent, const char * name, bool modal = false, Qt::WindowFlags flags = 0);
+    XDialog(QWidget * parent = 0, Qt::WindowFlags flags = Qt::WindowFlags {});
+    XDialog(QWidget * parent, const char * name, bool modal = false, Qt::WindowFlags flags = Qt::WindowFlags {});
     virtual ~XDialog();
     Q_INVOKABLE virtual ParameterList get() const;
 

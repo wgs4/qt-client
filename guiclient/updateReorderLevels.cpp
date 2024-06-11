@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QVariant>
+#include <QButtonGroup>
 
 #include <metasql.h>
 #include <parameter.h>

@@ -242,7 +242,7 @@ void enterPoReceipt::sPost()
     return;
   }
 
-  QString lotnum = QString::null;
+  QString lotnum = QString {};
   QDate expdate = omfgThis->startOfTime();
   QDate warrdate;
   bool gotlot = false;

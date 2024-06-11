@@ -22,7 +22,7 @@ class createPlannedOrdersByItem : public XDialog, public Ui::createPlannedOrders
     Q_OBJECT
 
 public:
-    createPlannedOrdersByItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    createPlannedOrdersByItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~createPlannedOrdersByItem();
 
 public slots:

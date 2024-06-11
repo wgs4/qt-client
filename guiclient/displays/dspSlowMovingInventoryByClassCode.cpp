@@ -14,6 +14,7 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QSqlError>
+#include <QButtonGroup>
 
 #include <metasql.h>
 #include <openreports.h>
@@ -127,7 +128,7 @@ void dspSlowMovingInventoryByClassCode::sPopulateMenu(QMenu *pMenu, QTreeWidgetI
     menuItem = pMenu->addAction(tr("Issue Count Tag..."), this, SLOT(sIssueCountTag()));;
     if (!_privileges->check("IssueCountTags"))
       menuItem->setEnabled(false);
-  } 
+  }
 }
 
 void dspSlowMovingInventoryByClassCode::sTransfer()
@@ -179,7 +180,7 @@ void dspSlowMovingInventoryByClassCode::sIssueCountTag()
 {
   ParameterList params;
   params.append("itemsite_id", list()->id());
-  
+
   createCountTagsByItem newdlg(this, "", true);
   newdlg.set(params);
   newdlg.exec();

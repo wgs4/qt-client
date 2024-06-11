@@ -23,7 +23,7 @@ class configureSearchPath
   Q_OBJECT
 
   public:
-    configureSearchPath(QWidget *parent = 0, const char *name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    configureSearchPath(QWidget *parent = 0, const char *name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~configureSearchPath();
 
   public slots:

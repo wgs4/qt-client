@@ -21,7 +21,7 @@ class vendorAddressList : public XDialog, public Ui::vendorAddressList
     Q_OBJECT
 
 public:
-    vendorAddressList(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    vendorAddressList(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~vendorAddressList();
 
 public slots:

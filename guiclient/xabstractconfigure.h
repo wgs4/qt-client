@@ -23,7 +23,7 @@ class XAbstractConfigure : public XWidget
     virtual bool sSave() = 0;
 
   protected:
-    XAbstractConfigure(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    XAbstractConfigure(QWidget *parent = 0, Qt::WindowFlags f = Qt::WindowFlags {});
     virtual ~XAbstractConfigure();
 
   protected slots:

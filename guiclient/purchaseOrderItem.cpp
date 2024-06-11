@@ -642,7 +642,7 @@ void purchaseOrderItem::sSave()
     if (QMessageBox::critical( this, tr("Zero Order Quantity"),
                                tr( "<p>The quantity that you are ordering is zero. "
                                    "<p>Do you wish to Continue or Change the Order Qty?" ),
-                               QString("&Continue"), QString("Change Order &Qty."), QString::null, 1, 1 ) == 1)
+                               QString("&Continue"), QString("Change Order &Qty."), QString {}, 1, 1 ) == 1)
     {
       _ordered->setFocus();
       return;
@@ -655,7 +655,7 @@ void purchaseOrderItem::sSave()
                                tr( "<p>The quantity that you are ordering is below the Minimum Order Quantity for this "
                                    "Item Source.  You may continue but this Vendor may not honor pricing or delivery quotations. "
                                    "<p>Do you wish to Continue or Change the Order Qty?" ),
-                               QString("&Continue"), QString("Change Order &Qty."), QString::null, 1, 1 ) == 1)
+                               QString("&Continue"), QString("Change Order &Qty."), QString {}, 1, 1 ) == 1)
     {
       _ordered->setFocus();
       return;
@@ -670,7 +670,7 @@ void purchaseOrderItem::sSave()
                                  tr( "<p>The quantity that you are ordering does not fall within the Order Multiple for this "
                                      "Item Source.  You may continue but this Vendor may not honor pricing or delivery quotations. "
                                      "<p>Do you wish to Continue or Change the Order Qty?" ),
-                                 QString("&Continue"), QString("Change Order &Qty."), QString::null, 1, 1 ) == 1)
+                                 QString("&Continue"), QString("Change Order &Qty."), QString {}, 1, 1 ) == 1)
       {
         _ordered->setFocus();
         return;
@@ -683,7 +683,7 @@ void purchaseOrderItem::sSave()
     if (QMessageBox::critical( this, tr("Invalid Unit Price"),
                                tr( "<p>The Unit Price is above the Maximum Desired Cost for this Item."
                                    "<p>Do you wish to Continue or Change the Unit Price?" ),
-                               QString("&Continue"), QString("Change Unit &Price."), QString::null, 1, 1 ) == 1)
+                               QString("&Continue"), QString("Change Unit &Price."), QString {}, 1, 1 ) == 1)
     {
       _unitPrice->setFocus();
       return;
@@ -697,7 +697,7 @@ void purchaseOrderItem::sSave()
                                    "Item Source.  You may continue but this Vendor may not honor pricing or delivery quotations "
                                    "or may not be able to deliver by the requested Due Date. "
                                    "<p>Do you wish to Continue or Change the Due Date?" ),
-                               QString("&Continue"), QString("Change Order &Due Date"), QString::null, 1, 1 ) == 1)
+                               QString("&Continue"), QString("Change Order &Due Date"), QString {}, 1, 1 ) == 1)
     {
       _dueDate->setFocus();
       return;

@@ -20,7 +20,7 @@ class createRecurringInvoices : public XDialog, public Ui::createRecurringInvoic
     Q_OBJECT
 
 public:
-    createRecurringInvoices(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    createRecurringInvoices(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~createRecurringInvoices();
 
 public slots:

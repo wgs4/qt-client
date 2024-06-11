@@ -22,7 +22,7 @@ class creditMemoItem : public XDialog, public Ui::creditMemoItem
     Q_OBJECT
 
 public:
-    creditMemoItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    creditMemoItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~creditMemoItem();
 
 public slots:

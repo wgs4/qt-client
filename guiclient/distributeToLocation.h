@@ -22,7 +22,7 @@ class distributeToLocation : public XDialog, public Ui::distributeToLocation
     Q_OBJECT
 
 public:
-    distributeToLocation(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    distributeToLocation(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~distributeToLocation();
 
 public slots:

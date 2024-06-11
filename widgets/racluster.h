@@ -69,7 +69,7 @@ class XTUPLEWIDGETS_EXPORT RaList : public VirtualList
   Q_OBJECT
 
   public:
-    RaList(QWidget*, Qt::WindowFlags = 0);
+    RaList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 void setupRaLineEdit(QScriptEngine *engine);

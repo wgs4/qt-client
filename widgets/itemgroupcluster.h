@@ -21,7 +21,7 @@ class ItemGroupInfo : public VirtualInfo
     Q_OBJECT
 
     public:
-      ItemGroupInfo(QWidget*, Qt::WindowFlags = 0);
+      ItemGroupInfo(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class ItemGroupList : public VirtualList
@@ -29,7 +29,7 @@ class ItemGroupList : public VirtualList
     Q_OBJECT
 
     public:
-      ItemGroupList(QWidget*, Qt::WindowFlags = 0);
+      ItemGroupList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class ItemGroupSearch : public VirtualSearch
@@ -37,7 +37,7 @@ class ItemGroupSearch : public VirtualSearch
     Q_OBJECT
 
     public:
-      ItemGroupSearch(QWidget*, Qt::WindowFlags = 0);
+      ItemGroupSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 

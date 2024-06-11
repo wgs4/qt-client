@@ -89,7 +89,7 @@ QuoteLineEdit::QuoteLineEdit(QWidget* pParent, const char* pName) :
                      "     LEFT OUTER JOIN prospect ON (quhead_cust_id=prospect_id) "
                      "WHERE true ");
     _recip_id = 0;
-    _recip_type = QString::null;
+    _recip_type = QString {};
 }
 
 void QuoteLineEdit::clear()
@@ -97,7 +97,7 @@ void QuoteLineEdit::clear()
   VirtualClusterLineEdit::clear();
   _id = -1;
   _recip_id = 0;
-  _recip_type = QString::null;
+  _recip_type = QString {};
 }
 
 void QuoteLineEdit::silentSetId(const int pId)

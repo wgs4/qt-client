@@ -63,7 +63,7 @@ class XTUPLEWIDGETS_EXPORT ApopenCluster : public VirtualCluster
     ApopenCluster(QWidget *, const char * = 0);
 
     Q_INVOKABLE virtual ApopenLineEdit::DocTypes allowedDocTypes()  const;
-    Q_INVOKABLE virtual void                     setExtraClause(const QString&, const QString& = QString::null);
+    Q_INVOKABLE virtual void                     setExtraClause(const QString&, const QString& = QString {});
     Q_INVOKABLE virtual ApopenLineEdit::DocType  type()             const;
     Q_INVOKABLE virtual QString                  typeString()       const;
 

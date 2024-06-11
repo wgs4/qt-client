@@ -1345,7 +1345,7 @@ bool vendor::sCheckSave()
 
 void vendor::clear()
 {
-  _cachedNumber = QString::null;
+  _cachedNumber = QString {};
   _crmacctid = -1;
   _vendid = -1;
 

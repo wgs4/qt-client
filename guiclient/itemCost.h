@@ -22,7 +22,7 @@ class itemCost : public XDialog, public Ui::itemCost
     Q_OBJECT
 
 public:
-    itemCost(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    itemCost(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~itemCost();
 
 public slots:

@@ -22,7 +22,7 @@ class toggleBankrecCleared : public XDialog, public Ui::toggleBankrecCleared
     Q_OBJECT
 
 public:
-    toggleBankrecCleared(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    toggleBankrecCleared(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~toggleBankrecCleared();
 
 public slots:

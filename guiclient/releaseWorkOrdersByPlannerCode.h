@@ -21,7 +21,7 @@ class releaseWorkOrdersByPlannerCode : public XDialog, public Ui::releaseWorkOrd
     Q_OBJECT
 
 public:
-    releaseWorkOrdersByPlannerCode(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    releaseWorkOrdersByPlannerCode(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~releaseWorkOrdersByPlannerCode();
 
     virtual bool setParams(ParameterList &);

@@ -20,6 +20,7 @@
 
 #include "errorReporter.h"
 #include "storedProcErrorLookup.h"
+#include "macpreviewfix.h"
 
 class reprintMulticopyDocumentPrivate : public Ui::reprintMulticopyDocument
 {
@@ -200,6 +201,9 @@ bool reprintMulticopyDocument::sPrintOneDoc(XTreeWidgetItem *item)
       }
     }
   }
+
+  if (isMacPrintPreview(_data->_printer))
+    orReport::endMultiPrint(_data->_printer);
 
   if (printedOk)
   {

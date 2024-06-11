@@ -24,7 +24,7 @@ class displayTimePhased : public display
     friend class displayTimePhasedPrivate;
 
 public:
-    displayTimePhased(QWidget* = 0, const char* = 0, Qt::WindowFlags = 0);
+    displayTimePhased(QWidget* = 0, const char* = 0, Qt::WindowFlags = Qt::WindowFlags {});
     ~displayTimePhased();
 
     virtual bool setParams(ParameterList &);

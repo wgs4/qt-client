@@ -30,7 +30,7 @@ class XTUPLEWIDGETS_EXPORT transferOrderList : public QDialog
     Q_OBJECT
 
 public:
-    transferOrderList( QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0 );
+    transferOrderList( QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {} );
 
     WarehouseGroup   *_dstwhs;
     WarehouseGroup   *_srcwhs;

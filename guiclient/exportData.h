@@ -26,7 +26,7 @@ class exportData : public XWidget, public Ui::exportData
   Q_OBJECT
   
   public:
-    exportData(QWidget* = 0, const char * = 0, Qt::WindowFlags = 0);
+    exportData(QWidget* = 0, const char * = 0, Qt::WindowFlags = Qt::WindowFlags {});
     ~exportData();
 
     static bool userHasPriv(const int priv);

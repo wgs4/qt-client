@@ -13,6 +13,7 @@
 #include <QMessageBox>
 #include "guiErrorCheck.h"
 #include <QSqlError>
+#include <QButtonGroup>
 
 #include <metasql.h>
 #include <openreports.h>

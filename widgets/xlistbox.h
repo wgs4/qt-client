@@ -16,8 +16,8 @@
 class XListBoxText : public QListWidgetItem
 {
   public:
-    XListBoxText(QListWidget* listbox, const QString & text=QString::null, int id=-1);
-    XListBoxText(const QString & text=QString::null, int id=-1);
+    XListBoxText(QListWidget* listbox, const QString & text=QString {}, int id=-1);
+    XListBoxText(const QString & text=QString {}, int id=-1);
     XListBoxText(QListWidget* listbox, const QString & text, QListWidgetItem *after);
     XListBoxText(QListWidget* listbox, const QString & text, int id, QListWidgetItem *after);
     virtual ~XListBoxText();

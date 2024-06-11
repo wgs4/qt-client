@@ -45,7 +45,7 @@
 #define iAskToUpdate  2
 #define iJustUpdate   3
 
-salesOrderItem::salesOrderItem(QWidget *parent, const char *name, Qt::WindowFlags fl)
+salesOrderItem::salesOrderItem(QWidget *parent, const char *name, bool modal, Qt::WindowFlags fl)
   : XDialog(parent, name, fl),
   _soitemid(-1)
 {

@@ -21,7 +21,7 @@ class getGLDistDate : public XDialog, public Ui::getGLDistDate
     Q_OBJECT
 
 public:
-    getGLDistDate(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    getGLDistDate(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~getGLDistDate();
 
     virtual QDate date() const;

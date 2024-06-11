@@ -22,7 +22,7 @@ class form : public XDialog, public Ui::form
     Q_OBJECT
 
 public:
-    form(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    form(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~form();
 
 public slots:

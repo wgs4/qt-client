@@ -233,7 +233,7 @@ bool postProduction::okToPost()
 
 QString postProduction::updateWoAfterPost()
 {
-  QString result = QString::null;
+  QString result = QString {};
   if (_productionNotes->toPlainText().trimmed().length())
   {
     XSqlQuery woq;
@@ -535,7 +535,7 @@ int postProduction::handleTransferSeriesAdjustBeforePost()
 
 QString postProduction::handleTransferAfterPost(int itemlocSeries)
 {
-  QString result = QString::null;
+  QString result = QString {};
   if (_immediateTransfer->isChecked())
   {
     if (_wo->currentWarehouse() == _transferWarehouse->id())
@@ -577,7 +577,7 @@ QString postProduction::handleTransferAfterPost(int itemlocSeries)
 
 QString postProduction::handleIssueToParentAfterPost(int itemlocSeries)
 {
-  QString result = QString::null;
+  QString result = QString {};
   XSqlQuery issueq;
   
   // Find invhist_id.  May not be found if control method is 'None'

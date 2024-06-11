@@ -22,7 +22,7 @@ class imageList : public XDialog, public Ui::imageList
     Q_OBJECT
 
 public:
-    imageList(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    imageList(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~imageList();
 
 public slots:

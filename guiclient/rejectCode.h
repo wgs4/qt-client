@@ -21,7 +21,7 @@ class rejectCode : public XDialog, public Ui::rejectCode
     Q_OBJECT
 
 public:
-    rejectCode(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    rejectCode(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~rejectCode();
 
 public slots:

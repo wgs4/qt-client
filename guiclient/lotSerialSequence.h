@@ -21,7 +21,7 @@ class lotSerialSequence : public XDialog, public Ui::lotSerialSequence
     Q_OBJECT
 
 public:
-    lotSerialSequence(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    lotSerialSequence(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~lotSerialSequence();
 
     virtual void populate();

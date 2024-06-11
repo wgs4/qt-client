@@ -20,7 +20,7 @@ class printApOpenItem : public printSinglecopyDocument,
     Q_OBJECT
 
   public:
-    printApOpenItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    printApOpenItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~printApOpenItem();
 
     Q_INVOKABLE virtual QString       doctype();

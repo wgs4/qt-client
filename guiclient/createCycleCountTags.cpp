@@ -12,6 +12,7 @@
 
 #include <QSqlError>
 #include <QVariant>
+#include <QButtonGroup>
 
 #include "storedProcErrorLookup.h"
 #include "errorReporter.h"
@@ -32,7 +33,7 @@ createCycleCountTags::createCycleCountTags(QWidget* parent, const char* name, bo
     _parameter->setType(ParameterGroup::ClassCode);
 
     _freeze->setEnabled(_privileges->check("CreateReceiptTrans"));
-    
+
     //If not multi-warehouse hide whs control
     if (!_metrics->boolean("MultiWhs"))
     {
@@ -159,7 +160,7 @@ void createCycleCountTags::sPopulateLocations()
              "       END AS locationname "
              "FROM location "
              "WHERE (location_warehous_id=:warehous_id) "
-             " AND (location_active) "  
+             " AND (location_active) "
              "ORDER BY locationname;" );
   createPopulateLocations.bindValue(":warehous_id", _warehouse->id());
   createPopulateLocations.exec();

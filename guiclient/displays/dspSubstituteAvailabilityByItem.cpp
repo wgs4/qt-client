@@ -17,6 +17,7 @@
 #include <QMenu>
 #include <QVariant>
 #include <QMessageBox>
+#include <QButtonGroup>
 
 #include "dspAllocations.h"
 #include "dspOrders.h"

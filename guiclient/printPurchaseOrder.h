@@ -20,7 +20,7 @@ class printPurchaseOrder : public printMulticopyDocument,
     Q_OBJECT
 
   public:
-    printPurchaseOrder(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    printPurchaseOrder(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~printPurchaseOrder();
 
     Q_INVOKABLE virtual ParameterList getParamsOneCopy(const int row,

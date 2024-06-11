@@ -14,6 +14,7 @@
 #include <QSqlError>
 #include <QValidator>
 #include <QVariant>
+#include <QButtonGroup>
 
 #include "distributeInventory.h"
 #include "inputManager.h"
@@ -170,7 +171,7 @@ enum SetResponse adjustmentTrans::set(const ParameterList &pParams)
 void adjustmentTrans::sPost()
 {
   XSqlQuery adjustmentPost;
-  XSqlQuery cleanup;  
+  XSqlQuery cleanup;
   int itemlocSeries = 0;
   double qty = _qty->toDouble();
   double cost = _cost->toDouble();
@@ -204,7 +205,7 @@ void adjustmentTrans::sPost()
   else if (ErrorReporter::error(QtCriticalMsg, this, tr("Failed to Retrieve the Next itemloc_series_seq"),
                             parentSeries, __FILE__, __LINE__))
     return;
-  
+
   if (DEBUG)
     qDebug() << "adjustmentTrans::sPost itemlocSeries: " << itemlocSeries;
 
@@ -311,7 +312,7 @@ void adjustmentTrans::sPopulateQOH()
       _itemsiteId = populateAdjustment.value("itemsite_id").toInt();
       _cachedValue = populateAdjustment.value("itemsite_value").toDouble();
       _cachedQOH = populateAdjustment.value("itemsite_qtyonhand").toDouble();
-      _controlledItem = populateAdjustment.value("lscntrl").toBool() || 
+      _controlledItem = populateAdjustment.value("lscntrl").toBool() ||
         populateAdjustment.value("itemsite_loccntrl").toBool();
       if(_cachedQOH == 0.0)
         _costManual->setChecked(true);
@@ -343,7 +344,7 @@ void adjustmentTrans::sPopulateQty()
 {
   if (_mode == cNew)
   {
-    
+
     if (_qty->text().trimmed().length())
     {
       if (_absolute->isChecked())
@@ -363,7 +364,7 @@ void adjustmentTrans::sPopulateQty()
     _lblCost->setEnabled(!neg);
     _unitCost->setEnabled(!neg);
     _unitCostLit->setEnabled(!neg);
-    
+
     if (_afterQty->toDouble() == 0)
     {
       _costAdjust->setChecked(true);

@@ -41,7 +41,7 @@ class XTUPLEWIDGETS_EXPORT ContactList : public VirtualList
   friend class ContactSearch;
 
 public:
-  ContactList(QWidget*, const char* = 0, bool = false, Qt::WindowFlags = 0);
+  ContactList(QWidget*, const char* = 0, bool = false, Qt::WindowFlags = Qt::WindowFlags {});
   virtual void set(const ParameterList & pParams);
 
 public slots:
@@ -63,7 +63,7 @@ class XTUPLEWIDGETS_EXPORT ContactSearch : public VirtualSearch
   friend class ContactWidget;
 
 public:
-  ContactSearch(QWidget*, Qt::WindowFlags = 0);
+  ContactSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
   virtual void set(const ParameterList & pParams);
 
 public slots:
@@ -242,7 +242,7 @@ public slots:
 
   Q_INVOKABLE void setEmailSubjectText(const QString text);
   Q_INVOKABLE void setEmailBodyText(const QString text);
-  
+
   virtual void	clear();
   virtual void	check();
   virtual bool  sChanged() { return _changed; }
@@ -261,7 +261,7 @@ public slots:
   virtual void	setActiveVisible(const bool);
   virtual void	setAddressVisible(const bool);
   virtual void	setEmailVisible(const bool);
-  virtual void	setId(const int, const QString& = QString::null);
+  virtual void	setId(const int, const QString& = QString {});
   virtual void	setInitialsVisible(const bool);
   virtual void	setMinimalLayout(const bool);
   virtual void	setName(int, const QString& p);

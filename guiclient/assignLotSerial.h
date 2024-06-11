@@ -23,7 +23,7 @@ class assignLotSerial : public XDialog, public Ui::assignLotSerial
     Q_OBJECT
 
 public:
-    assignLotSerial(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    assignLotSerial(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~assignLotSerial();
 
     QPushButton* _print;

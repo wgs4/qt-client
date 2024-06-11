@@ -22,7 +22,7 @@ class ConfigCyberSourceProcessor : public ConfigCreditCardProcessor,
   Q_OBJECT
 
   public:
-    ConfigCyberSourceProcessor(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    ConfigCyberSourceProcessor(QWidget *parent = 0, Qt::WindowFlags flags = Qt::WindowFlags {});
     virtual ~ConfigCyberSourceProcessor();
 
   public slots:

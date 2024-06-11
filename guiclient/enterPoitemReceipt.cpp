@@ -298,7 +298,7 @@ void enterPoitemReceipt::sReceive()
   {
     XMessageBox::message( (isVisible() ? this : parentWidget()), QMessageBox::Warning, tr("Cannot Receive"),
                           tr(  "<p>Cannot receive more quantity than ordered." ),
-                          QString::null, QString::null, _snooze );
+                          QString {}, QString {}, _snooze );
     return;
   }
 
@@ -306,7 +306,7 @@ void enterPoitemReceipt::sReceive()
   {
     XMessageBox::message( (isVisible() ? this : parentWidget()), QMessageBox::Warning, tr("Cannot Receive"),
                           tr(  "<p>Cannot receive more quantity than authorized." ),
-                          QString::null, QString::null, _snooze );
+                          QString {}, QString {}, _snooze );
     return;
   }
 
@@ -382,7 +382,7 @@ void enterPoitemReceipt::sReceive()
           cleanup.exec();
           XMessageBox::message( (isVisible() ? this : parentWidget()), QMessageBox::Warning, tr("Enter PO Receipt"),
                             tr(  "<p>Transaction Cancelled." ),
-                            QString::null, QString::null, _snooze );
+                            QString {}, QString {}, _snooze );
           return;
         }
       }

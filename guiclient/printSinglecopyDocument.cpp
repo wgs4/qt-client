@@ -18,6 +18,7 @@
 #include <openreports.h>
 
 #include "errorReporter.h"
+#include "macpreviewfix.h"
 
 class printSinglecopyDocumentPrivate : public Ui::printSinglecopyDocument
 {
@@ -283,6 +284,9 @@ bool printSinglecopyDocument::sPrintOneDoc(XSqlQuery *docq)
       printedOk = false;
     }
   }
+
+  if (isMacPrintPreview(_data->_printer))
+    orReport::endMultiPrint(_data->_printer);
 
   if (printedOk)
     emit finishedPrinting(docq->value("docid").toInt());

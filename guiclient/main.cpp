@@ -396,6 +396,7 @@ int main(int argc, char *argv[])
                          metric, __FILE__, __LINE__);
   }
   metric.exec("SELECT packageIsEnabled('drupaluserinfo') AS result;");
+  /*
   bool xtweb = false;
   if(metric.first())
     xtweb = metric.value("result").toBool();
@@ -543,6 +544,7 @@ int main(int argc, char *argv[])
 
     _splash->show();
   }
+  */
 
   QString _serverVersion = _metrics->value("ServerVersion");
   if (_serverVersion != _dbVersion) {

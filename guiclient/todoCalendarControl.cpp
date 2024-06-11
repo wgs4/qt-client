@@ -66,6 +66,6 @@ QString todoCalendarControl::contents(const QDate & date)
     if(qry.value(0).toInt() != 0)
       return qry.value(0).toString();
   }
-  return QString::null;
+  return QString {};
 }
 

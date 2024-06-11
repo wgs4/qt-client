@@ -1123,7 +1123,7 @@ void workOrder::sReprioritizeParent()
                                    "Are you sure you want to change the work order priority?" )
                                .arg(QString().setNum(_oldPriority))
                                .arg(QString().setNum(_priority->value())),
-                               tr("&Yes"), tr("&No"), QString::null, 0, 1 ) == 1 )
+                               tr("&Yes"), tr("&No"), QString {}, 0, 1 ) == 1 )
     {
       _priority->setValue(_oldPriority);
       return;
@@ -1156,7 +1156,7 @@ void workOrder::sRescheduleParent()
     if ( QMessageBox::warning( this, tr("Change Date"),
                                tr( "Changing the start or due date will update all work order requirements.  "
                                    "Are you sure you want to reschedule all dates?" ),
-                               tr("&Yes"), tr("&No"), QString::null, 0, 1 ) == 1 )
+                               tr("&Yes"), tr("&No"), QString {}, 0, 1 ) == 1 )
     {
       _startDate->setDate(_oldStartDate);
       _dueDate->setDate(_oldDueDate);
@@ -1217,7 +1217,7 @@ void workOrder::sChangeParentQty()
                                        "Do you want to change the Order Quantity for this Work Order to %2?" )
                                    .arg(formatQty(workChangeParentQty.value("qty").toDouble()))
                                    .arg(formatQty(workChangeParentQty.value("qty").toDouble())),
-                                   tr("&Yes"), tr("&No"), QString::null, 0, 1 ) == 1 )
+                                   tr("&Yes"), tr("&No"), QString {}, 0, 1 ) == 1 )
           {
             _qty->setText(_oldQty);
             _qty->setFocus();
@@ -1231,7 +1231,7 @@ void workOrder::sChangeParentQty()
                                      "Are you sure you want to change the work order quantity?" )
                                  .arg(formatQty(_oldQty))
                                  .arg(formatQty(_qty->text().toDouble())),
-                                 tr("&Yes"), tr("&No"), QString::null, 0, 1 ) == 1 )
+                                 tr("&Yes"), tr("&No"), QString {}, 0, 1 ) == 1 )
       {
         _qty->setText(_oldQty);
         return;

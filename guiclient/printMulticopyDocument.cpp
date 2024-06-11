@@ -20,6 +20,7 @@
 
 #include "errorReporter.h"
 #include "storedProcErrorLookup.h"
+#include "macpreviewfix.h"
 
 class printMulticopyDocumentPrivate : public Ui::printMulticopyDocument
 {
@@ -225,7 +226,7 @@ bool printMulticopyDocument::sPostOneDoc(XSqlQuery *docq, int itemlocSeries)
     XSqlQuery cleanup; // Stage cleanup function to be called on error
     cleanup.prepare("SELECT deleteitemlocseries(:itemlocSeries, TRUE);");
     cleanup.bindValue(":itemlocSeries", itemlocSeries);
-  
+
     if (itemlocSeries > 0)
       postp.append("itemlocSeries", itemlocSeries);
 
@@ -240,7 +241,7 @@ bool printMulticopyDocument::sPostOneDoc(XSqlQuery *docq, int itemlocSeries)
         cleanup.exec();
         return false;
       }
-        
+
       else if (askq.value("ask").toBool() &&
                QMessageBox::question(this, tr("Post Anyway?"),
                                      _askBeforePostingMsg.arg(docnumber),
@@ -347,7 +348,7 @@ void printMulticopyDocument::sPrint()
       if (itemlocSeries <= 0)
         return;
     }
-    
+
     emit timeToPostOneDoc(&docinfoq, itemlocSeries);
 
     message("");
@@ -446,6 +447,9 @@ bool printMulticopyDocument::sPrintOneDoc(XSqlQuery *docq)
       }
     }
   }
+
+  if (isMacPrintPreview(_data->_printer))
+    orReport::endMultiPrint(_data->_printer);
 
   if (printedOk)
     emit finishedPrinting(docq->value("docid").toInt());

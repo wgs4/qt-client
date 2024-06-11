@@ -22,7 +22,7 @@ class commentType : public XDialog, public Ui::commentType
     Q_OBJECT
 
 public:
-    commentType(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    commentType(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~commentType();
 
 public slots:

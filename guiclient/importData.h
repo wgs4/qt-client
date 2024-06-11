@@ -22,7 +22,7 @@ class importData : public XWidget, public Ui::importData
   Q_OBJECT
   
   public:
-    importData(QWidget* = 0, const char * = 0, Qt::WindowFlags = 0);
+    importData(QWidget* = 0, const char * = 0, Qt::WindowFlags = Qt::WindowFlags {});
     ~importData();
 
     static bool userHasPriv();

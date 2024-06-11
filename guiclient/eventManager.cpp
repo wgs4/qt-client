@@ -365,7 +365,7 @@ void eventManager::sDeleteWorkOrder()
   XSqlQuery eventDeleteWorkOrder;
   if ( QMessageBox::warning( this, tr("Delete Work Order?"),
                              tr("Are you sure that you want to delete the selected Work Order?"),
-                             tr("&Yes"), tr("&No"), QString::null, 0, 1) == 0)
+                             tr("&Yes"), tr("&No"), QString {}, 0, 1) == 0)
   {
     eventDeleteWorkOrder.prepare("SELECT deleteWo(:wo_id, true) AS returnVal;");
     eventDeleteWorkOrder.bindValue(":wo_id", _event->currentItem()->rawValue("evntlog_ord_id").toInt());

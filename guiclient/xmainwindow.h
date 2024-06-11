@@ -26,8 +26,8 @@ class XMainWindow : public QMainWindow, protected ScriptablePrivate
   Q_PROPERTY(ParameterList params READ get WRITE set DESIGNABLE false);
 
   public:
-    XMainWindow(QWidget * parent = 0, Qt::WindowFlags flags = 0);
-    XMainWindow(QWidget * parent, const char * name, Qt::WindowFlags flags = 0);
+    XMainWindow(QWidget * parent = 0, Qt::WindowFlags flags = Qt::WindowFlags {});
+    XMainWindow(QWidget * parent, const char * name, Qt::WindowFlags flags = Qt::WindowFlags {});
     virtual ~XMainWindow();
 
     Q_INVOKABLE virtual ParameterList get() const;

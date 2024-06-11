@@ -21,7 +21,7 @@ class printWoPickList : public XDialog, public Ui::printWoPickList
     Q_OBJECT
 
 public:
-    printWoPickList(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    printWoPickList(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~printWoPickList();
 
 public slots:

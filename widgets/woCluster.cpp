@@ -607,7 +607,8 @@ void WomatlCluster::setWooperid(int pWooperid)
   _sourceId = pWooperid;
 
   bool qual = false;
-  QString sql( "SELECT womatl_id AS womatlid, item_number,"
+  QString sql( "SELECT womatl_id AS womatlid,"
+               "       CONCAT_WS(' - ', item_number, item_descrip1) as item_number_descrip,"
                "       wo_id, uom_name, item_descrip1, item_descrip2,"
                "       womatl_qtyfxd AS _qtyfxd, womatl_qtyreq AS _qtyreq, womatl_qtyiss AS _qtyiss,"
                "       formatQty(womatl_qtyfxd) AS qtyfxd,"
@@ -684,7 +685,8 @@ void WomatlCluster::setWoid(int pWoid)
   _sourceId = pWoid;
 
   bool qual = false;
-  QString sql( "SELECT womatl_id AS womatlid, item_number,"
+  QString sql( "SELECT womatl_id AS womatlid,"
+               "       CONCAT_WS(' - ', item_number, item_descrip1) as item_number_descrip,"
                "       wo_id, wo_qtyord, uom_name, item_descrip1, item_descrip2,"
                "       womatl_qtyreq AS _qtyreq, womatl_qtyiss AS _qtyiss,"
                "       womatl_qtyfxd AS qtyfxd, womatl_qtyper AS qtyper,"
@@ -773,7 +775,8 @@ void WomatlCluster::setId(int pWomatlid)
   else
   {
     bool qual = false;
-    QString sql( "SELECT list.womatl_id AS womatlid, item_number, "
+    QString sql( "SELECT list.womatl_id AS womatlid,"
+                 "       CONCAT_WS(' - ', item_number, item_descrip1) as item_number_descrip,"
                  "       wo_id, uom_name, item_descrip1, item_descrip2,"
                  "       ABS(list.womatl_qtyreq) AS _qtyreq, "
                  "       ABS(list.womatl_qtyiss) AS _qtyiss,"

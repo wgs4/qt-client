@@ -20,7 +20,7 @@ class voucherItem : public XDialog, public Ui::voucherItem
     Q_OBJECT
 
 public:
-    voucherItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    voucherItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~voucherItem();
 	
 public slots:

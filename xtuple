@@ -21,12 +21,12 @@ XTUPLE_EXE=`basename $0 .sh`
 # Check to see if LD_LIBRARY_PATH is already set with
 # a value. If so then we will prepend our values.
 if [ -z $LD_LIBRARY_PATH ]; then
-  LD_LIBRARY_PATH="$XTUPLE_DIR"
+  LD_LIBRARY_PATH="$XTUPLE_DIR/lib"
 else
-  LD_LIBRARY_PATH="$XTUPLE_DIR":$LD_LIBRARY_PATH
+  LD_LIBRARY_PATH="$XTUPLE_DIR/lib":$LD_LIBRARY_PATH
 fi
 export LD_LIBRARY_PATH
 
 # Execute the real binary we want now that our
 # environment has been setup correctly.
-"$XTUPLE_DIR/$XTUPLE_EXE.bin" $@
+"$XTUPLE_DIR/$XTUPLE_EXE.bin" --platform xcb $@

@@ -60,7 +60,7 @@ QString Parameters::value(const QString &pName)
 {
   MetricMap::iterator it = _values.find(pName);
   if (it == _values.end())
-    return QString::null;
+    return QString {};
   else
     return it.value();
 }
@@ -140,7 +140,7 @@ QString Parameters::parent(const QString &pValue)
     if (it.value() == pValue)
       return it.key();
 
-  return QString::null;
+  return QString {};
 }
 
 Metrics::Metrics()

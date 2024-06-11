@@ -13,6 +13,7 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QVariant>
+#include <QButtonGroup>
 
 #include <mqlutil.h>
 

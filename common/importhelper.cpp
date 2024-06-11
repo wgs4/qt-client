@@ -295,7 +295,7 @@ bool ImportHelper::handleFilePostImport(const QString &pfilename, bool success, 
 
 bool ImportHelper::importCSV(const QString &pFileName, QString &errmsg)
 {
-  errmsg = QString::null;
+  errmsg = QString {};
   QFile file(pFileName);
   if (! file.open(QIODevice::ReadOnly))
   {

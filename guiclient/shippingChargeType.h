@@ -21,7 +21,7 @@ class shippingChargeType : public XDialog, public Ui::shippingChargeType
     Q_OBJECT
 
 public:
-    shippingChargeType(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    shippingChargeType(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~shippingChargeType();
 
 public slots:

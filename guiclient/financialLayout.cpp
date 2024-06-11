@@ -923,7 +923,7 @@ void financialLayout::sSetType()
           tr( "Existing row definitions will be changed.\n"
           "Group percentage settings will be reset.\n"
           "Continue?" ),
-          tr("Yes"), tr("No"), QString::null ) == 1 )
+          tr("Yes"), tr("No"), QString {} ) == 1 )
       {
         if (_cachedType == cAdHoc)
           _adHoc->setChecked(true);

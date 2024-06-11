@@ -23,7 +23,7 @@ class systemMessage : public XDialog, public Ui::systemMessage
     Q_OBJECT
 
   public:
-    systemMessage(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    systemMessage(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~systemMessage();
 
     static systemMessage *windowForId(int id);

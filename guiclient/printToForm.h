@@ -20,7 +20,7 @@ class printToForm : public printSinglecopyDocument,
     Q_OBJECT
 
   public:
-    printToForm(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    printToForm(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~printToForm();
 
     Q_INVOKABLE virtual ParameterList getParamsDocList();

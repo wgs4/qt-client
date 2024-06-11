@@ -21,7 +21,7 @@ class userList : public XDialog, public Ui::userList
     Q_OBJECT
 
 public:
-    userList(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    userList(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~userList();
 
 public slots:

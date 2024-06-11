@@ -20,7 +20,7 @@ class purgePostedCountSlips : public XDialog, public Ui::purgePostedCountSlips
     Q_OBJECT
 
 public:
-    purgePostedCountSlips(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    purgePostedCountSlips(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~purgePostedCountSlips();
 
 public slots:

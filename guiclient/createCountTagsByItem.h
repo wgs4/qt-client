@@ -22,7 +22,7 @@ class createCountTagsByItem : public XDialog, public Ui::createCountTagsByItem
     Q_OBJECT
 
 public:
-    createCountTagsByItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    createCountTagsByItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~createCountTagsByItem();
 
 public slots:

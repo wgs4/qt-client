@@ -32,7 +32,7 @@ class XTUPLEWIDGETS_EXPORT itemList : public VirtualList
     Q_OBJECT
 
 public:
-    itemList(QWidget*, Qt::WindowFlags = 0);
+    itemList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 
     QCheckBox* _showInactive;
     QCheckBox* _showMake;
@@ -58,7 +58,7 @@ class XTUPLEWIDGETS_EXPORT itemSearch : public VirtualSearch
     Q_OBJECT
 
 public:
-    itemSearch(QWidget*, Qt::WindowFlags = 0);
+    itemSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 
     XCheckBox* _searchDescrip2;
     XCheckBox* _searchUpc;
@@ -271,7 +271,7 @@ class XTUPLEWIDGETS_EXPORT ItemCluster : public VirtualCluster
   public slots:
     QItemDelegate *itemDelegate() { return static_cast<ItemLineEdit*>(_number)->itemDelegate(); }
     void setDescriptionVisible(const bool p);
-    void setId(const int pId, const QString& = QString::null);
+    void setId(const int pId, const QString& = QString {});
     void setItemNumber(QString);
     void setItemsiteid(int);
 

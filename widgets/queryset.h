@@ -26,7 +26,7 @@ class QuerySet : public QWidget, public Ui::QuerySet
     Q_OBJECT
 
   public:
-    QuerySet(QWidget* parent = 0, Qt::WindowFlags fl = 0);
+    QuerySet(QWidget* parent = 0, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~QuerySet();
 
     Q_INVOKABLE virtual int id()       const;

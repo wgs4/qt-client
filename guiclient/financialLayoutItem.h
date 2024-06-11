@@ -22,7 +22,7 @@ class financialLayoutItem : public XDialog, public Ui::financialLayoutItem
     Q_OBJECT
 
 public:
-    financialLayoutItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    financialLayoutItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~financialLayoutItem();
 
     virtual void populate();

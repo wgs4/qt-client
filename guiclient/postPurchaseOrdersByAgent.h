@@ -20,7 +20,7 @@ class postPurchaseOrdersByAgent : public XDialog, public Ui::postPurchaseOrdersB
     Q_OBJECT
 
 public:
-    postPurchaseOrdersByAgent(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    postPurchaseOrdersByAgent(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~postPurchaseOrdersByAgent();
 
 public slots:

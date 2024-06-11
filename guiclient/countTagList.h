@@ -22,7 +22,7 @@ class countTagList : public XDialog, public Ui::countTagList
     Q_OBJECT
 
 public:
-    countTagList(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    countTagList(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~countTagList();
 
 public slots:

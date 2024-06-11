@@ -14,14 +14,21 @@ isEqual(QT_MAJOR_VERSION, 5) {
 
 TEMPLATE = app
 
+XTUPLE_BLD = $$(XTUPLE_BLD)
+isEmpty(XTUPLE_BLD) {
+  exists(../../xtuple-build-desktop) {
+    XTUPLE_BLD = ../../xtuple-build-desktop
+  }
+}
+
 INCLUDEPATH += ../scriptapi \
                ../common \
                ../widgets ../widgets/tmp/lib \
-               ../../xtuple-build-desktop/scriptapi \
-               ../../xtuple-build-desktop/common \
-               ../../xtuple-build-desktop/widgets \
-               ../../xtuple-build-desktop/widgets/tmp/lib \
-               ../../xtuple-build-desktop/guiclient . \
+               $${XTUPLE_BLD}/scriptapi \
+               $${XTUPLE_BLD}/common \
+               $${XTUPLE_BLD}/widgets \
+               $${XTUPLE_BLD}/widgets/tmp/lib \
+               $${XTUPLE_BLD}/guiclient . \
                $(CSVIMP_HEADERS)/csvimpcommon $(CSVIMP_HEADERS)/plugin
 
 DEPENDPATH  += $${INCLUDEPATH}
@@ -953,6 +960,7 @@ HEADERS = ../common/format.h                    \
           lotSerialSequences.h          \
           lotSerialRegistration.h       \
           lotSerialUtils.h              \
+          macpreviewfix.h               \
           maintainBudget.h              \
           maintainItemCosts.h           \
           maintainShipping.h            \
@@ -1571,6 +1579,7 @@ SOURCES = absoluteCalendarItem.cpp              \
           lotSerialSequences.cpp        \
           lotSerialRegistration.cpp     \
           lotSerialUtils.cpp            \
+          macpreviewfix.cpp             \
           main.cpp                      \
           maintainBudget.cpp            \
           maintainItemCosts.cpp         \

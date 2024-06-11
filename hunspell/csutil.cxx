@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h> 
 #include <ctype.h>
+#include <cstddef>
 
 #include "csutil.hxx"
 #include "atypes.hxx"
@@ -217,7 +218,7 @@ int flag_bsearch(unsigned short flags[], unsigned short flag, int length) {
       }
       if (dp) {
          *stringp = dp+1;
-         int nc = (int)((unsigned long)dp - (unsigned long)mp);
+         ptrdiff_t nc = dp - mp;
          *(mp+nc) = '\0';
       } else {
          *stringp = mp + strlen(mp);

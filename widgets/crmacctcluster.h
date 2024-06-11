@@ -54,7 +54,7 @@ class XTUPLEWIDGETS_EXPORT CRMAcctList : public VirtualList
     friend class CRMAcctLineEdit;
 
     public:
-	CRMAcctList(QWidget*, const char* = 0, bool = false, Qt::WindowFlags = 0);
+	CRMAcctList(QWidget*, const char* = 0, bool = false, Qt::WindowFlags = Qt::WindowFlags {});
 
     public slots:
 	virtual void sFillList();
@@ -77,7 +77,7 @@ class XTUPLEWIDGETS_EXPORT CRMAcctSearch : public VirtualSearch
     friend class CRMAcctLineEdit;
 
     public:
-	CRMAcctSearch(QWidget*, Qt::WindowFlags = 0);
+	CRMAcctSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 	virtual void setId(const int);
 	virtual void setShowInactive(const bool);
 	virtual void setSubtype(const CRMAcctLineEdit::CRMAcctSubtype);

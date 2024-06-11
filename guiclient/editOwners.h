@@ -22,7 +22,7 @@ class editOwners : public XDialog, public Ui::editOwners
     Q_OBJECT
 
 public:
-    editOwners(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    editOwners(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
 
 protected slots:
     virtual void sClose();

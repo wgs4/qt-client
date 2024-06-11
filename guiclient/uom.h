@@ -21,7 +21,7 @@ class uom : public XDialog, public Ui::uom
     Q_OBJECT
 
 public:
-    uom(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    uom(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~uom();
 
 public slots:

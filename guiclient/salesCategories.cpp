@@ -82,7 +82,7 @@ void salesCategories::sDelete()
         result = QMessageBox::warning( this, tr("Cannot Delete Sales Category"),
                                        tr( "The selected Sales Category cannot be deleted as there are closed Invoice Lines assigned to it.\n"
                                            "Would you like to mark the selected Sales Category as inactive instead?" ),
-                                       tr("&Yes"), tr("&No"), QString::null );
+                                       tr("&Yes"), tr("&No"), QString {} );
         if (result == 0)
         {
           salesDelete.prepare( "UPDATE salescat "
@@ -98,7 +98,7 @@ void salesCategories::sDelete()
         result = QMessageBox::warning( this, tr("Cannot Delete Sales Category"),
                                        tr( "The selected Sales Category cannot be deleted as there are A/R Open Items assigned to it.\n"
                                            "Would you like to mark the selected Sales Category as inactive instead?" ),
-                                       tr("&Yes"), tr("&No"), QString::null );
+                                       tr("&Yes"), tr("&No"), QString {} );
         if (result == 0)
         {
           salesDelete.prepare( "UPDATE salescat "

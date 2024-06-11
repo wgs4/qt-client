@@ -29,7 +29,7 @@ class login2 : public QDialog, public Ui::login2
   Q_OBJECT
 
   public:
-    login2(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    login2(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~login2();
 
     QString _databaseURL;

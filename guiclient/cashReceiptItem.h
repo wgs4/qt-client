@@ -22,7 +22,7 @@ class cashReceiptItem : public XDialog, public Ui::cashReceiptItem
     Q_OBJECT
 
 public:
-    cashReceiptItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    cashReceiptItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~cashReceiptItem();
 
 public slots:

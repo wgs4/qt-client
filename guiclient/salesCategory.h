@@ -20,7 +20,7 @@ class salesCategory : public XDialog, public Ui::salesCategory
     Q_OBJECT
 
 public:
-    salesCategory(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    salesCategory(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~salesCategory();
 
 public slots:

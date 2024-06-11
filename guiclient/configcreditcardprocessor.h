@@ -39,7 +39,7 @@ class ConfigCreditCardProcessor : public XWidget
   Q_OBJECT
 
   public:
-    ConfigCreditCardProcessor(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    ConfigCreditCardProcessor(QWidget *parent = 0, Qt::WindowFlags flags = Qt::WindowFlags {});
     virtual ~ConfigCreditCardProcessor();
 
   public slots:

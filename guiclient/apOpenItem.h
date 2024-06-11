@@ -22,7 +22,7 @@ class apOpenItem : public XDialog, public Ui::apOpenItem
     Q_OBJECT
 
 public:
-    apOpenItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    apOpenItem(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~apOpenItem();
 
     virtual void populate();

@@ -11,6 +11,7 @@
 #include "updateOUTLevelByItem.h"
 
 #include <QMessageBox>
+#include <QButtonGroup>
 #include <parameter.h>
 
 updateOUTLevelByItem::updateOUTLevelByItem(QWidget* parent, const char* name, bool modal, Qt::WindowFlags fl)

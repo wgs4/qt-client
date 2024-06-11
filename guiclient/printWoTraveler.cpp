@@ -38,7 +38,7 @@ printWoTraveler::printWoTraveler(QWidget* parent, const char* name, bool modal, 
 
   omfgThis->inputManager()->notify(cBCWorkOrder, this, _wo, SLOT(setId(int)));
 
-  _wo->setType(cWoExploded | cWoReleased | cWoIssued);
+  _wo->setType(cWoExploded | cWoReleased | cWoIssued | cWoClosed | cWoOpen);
 
   if (!_privileges->check("ReleaseWorkOrders"))
     _releaseWo->setEnabled(false);

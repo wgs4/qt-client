@@ -76,7 +76,7 @@ void implodeWo::sImplode()
                                    "have been manually modified.  If you Implode the selected Work Order\n"
                                    "then these modifications will be lost.\n"
                                    "Are you sure that you want to Implode the selected Work Order?"),
-                               tr("&Yes"), tr("&No"), QString::null, 0, 1) == 1)
+                               tr("&Yes"), tr("&No"), QString {}, 0, 1) == 1)
       return;
   }
 

@@ -22,7 +22,7 @@ class copyBOM : public XDialog, public Ui::copyBOM
     Q_OBJECT
 
 public:
-    copyBOM(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0);
+    copyBOM(QWidget* parent = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = Qt::WindowFlags {});
     ~copyBOM();
 
 public slots:

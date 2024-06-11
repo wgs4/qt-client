@@ -43,7 +43,7 @@ void summarizeInvTransByClassCode::sSummarize()
                              tr( "<p>You are about to summarize Inventory Transactions for the selected Site and Class Code(s). "
                                  "Summarizing Inventory Transactions will delete any detailed Transaction information.<br>"
                                  "Are you sure that you want to summarize the selected Transactions?</p>" ),
-                             tr("&Yes"), tr("&No"), QString::null, 0, 1) == 1)
+                             tr("&Yes"), tr("&No"), QString {}, 0, 1) == 1)
   {
     reject();
     return;

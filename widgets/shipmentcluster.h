@@ -18,7 +18,7 @@ class ShipmentList : public VirtualList
     Q_OBJECT
 
     public:
-        ShipmentList(QWidget*, Qt::WindowFlags = 0);
+        ShipmentList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class ShipmentSearch : public VirtualSearch
@@ -26,7 +26,7 @@ class ShipmentSearch : public VirtualSearch
     Q_OBJECT
 
     public:
-        ShipmentSearch(QWidget*, Qt::WindowFlags = 0);
+        ShipmentSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 };
 
 class XTUPLEWIDGETS_EXPORT ShipmentClusterLineEdit : public VirtualClusterLineEdit
@@ -74,7 +74,7 @@ class XTUPLEWIDGETS_EXPORT ShipmentCluster : public VirtualCluster
     public slots:
         virtual void limitToOrder(const int);
         virtual void removeOrderLimit();
-        virtual void setId(const int, const QString& = QString::null);
+        virtual void setId(const int, const QString& = QString {});
         virtual void setType(QString);
         virtual void setType(ShipmentClusterLineEdit::ShipmentType);
         virtual void setStatus(QString);

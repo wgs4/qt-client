@@ -24,7 +24,7 @@ class XTUPLEWIDGETS_EXPORT accountList : public VirtualList
     Q_OBJECT
 
 public:
-    accountList(QWidget*, Qt::WindowFlags = 0);
+    accountList(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
     virtual XTreeWidget* xtreewidget();
 
 public slots:
@@ -44,7 +44,7 @@ class XTUPLEWIDGETS_EXPORT accountSearch : public VirtualSearch
     Q_OBJECT
 
 public:
-    accountSearch(QWidget*, Qt::WindowFlags = 0);
+    accountSearch(QWidget*, Qt::WindowFlags = Qt::WindowFlags {});
 
 public slots:
     void set(const ParameterList & pParams);
@@ -136,7 +136,7 @@ class XTUPLEWIDGETS_EXPORT GLCluster : public VirtualCluster
     Q_INVOKABLE int  companyId()                 { return static_cast<GLClusterLineEdit*>(_number)->companyId(); }
 
   public slots:
-    void setId(const int p, const QString& = QString::null);
+    void setId(const int p, const QString& = QString {});
 
   protected slots:
     void sHandleProjectState(int p);
