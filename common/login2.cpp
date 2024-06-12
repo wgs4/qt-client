@@ -355,7 +355,8 @@ void login2::sLogin()
   if (db.isOpen())
   {
     QString earliest = "9.3.0",
-            latest   = "9.7.0";
+            latest   = "16.0.0",
+            tested   = "14.12";
     XSqlQuery checkVersion;   // include earliest in the range but exclude latest
     checkVersion.prepare("SELECT compareVersion(:earliest) <= 0"
                          "   AND compareVersion(:latest)   > 0 AS ok,"
@@ -364,11 +365,13 @@ void login2::sLogin()
     checkVersion.bindValue(":latest",   latest);
     checkVersion.exec();
     if (checkVersion.first() && ! checkVersion.value("ok").toBool() &&
-        _handler->question(tr("<p>The database server is at version %1 but "
-                                "xTuple ERP only supports from %2 up to but "
-                                "not including %3.</p><p>Continue anyway?</p>")
+        _handler->question(tr("<p>The database server is at version %1.</p><p>"
+                                "However, this custom version of xTuple "
+                                "ERP only supports from %2 up to but "
+                                "not including %3 (tested up to %4.)</p>"
+                                "<p>Continue anyway?</p>")
                                .arg(checkVersion.value("version").toString(),
-                                    earliest, latest),
+                                    earliest, latest, tested),
                            QMessageBox::Yes | QMessageBox::No,
                            QMessageBox::No) == QMessageBox::No) {
       if (_splash) {
