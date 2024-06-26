@@ -93,6 +93,12 @@ bool dspTimePhasedOpenARItems::setParams(ParameterList &params)
   params.append("useDocDate",  QVariant(_useDocDate->isChecked()));
   params.append("useDistDate", QVariant(_useDistDate->isChecked()));
 
+  if (_excludeNegs->isChecked())
+  {
+    params.append("no_creditMemo", "");
+    params.append("no_cashdeposit", "");
+  }
+
   return true;
 }
 
