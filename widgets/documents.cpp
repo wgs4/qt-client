@@ -322,7 +322,7 @@ void Documents::sOpenDoc(QString mode)
       // TODO: QDesktopServices::openUrl(urldb) on windows does not open files
       // containing spaces. why not?
 #ifdef Q_OS_WIN
-      QString fileName = fi.fileName().remove(" ");
+      QString fileName = fi.fileName().replace(" ","");
 #else
       QString fileName = fi.fileName();
 #endif
