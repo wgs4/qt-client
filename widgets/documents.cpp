@@ -320,13 +320,9 @@ void Documents::sOpenDoc(QString mode)
       QFileInfo fi( qfile.value("url_url").toString() );
       QDir tdir;
       // TODO: QDesktopServices::openUrl(urldb) on windows does not open files
-      // containing spaces. why not?
-#ifdef Q_OS_WIN
-      QString fileName = fi.fileName().replace(" ","%20");
-#else
-      QString fileName = fi.fileName();
-#endif
+      // containing spaces. why not? (SOLVED)
 
+      QString fileName = fi.fileName();
       QString filePath = tdir.tempPath() + "/xtTempDoc/" +
 	                 qfile.value("url_id").toString() + "/";
       QFile tfile(filePath + fileName);
@@ -346,7 +342,7 @@ void Documents::sOpenDoc(QString mode)
       }
       tfile.write(qfile.value("url_stream").toByteArray());
       QUrl urldb;
-      urldb.setUrl(tfile.fileName());
+      urldb.setUrl(Qurl::fromLocalFile(tfile.fileName()).toString());
 #ifndef Q_OS_WIN
       urldb.setScheme("file");
 #endif
