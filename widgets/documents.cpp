@@ -323,11 +323,14 @@ void Documents::sOpenDoc(QString mode)
       // containing spaces. why not?
 #ifdef Q_OS_WIN
       QString fileName = fi.fileName().replace(" ","");
+      QString filePath = tdir.tempPath() + "\xtTempDoc\" +
+	                 qfile.value("url_id").toString() + "\";
 #else
       QString fileName = fi.fileName();
-#endif
       QString filePath = tdir.tempPath() + "/xtTempDoc/" +
 	                 qfile.value("url_id").toString() + "/";
+#endif
+
       QFile tfile(filePath + fileName);
 
       // Remove any previous watches
