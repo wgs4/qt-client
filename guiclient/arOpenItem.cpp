@@ -499,7 +499,7 @@ void arOpenItem::populate()
 
     if ( (docType == "I") || (docType == "D") )
     {
-      arpopulate.prepare( "SELECT arapply_id, arapply_source_aropen_id,"
+      arpopulate.prepare( "SELECT arapply_id, arapply_source_aropen_id, arapply_username,"
                  "       CASE WHEN (arapply_source_doctype = 'C') THEN :creditMemo"
                  "            WHEN (arapply_source_doctype = 'R') THEN :cashdeposit"
                  "            ELSE getFundsTypeName(arapply_fundstype)"
@@ -522,7 +522,7 @@ void arOpenItem::populate()
     }
     else if (docType == "C" || docType == "R")
     {
-      arpopulate.prepare( "SELECT arapply_id, arapply_target_aropen_id,"
+      arpopulate.prepare( "SELECT arapply_id, arapply_target_aropen_id, arapply_username,"
                  "       CASE WHEN (arapply_target_doctype = 'I') THEN :invoice"
                  "            WHEN (arapply_target_doctype = 'D') THEN :debitMemo"
                  "            WHEN (arapply_target_doctype = 'K') THEN :apcheck"
