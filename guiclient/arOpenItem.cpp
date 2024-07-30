@@ -61,6 +61,7 @@ arOpenItem::arOpenItem(QWidget* parent, const char* name, bool modal, Qt::Window
   _arapply->addColumn(tr("Amount"),         _moneyColumn, Qt::AlignRight, true, "arapply_applied");
   _arapply->addColumn(tr("Currency"),    _currencyColumn, Qt::AlignLeft,  !omfgThis->singleCurrency(), "currabbr");
   _arapply->addColumn(tr("Base Amount"), _bigMoneyColumn, Qt::AlignRight, true, "baseapplied");
+  _arapply->addColumn(tr("User"), _userColumn, Qt::AlignLeft, true, "arapply_username");
 
   _printOnPost->setVisible(false);
 
