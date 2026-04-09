@@ -228,6 +228,9 @@ void login2::sOpenHelp()
 
 void login2::sLogin()
 {
+  // Refresh entered info, sometimes it may not read dbname if clicked on login button
+  sChangeURL();
+
   QSqlDatabase db;
 
   QString databaseURL;
