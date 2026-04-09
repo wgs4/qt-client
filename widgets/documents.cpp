@@ -342,7 +342,7 @@ void Documents::sOpenDoc(QString mode)
       }
       tfile.write(qfile.value("url_stream").toByteArray());
       QUrl urldb;
-      urldb.setUrl(Qurl::fromLocalFile(tfile.fileName()).toString());
+      urldb.setUrl(QUrl::fromLocalFile(tfile.fileName()).toString());
 #ifndef Q_OS_WIN
       urldb.setScheme("file");
 #endif
