@@ -73,7 +73,12 @@
       "qt_grep": 12,
       "wgs_review": 8
     },
-    "notes": "Broad-sweep medium-depth audit. 89 entries. 47% confirmed (backed by DB query or direct code proof). 24% P1, 46% P2, 29% P3, 1% P0 — priority distribution within target. All 11 primary modules have coverage. No source files modified by this audit — see git status. Recommended next steps: (a) triage by priority starting with BUG-0001 (convertProspectToCustomer silent data loss) and BUG-0055/BUG-0056 (live data anomalies); (b) remediate the 45 invchead rows with NULL gldistdate via one-time backfill; (c) apply misc-charge guard sibling fixes (BUG-0072/0073) and issueWoMaterialBatch filter (BUG-0080). The manual-cross-reference pass is only partial (no doc-vs-code divergences catalogued) because manual probing on every audited screen would roughly double the file and was not identified as high-value during the spot checks.\n\n[Pass 2 continuation, 2026-04-14]: Added BUG-0090..BUG-0165 (76 new entries) across 5 focused mini-passes: (1) displays sweep (dspGLTransactions, dspJournals, dspWoSchedule, dspRunningAvailability, dspInventoryAvailability), (2) remaining payment processors (cybersource, verisign, authorize.net, paymentech), (3) CRM (incident, opportunity, contact, crmaccount), (4) Purchasing + error-handling core (purchaseOrder, purchaseOrderItem, enterPoReceipt, poitemTableView, common/errorReporter), (5) DB deep sweep (financialreport, explodewo, voidpostedcheck, voidapopenvoucher, shipshipment, issuetoshipping, merge2crmaccts, convertquotetoinvoice, convertprospecttocustomer, resetdbobjperms, changefkeypointers, copyfinancialgroup, deletepackage, calculatetaxdetailsummary, calcshipfreight, createpurchasetosale, returnshipmenttransaction, plus 10 wgs.* functions and trigger-order analysis on coitem). Out of scope for Pass 2: full trigger-order analysis on cohead/gltrans/invhist/item/poitem; exhaustive wgs.* review (10 of 37 wgs functions now covered); runtime reproduction of the 148-row coitem over-shipment anomaly beyond the shipshipment write-path link."
+    "notes": "Broad-sweep medium-depth audit. 89 entries. 47% confirmed (backed by DB query or direct code proof). 24% P1, 46% P2, 29% P3, 1% P0 — priority distribution within target. All 11 primary modules have coverage. No source files modified by this audit — see git status. Recommended next steps: (a) triage by priority starting with BUG-0001 (convertProspectToCustomer silent data loss) and BUG-0055/BUG-0056 (live data anomalies); (b) remediate the 45 invchead rows with NULL gldistdate via one-time backfill; (c) apply misc-charge guard sibling fixes (BUG-0072/0073) and issueWoMaterialBatch filter (BUG-0080). The manual-cross-reference pass is only partial (no doc-vs-code divergences catalogued) because manual probing on every audited screen would roughly double the file and was not identified as high-value during the spot checks.\n\n[Pass 2 continuation, 2026-04-14]: Added BUG-0090..BUG-0165 (76 new entries) across 5 focused mini-passes: (1) displays sweep (dspGLTransactions, dspJournals, dspWoSchedule, dspRunningAvailability, dspInventoryAvailability), (2) remaining payment processors (cybersource, verisign, authorize.net, paymentech), (3) CRM (incident, opportunity, contact, crmaccount), (4) Purchasing + error-handling core (purchaseOrder, purchaseOrderItem, enterPoReceipt, poitemTableView, common/errorReporter), (5) DB deep sweep (financialreport, explodewo, voidpostedcheck, voidapopenvoucher, shipshipment, issuetoshipping, merge2crmaccts, convertquotetoinvoice, convertprospecttocustomer, resetdbobjperms, changefkeypointers, copyfinancialgroup, deletepackage, calculatetaxdetailsummary, calcshipfreight, createpurchasetosale, returnshipmenttransaction, plus 10 wgs.* functions and trigger-order analysis on coitem). Out of scope for Pass 2: full trigger-order analysis on cohead/gltrans/invhist/item/poitem; exhaustive wgs.* review (10 of 37 wgs functions now covered); runtime reproduction of the 148-row coitem over-shipment anomaly beyond the shipshipment write-path link.",
+    "counts_by_side": {
+      "both": 1,
+      "client": 71,
+      "database": 93
+    }
   },
   "bugs": [
     {
@@ -100,7 +105,8 @@
         "silent-failure",
         "data-loss",
         "no-row-count-check"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0002",
@@ -125,7 +131,8 @@
       "tags": [
         "exception-when-others",
         "silent-failure"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0003",
@@ -151,7 +158,8 @@
         "destructive-fallback",
         "exception-when-others",
         "cascade"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0004",
@@ -177,7 +185,8 @@
         "cross-join",
         "missing-unique-constraint",
         "trigger"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0005",
@@ -203,7 +212,8 @@
         "silent-failure",
         "missing-insert",
         "dba-attribution"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0006",
@@ -228,7 +238,8 @@
       "tags": [
         "variable-name-typo",
         "error-message"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0007",
@@ -254,7 +265,8 @@
         "gl-imbalance",
         "limit-1-arbitrary",
         "multi-company"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0008",
@@ -280,7 +292,8 @@
         "race-condition",
         "missing-for-update",
         "receipt"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0009",
@@ -306,7 +319,8 @@
         "null-handling",
         "division-by-null",
         "costing"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0010",
@@ -336,7 +350,8 @@
         "substring-vs-token",
         "string-parsing",
         "data-integrity"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0011",
@@ -366,7 +381,8 @@
         "substring-vs-token",
         "string-parsing",
         "trailing-comma"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0012",
@@ -391,7 +407,8 @@
       "tags": [
         "shared-scratch-table",
         "race-condition"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0013",
@@ -416,7 +433,8 @@
       "tags": [
         "coalesce-ordering",
         "address-matching"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0014",
@@ -442,7 +460,8 @@
         "y2k-like",
         "two-digit-year",
         "date-handling"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0015",
@@ -467,7 +486,8 @@
       "tags": [
         "select-into-multiple-rows",
         "non-deterministic"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0016",
@@ -492,7 +512,8 @@
       "tags": [
         "null-not-checked",
         "orphan-rows"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0017",
@@ -518,7 +539,8 @@
         "integer-cast",
         "null-concat",
         "boundary"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0018",
@@ -543,7 +565,8 @@
       "tags": [
         "string-parsing",
         "prefix-check"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0019",
@@ -569,7 +592,8 @@
         "regex-anchor",
         "false-positive",
         "string-parsing"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0020",
@@ -594,7 +618,8 @@
       "tags": [
         "arbitrary-selection",
         "BOM-walk"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0021",
@@ -619,7 +644,8 @@
       "tags": [
         "sentinel-value",
         "magic-number"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0022",
@@ -645,7 +671,8 @@
         "recursion",
         "cycle-detection",
         "defense-in-depth"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0023",
@@ -676,7 +703,8 @@
         "time-window",
         "idempotency",
         "missed-orders"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0024",
@@ -705,7 +733,8 @@
       "tags": [
         "null-overwrite",
         "subquery"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0025",
@@ -735,7 +764,8 @@
         "hardcoded-list",
         "silent-remap",
         "sales-data-quality"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0026",
@@ -763,7 +793,8 @@
         "tax-compliance",
         "silent-adjustment",
         "known-via-comment"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0027",
@@ -788,7 +819,8 @@
       "tags": [
         "inner-join-hides-rows",
         "api-view"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0028",
@@ -814,7 +846,8 @@
         "cross-product",
         "api-view",
         "gl"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0029",
@@ -845,7 +878,8 @@
       "tags": [
         "inner-join-hides-rows",
         "api-view"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0030",
@@ -876,7 +910,8 @@
       "tags": [
         "inner-join-hides-rows",
         "api-view"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0031",
@@ -906,7 +941,8 @@
       "tags": [
         "inner-join-hides-rows",
         "api-view"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0032",
@@ -932,7 +968,8 @@
         "div-by-zero",
         "posting",
         "ap"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0033",
@@ -957,7 +994,8 @@
       "tags": [
         "rounding",
         "scale-mismatch"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0034",
@@ -983,7 +1021,8 @@
         "data-loss",
         "allpedal",
         "truncation"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0035",
@@ -1009,7 +1048,8 @@
         "select-into-multi-row",
         "null-comparison",
         "serial"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0036",
@@ -1035,7 +1075,8 @@
         "race-condition",
         "shared-scratch-table",
         "concurrency"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0037",
@@ -1059,7 +1100,8 @@
       "discovered_via": "module_review",
       "tags": [
         "undefined-column"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0038",
@@ -1089,7 +1131,8 @@
         "recursion",
         "no-cycle-guard",
         "stack-overflow"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0039",
@@ -1119,7 +1162,8 @@
         "bom",
         "multi-parent",
         "silent-drop"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0040",
@@ -1144,7 +1188,8 @@
       "tags": [
         "substring-negative-length",
         "data-loss"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0041",
@@ -1169,7 +1214,8 @@
       "tags": [
         "substring-match",
         "tokenization"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0042",
@@ -1198,7 +1244,8 @@
       "tags": [
         "tokenization",
         "string-manipulation"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0043",
@@ -1223,7 +1270,8 @@
       "tags": [
         "numeric-overflow",
         "allpedal"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0044",
@@ -1248,7 +1296,8 @@
       "tags": [
         "rounding",
         "upstream-known"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0045",
@@ -1273,7 +1322,8 @@
       "tags": [
         "dead-code",
         "trigger-without-return"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0046",
@@ -1298,7 +1348,8 @@
       "tags": [
         "misnamed",
         "dead-logic"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0047",
@@ -1323,7 +1374,8 @@
       "tags": [
         "stub",
         "incomplete"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0048",
@@ -1353,7 +1405,8 @@
         "no-error-on-missing",
         "allpedal",
         "silent-bad-data"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0049",
@@ -1380,7 +1433,8 @@
         "gl-imbalance",
         "asymmetric-branch",
         "misc-charge"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0050",
@@ -1406,7 +1460,8 @@
         "dead-code",
         "tech-debt",
         "fx-date"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0051",
@@ -1432,7 +1487,8 @@
         "dead-code",
         "tech-debt",
         "suspicious-refactor-debris"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0052",
@@ -1459,7 +1515,8 @@
         "rounding",
         "fx",
         "todo"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0053",
@@ -1486,7 +1543,8 @@
         "gl-date",
         "cutoff",
         "timestamptz"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0054",
@@ -1514,7 +1572,8 @@
         "inventory",
         "avg-cost",
         "fk-missing-lock"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0055",
@@ -1541,7 +1600,8 @@
         "invariant-violation",
         "confirmed-live",
         "reporting-blind-spot"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0056",
@@ -1567,7 +1627,8 @@
         "financial",
         "invariant-violation",
         "confirmed-live"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0057",
@@ -1593,7 +1654,8 @@
         "data-integrity",
         "gl-noise",
         "confirmed-live"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0058",
@@ -1619,7 +1681,8 @@
         "audit-trail",
         "data-integrity",
         "confirmed-live"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0059",
@@ -1648,7 +1711,8 @@
         "payment-processing",
         "todo-tracked",
         "systemic"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0060",
@@ -1677,7 +1741,8 @@
         "security",
         "data-leakage",
         "test-mode"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0061",
@@ -1709,7 +1774,8 @@
         "silent-failure",
         "exec-unchecked",
         "locking"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0062",
@@ -1742,7 +1808,8 @@
         "systemic",
         "error-handling",
         "high-count"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0063",
@@ -1770,7 +1837,8 @@
         "sql-injection",
         "string-concat",
         "charass"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0064",
@@ -1797,7 +1865,8 @@
       "tags": [
         "silent-failure",
         "exec-unchecked"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0065",
@@ -1825,7 +1894,8 @@
         "sequence-misuse",
         "race",
         "semantic-bug"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0066",
@@ -1854,7 +1924,8 @@
         "currency",
         "precision",
         "systemic"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0067",
@@ -1883,7 +1954,8 @@
         "curl",
         "portability",
         "todo-tracked"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0068",
@@ -1911,7 +1983,8 @@
         "gui-thread-blocking",
         "ux",
         "todo-tracked"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0069",
@@ -1938,7 +2011,8 @@
       "tags": [
         "sentinel-overload",
         "todo-tracked"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0070",
@@ -1966,7 +2040,8 @@
         "unfinished-feature",
         "fraud",
         "todo-tracked"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0071",
@@ -1994,7 +2069,8 @@
         "pointer-vs-value",
         "dead-branch",
         "widget"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0072",
@@ -2026,7 +2102,8 @@
         "misc-charge",
         "sibling-fix-missing",
         "validation"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0073",
@@ -2061,7 +2138,8 @@
         "misc-charge",
         "sibling-fix-missing",
         "validation"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0074",
@@ -2089,7 +2167,8 @@
         "null-to-zero",
         "commission",
         "financial"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0075",
@@ -2117,7 +2196,8 @@
         "signal-slot",
         "maintenance-hazard",
         "exception-safety"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0076",
@@ -2145,7 +2225,8 @@
         "transaction-scope",
         "partial-commit",
         "data-integrity"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0077",
@@ -2172,7 +2253,8 @@
       "tags": [
         "validation",
         "numrowsaffected"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0078",
@@ -2199,7 +2281,8 @@
       "tags": [
         "update-validation",
         "first-as-success"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0079",
@@ -2230,7 +2313,8 @@
       "tags": [
         "exec-unchecked",
         "query-reuse"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0080",
@@ -2262,7 +2346,8 @@
         "sibling-fix-missing",
         "wrong-filter",
         "underinclude"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0081",
@@ -2289,7 +2374,8 @@
       "tags": [
         "duplicate-connect",
         "copy-paste"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0082",
@@ -2316,7 +2402,8 @@
       "tags": [
         "exec-unchecked",
         "silent-failure"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0083",
@@ -2344,7 +2431,8 @@
         "numrowsaffected",
         "race",
         "check-printing"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0084",
@@ -2370,7 +2458,8 @@
         "division-by-zero",
         "fx",
         "defensive-coding"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0085",
@@ -2399,7 +2488,8 @@
       "tags": [
         "division-by-zero",
         "bank-rec"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0086",
@@ -2430,7 +2520,8 @@
         "api-view",
         "inner-join-hides-rows",
         "reporting-blind-spot"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0087",
@@ -2455,7 +2546,8 @@
       "tags": [
         "exception-when-others",
         "silent-failure"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0088",
@@ -2484,7 +2576,8 @@
       "tags": [
         "exception-when-others",
         "narrow-catch"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0089",
@@ -2511,7 +2604,8 @@
       "tags": [
         "readability",
         "redundant-check"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0090",
@@ -2543,7 +2637,8 @@
         "unchecked-exec",
         "silent-failure",
         "stored-proc-return-ignored"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0091",
@@ -2571,7 +2666,8 @@
         "stored-proc-return-ignored",
         "silent-failure",
         "consistency-bug"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0092",
@@ -2599,7 +2695,8 @@
         "TODO-unresolved",
         "stored-proc-return-ignored",
         "silent-failure"
-      ]
+      ],
+      "side": "both"
     },
     {
       "id": "BUG-0093",
@@ -2632,7 +2729,8 @@
         "TODO-unresolved",
         "duplicate-demand",
         "refactor-incomplete"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0094",
@@ -2659,7 +2757,8 @@
       "tags": [
         "inconsistent-casing",
         "latent-bug"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0095",
@@ -2692,7 +2791,8 @@
         "silent-failure",
         "duplicated-code",
         "ux"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0096",
@@ -2719,7 +2819,8 @@
       "tags": [
         "dead-code",
         "readability"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0097",
@@ -2746,7 +2847,8 @@
       "tags": [
         "unchecked-exec",
         "silent-default-drop"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0098",
@@ -2777,7 +2879,8 @@
       "tags": [
         "unchecked-exec",
         "silent-default-drop"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0099",
@@ -2805,7 +2908,8 @@
         "style",
         "possible-logic-error",
         "raw-exec"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0100",
@@ -2833,7 +2937,8 @@
         "typo",
         "http-header",
         "credit-card"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0101",
@@ -2862,7 +2967,8 @@
         "unfinished",
         "credit-card",
         "dead-code"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0102",
@@ -2890,7 +2996,8 @@
         "silent-failure",
         "credit-card",
         "error-handling"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0103",
@@ -2919,7 +3026,8 @@
         "incomplete-feature",
         "credit-card",
         "ach"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0104",
@@ -2947,7 +3055,8 @@
         "todo",
         "test-vs-prod-divergence",
         "credit-card"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0105",
@@ -2976,7 +3085,8 @@
         "incomplete-feature",
         "credit-card",
         "fraud"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0106",
@@ -3005,7 +3115,8 @@
         "3dsecure",
         "api-deprecation",
         "credit-card"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0107",
@@ -3034,7 +3145,8 @@
         "hardcoded",
         "credit-card",
         "i18n"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0108",
@@ -3062,7 +3174,8 @@
         "fragile-detection",
         "credit-card",
         "configuration"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0109",
@@ -3090,7 +3203,8 @@
         "todo",
         "credit-card",
         "void-vs-refund"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0110",
@@ -3119,7 +3233,8 @@
         "credit-card",
         "avs",
         "display-correctness"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0111",
@@ -3148,7 +3263,8 @@
         "unchecked-exec",
         "transaction",
         "crm"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0112",
@@ -3177,7 +3293,8 @@
         "unchecked-exec",
         "transaction",
         "crm"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0113",
@@ -3206,7 +3323,8 @@
         "unchecked-exec",
         "transaction",
         "crm"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0114",
@@ -3234,7 +3352,8 @@
         "unchecked-exec",
         "crm",
         "edge-case"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0115",
@@ -3263,7 +3382,8 @@
         "fragile",
         "crm",
         "sql-hygiene"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0116",
@@ -3292,7 +3412,8 @@
         "qt",
         "crm",
         "ux"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0117",
@@ -3320,7 +3441,8 @@
         "modal-dialog",
         "ignored-return",
         "crm"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0118",
@@ -3348,7 +3470,8 @@
         "populate",
         "silent-failure",
         "crm"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0119",
@@ -3376,7 +3499,8 @@
         "style",
         "refactor-hazard",
         "crm"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0120",
@@ -3404,7 +3528,8 @@
         "populate",
         "ordering",
         "crm"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0121",
@@ -3433,7 +3558,8 @@
         "unchecked-exec",
         "purchasing",
         "display-corruption"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0122",
@@ -3461,7 +3587,8 @@
         "missing-return",
         "money-sensitive",
         "purchasing"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0123",
@@ -3490,7 +3617,8 @@
         "money-sensitive",
         "purchasing",
         "inventory"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0124",
@@ -3519,7 +3647,8 @@
         "transaction",
         "money-sensitive",
         "purchasing"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0125",
@@ -3548,7 +3677,8 @@
         "silent-failure",
         "inventory",
         "purchasing"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0126",
@@ -3577,7 +3707,8 @@
         "silent-failure",
         "purchasing",
         "sql-typo"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0127",
@@ -3605,7 +3736,8 @@
         "unchecked-exec",
         "purchasing",
         "wo-link"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0128",
@@ -3634,7 +3766,8 @@
         "loop",
         "stored-proc-return",
         "purchasing"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0129",
@@ -3662,7 +3795,8 @@
         "money-sensitive",
         "purchasing",
         "tax"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0130",
@@ -3691,7 +3825,8 @@
         "qt-model",
         "ux",
         "purchasing"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0131",
@@ -3719,7 +3854,8 @@
         "silent-failure",
         "purchasing",
         "itemsite"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0132",
@@ -3747,7 +3883,8 @@
         "unchecked-exec",
         "ui-label",
         "purchasing"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0133",
@@ -3775,7 +3912,8 @@
         "unchecked-exec",
         "combo-population",
         "purchasing"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0134",
@@ -3804,7 +3942,8 @@
         "tech-debt",
         "common",
         "error-messages"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0135",
@@ -3832,7 +3971,8 @@
         "todo-cluster",
         "tech-debt",
         "common"
-      ]
+      ],
+      "side": "client"
     },
     {
       "id": "BUG-0136",
@@ -3861,7 +4001,8 @@
         "ddl",
         "definer",
         "admin"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0137",
@@ -3889,7 +4030,8 @@
         "sql-injection",
         "merge",
         "dynamic-sql"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0138",
@@ -3917,7 +4059,8 @@
         "sql-injection",
         "dynamic-sql",
         "financial-report"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0139",
@@ -3945,7 +4088,8 @@
         "sql-injection",
         "ddl",
         "packages"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0140",
@@ -3974,7 +4118,8 @@
         "merge",
         "crm",
         "orphan-rows"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0141",
@@ -4003,7 +4148,8 @@
         "shipping",
         "live-data-anomaly",
         "missing-invariant"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0142",
@@ -4031,7 +4177,8 @@
         "inventory",
         "shipping",
         "missing-invariant"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0143",
@@ -4059,7 +4206,8 @@
         "triggers",
         "invariant",
         "sales-order"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0144",
@@ -4088,7 +4236,8 @@
         "metrics",
         "commissions",
         "dead-code"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0145",
@@ -4116,7 +4265,8 @@
         "exception-handling",
         "silent-failure",
         "typo"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0146",
@@ -4143,7 +4293,8 @@
       "tags": [
         "exception-handling",
         "silent-failure"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0147",
@@ -4171,7 +4322,8 @@
         "exception-handling",
         "silent-failure",
         "wgs"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0148",
@@ -4200,7 +4352,8 @@
         "robustness",
         "author-acknowledged",
         "wgs"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0149",
@@ -4229,7 +4382,8 @@
         "manufacturing",
         "bom",
         "infinite-loop"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0150",
@@ -4258,7 +4412,8 @@
         "cte",
         "bom",
         "wgs"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0151",
@@ -4288,7 +4443,8 @@
         "race-condition",
         "shipping",
         "wgs"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0152",
@@ -4316,7 +4472,8 @@
         "duplication",
         "maintainability",
         "wgs"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0153",
@@ -4345,7 +4502,8 @@
         "maintainability",
         "shipping",
         "wgs"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0154",
@@ -4374,7 +4532,8 @@
         "locking",
         "ap",
         "ar"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0155",
@@ -4403,7 +4562,8 @@
         "currency",
         "robustness",
         "ap"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0156",
@@ -4431,7 +4591,8 @@
         "concurrency",
         "locking",
         "ap"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0157",
@@ -4459,7 +4620,8 @@
         "concurrency",
         "locking",
         "purchasing"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0158",
@@ -4487,7 +4649,8 @@
         "type-coercion",
         "style",
         "performance"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0159",
@@ -4515,7 +4678,8 @@
         "rounding",
         "tax",
         "financial"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0160",
@@ -4544,7 +4708,8 @@
         "financial-report",
         "accumulator",
         "gl"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0161",
@@ -4572,7 +4737,8 @@
         "loop-termination",
         "robustness",
         "wgs"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0162",
@@ -4601,7 +4767,8 @@
         "locking",
         "shipping",
         "returns"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0163",
@@ -4630,7 +4797,8 @@
         "dynamic-sql",
         "style",
         "admin"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0164",
@@ -4658,7 +4826,8 @@
         "null-handling",
         "encoding",
         "wgs"
-      ]
+      ],
+      "side": "database"
     },
     {
       "id": "BUG-0165",
@@ -4686,7 +4855,8 @@
         "typo",
         "logging",
         "cosmetic"
-      ]
+      ],
+      "side": "database"
     }
   ]
 }
